@@ -206,5 +206,5 @@ def eliminar_automatizacion():
         auto = automatizaciones.pop(idx)
         print(f"Automatización '{auto['nombre']}' eliminada.")
 
-# Iniciar el programa
+# Iniciar el programa 2
 menu_principal()
