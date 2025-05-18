@@ -145,8 +145,8 @@ def mostrar_automatizaciones():
             print(f"{i}. {d['nombre']}")
         d_idx = int(input("Seleccione un dispositivo: ")) - 1
         dias = input("Días de la semana (ej: Lunes,Miércoles): ")
-        hora_on = input("Hora de encendido (formato hh:mma/pm): ")
-        hora_off = input("Hora de apagado (formato hh:mma/pm): ")
+        hora_on = input("Hora de encendido (formato hh:am/pm): ")
+        hora_off = input("Hora de apagado (formato hh:am/pm): ")
         automatizaciones.append({"nombre": nombre, "dispositivo": dispositivos[d_idx]['nombre'],
                                  "dias": dias, "hora_on": hora_on, "hora_off": hora_off})
         print("Automatización creada.")
