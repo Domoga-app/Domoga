@@ -1,6 +1,6 @@
 usuarios = {}
 usuario_actual = None
-hogares = {"hogar": {}, "casa campo": {}}
+hogares_disponibles = []
 ambientes = {}
 dispositivos = []
 automatizaciones = []

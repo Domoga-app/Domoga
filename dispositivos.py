@@ -1,3 +1,4 @@
+
 from datos import dispositivos, ambientes
 
 def gestionar_dispositivos(hogar):
