@@ -20,6 +20,7 @@ def menu_principal_usuario():
             print("Opción no válida.")
 
 def menu_hogar():
+
     opcion = input("Seleccione un hogar: ")
     nombre_hogar = "hogar" if opcion == "1" else "casa campo" if opcion == "2" else None
     if nombre_hogar:
@@ -28,6 +29,12 @@ def menu_hogar():
         print("Opción no válida.")
 
 def menu_hogar_opciones(nombre_hogar):
+    opciones = {
+        "1":  lambda: ambientes.gestionar_ambientes(nombre_hogar),
+        "2":  lambda: disp.gestionar_dispositivos(nombre_hogar),
+        "3":  lambda: auto.mostrar_automatizaciones(),
+        "4":  lambda: configuracion.menu_configuracion(nombre_hogar),
+    }
     while True:
         print(f"\nMenú de {nombre_hogar}:")
         print("1. Ambientes")
@@ -36,16 +43,12 @@ def menu_hogar_opciones(nombre_hogar):
         print("4. Configuración")
         print("5. Volver")
         opcion = input("Seleccione una opción: ")
-        
-        if opcion == "1":
-            ambientes.gestionar_ambientes(nombre_hogar)
-        elif opcion == "2":
-            disp.gestionar_dispositivos(nombre_hogar)
-        elif opcion == "3":
-            auto.mostrar_automatizaciones()
-        elif opcion == "4":
-            configuracion.menu_configuracion(nombre_hogar)
-        elif opcion == "5":
+
+   
+        if opcion == "5":
             break
+        elif opcion in opciones:
+            opciones[opcion]()  # Ejecuta la función correspondiente
+        
         else:
             print("Opción no válida.")
