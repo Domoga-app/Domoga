@@ -20,7 +20,6 @@ def ingresar_usuario():
     contrasena = input("Ingrese su contraseña: ")
 
     for usuario in usuarios:
-        print("usuarios", usuario)
         if usuario["nombre"] == nombre and usuario["contra"] == contrasena:
          print(f"Hola {nombre}! Bienvenido a casa")
          hogares.menu_principal_usuario()

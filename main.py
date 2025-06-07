@@ -1,6 +1,15 @@
 from usuarios import ingresar_usuario, crear_usuario, recuperar_usuario
 
+
+
 def menu_principal():
+    opciones = {
+            "1": ingresar_usuario,
+            "2": crear_usuario,
+            "3": recuperar_usuario,
+            "4": print("Hasta luego!"),
+        }
+       
     while True:
         print("\n¡Bienvenido a Domóga!")
         print("1. Ingresar usuario")
@@ -8,16 +17,13 @@ def menu_principal():
         print("3. Recuperar usuario y/o contraseña")
         print("4. Salir")
         opcion = input("Seleccione una opción: ")
+      
+        accion = opciones.get(opcion)
 
-        if opcion == "1":
-            ingresar_usuario()
-        elif opcion == "2":
-            crear_usuario()
-        elif opcion == "3":
-            recuperar_usuario()
-        elif opcion == "4":
-            print("Hasta luego!")
-            break
+        if accion:
+            accion()
+            if opcion == "4":
+                break
         else:
             print("Opción no válida.")
 
