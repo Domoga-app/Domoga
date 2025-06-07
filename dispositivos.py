@@ -1,21 +1,16 @@
-from datos import dispositivos, ambientes
+from datos import dispositivos
 
 def gestionar_dispositivos(hogar):
     print("\nDispositivos:")
     encontrados = [d for d in dispositivos if d['hogar'] == hogar]
+
     if not encontrados:
         print("No hay dispositivos creados.")
     else:
         for d in encontrados:
-            print(f"- {d['nombre']} ({d['estado']}) - Ambiente: {d['ambiente']}")
-    if input("\n¿Desea crear un nuevo dispositivo? (s/n): ") == "s":
-        if not ambientes.get(hogar):
-            print("Debe crear un ambiente primero.")
-            return
+            print(f"- {d['nombre']} ({d['estado']})")
+
+    if input("\n¿Desea crear un nuevo dispositivo? (s/n): ").strip().lower() == "s":
         nombre = input("Nombre del dispositivo: ")
-        for i, amb in enumerate(ambientes[hogar], 1):
-            print(f"{i}. {amb}")
-        amb_idx = int(input("Seleccione el ambiente: ")) - 1
-        ambiente = ambientes[hogar][amb_idx]
-        dispositivos.append({"nombre": nombre, "estado": "apagado", "hogar": hogar, "ambiente": ambiente})
+        dispositivos.append({"nombre": nombre, "estado": "apagado", "hogar": hogar})
         print("Dispositivo creado con éxito.")
