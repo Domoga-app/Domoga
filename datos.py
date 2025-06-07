@@ -1,6 +1,6 @@
-usuarios = {}
+usuarios = []
 usuario_actual = None
-hogares = {"hogar": {}, "casa campo": {}}
-ambientes = {}
+hogares = []
+ambientes = []
 dispositivos = []
 automatizaciones = []

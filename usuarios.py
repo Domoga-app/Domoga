@@ -4,7 +4,11 @@ import hogares
 def crear_usuario():
     nombre = input("Ingrese un nombre de usuario: ")
     contrasena = input("Ingrese una contraseña: ")
-    usuarios[nombre] = contrasena
+    nuevo_usuario = { 
+        "nombre":  nombre,
+        "contra": contrasena
+    }
+    usuarios.append(nuevo_usuario)
     print("Usuario creado con éxito.")
 
 def recuperar_usuario():
@@ -14,9 +18,11 @@ def ingresar_usuario():
     global usuario_actual
     nombre = input("Ingrese su nombre de usuario: ")
     contrasena = input("Ingrese su contraseña: ")
-    if usuarios.get(nombre) == contrasena:
-        usuario_actual = nombre
-        print(f"Hola {nombre}! Bienvenido a casa")
-        hogares.menu_principal_usuario()
-    else:
-        print("Usuario o contraseña incorrectos.")
+
+    for usuario in usuarios:
+        print("usuarios", usuario)
+        if usuario["nombre"] == nombre and usuario["contra"] == contrasena:
+         print(f"Hola {nombre}! Bienvenido a casa")
+         hogares.menu_principal_usuario()
+        else:
+         print("Usuario o contraseña incorrectos.")

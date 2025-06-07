@@ -20,8 +20,6 @@ def menu_principal_usuario():
             print("Opción no válida.")
 
 def menu_hogar():
-    print("\n1. hogar")
-    print("2. casa campo")
     opcion = input("Seleccione un hogar: ")
     nombre_hogar = "hogar" if opcion == "1" else "casa campo" if opcion == "2" else None
     if nombre_hogar:
@@ -38,7 +36,7 @@ def menu_hogar_opciones(nombre_hogar):
         print("4. Configuración")
         print("5. Volver")
         opcion = input("Seleccione una opción: ")
-
+        
         if opcion == "1":
             ambientes.gestionar_ambientes(nombre_hogar)
         elif opcion == "2":
