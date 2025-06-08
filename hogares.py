@@ -2,6 +2,7 @@ import ambientes
 import dispositivos as disp
 import automatizaciones as auto
 import configuracion
+import datos
 
 def menu_principal_usuario():
     while True:
@@ -28,9 +29,9 @@ def menu_principal_usuario():
 from datos import hogares_disponibles  # importá la lista de hogares
 
 def menu_hogar():
-    if not hogares_disponibles:
+    if not datos.hogares_disponibles:
         print("No hay hogares disponibles. Por favor, agregue uno primero.")
-        return
+        agregar_hogar()
 
     while True:
         print("\nSeleccione un hogar:")
@@ -61,7 +62,7 @@ def agregar_hogar():
         print("Nombre inválido o ya existe.")
 
 def eliminar_hogar():
-    if not hogares_disponibles:
+    if not datos.hogares_disponibles:
         print("No hay hogares para eliminar.")
         return
 
