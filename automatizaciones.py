@@ -143,23 +143,3 @@ def eliminar_automatizacion():
         print("Entrada inválida.")
 
         
-def menu_automatizaciones(nombre_hogar):
-    while True:
-        print(f"\n Automatizaciones en {nombre_hogar}")
-        print("1. Mostrar automatizaciones")
-        print("2. Crear automatizaciones")
-        print("3. Eliminar automatizaciones")
-        print("4. Volver atrás")
-        opcion = input("Seleccione una opción: ")
-
-        if opcion == "1":
-            mostrar_automatizaciones()
-        elif opcion == "2":
-            crear_automatizacion()
-        elif opcion == "3":
-            eliminar_automatizacion()
-        elif opcion == "4":
-            print("Hasta luego!")
-            break
-        else:
-            print("Opción no válida.")
