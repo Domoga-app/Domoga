@@ -30,14 +30,28 @@ from datos import hogares_disponibles  # importá la lista de hogares
 
 def menu_hogar():
     if not datos.hogares_disponibles:
-        print("No hay hogares disponibles. Por favor, agregue uno primero.")
-        agregar_hogar()
+        print("No hay hogares disponibles.")
+        while True:
+            print("\n1. Agregar un hogar")
+            print("0. Volver al menú anterior")
+            opcion = input("Seleccione una opción: ")
+
+            if opcion == "1":
+                agregar_hogar()
+                if not datos.hogares_disponibles:
+                    print("No se agregó ningún hogar.")
+                    return
+                break  # continuar al menú de selección
+            elif opcion == "0":
+                return
+            else:
+                print("Opción no válida.")
 
     while True:
         print("\nSeleccione un hogar:")
-        for i, nombre in enumerate(hogares_disponibles, start=1):
+        for i, nombre in enumerate(datos.hogares_disponibles, start=1):
             print(f"{i}. {nombre}")
-        print("0. Volver")  # <- opción para salir del menú
+        print("0. Volver")  # opción para salir del menú
 
         opcion = input("Ingrese el número del hogar: ")
 
@@ -46,8 +60,8 @@ def menu_hogar():
 
         if opcion.isdigit():
             indice = int(opcion) - 1
-            if 0 <= indice < len(hogares_disponibles):
-                nombre_hogar = hogares_disponibles[indice]
+            if 0 <= indice < len(datos.hogares_disponibles):
+                nombre_hogar = datos.hogares_disponibles[indice]
                 menu_hogar_opciones(nombre_hogar)
                 return  # volver al menú principal luego de seleccionar un hogar
 
