@@ -7,21 +7,18 @@ import datos
 def menu_principal_usuario():
     while True:
         print("\n1. Seleccionar hogar")
-        print("2. Administrar automatizaciones del hogar")
-        print("3. Agregar nuevo hogar")
-        print("4. Eliminar hogar")
-        print("5. Cerrar sesión")
+        print("2. Agregar nuevo hogar")
+        print("3. Eliminar hogar")
+        print("4. Cerrar sesión")
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
             menu_hogar()
         elif opcion == "2":
-            auto.mostrar_automatizaciones()
-        elif opcion == "3":
             agregar_hogar()
-        elif opcion == "4":
+        elif opcion == "3":
             eliminar_hogar()
-        elif opcion == "5":
+        elif opcion == "4":
             break
         else:
             print("Opción no válida.")
@@ -102,7 +99,7 @@ def menu_hogar_opciones(nombre_hogar):
         elif opcion == "2":
             disp.gestionar_dispositivos(nombre_hogar)
         elif opcion == "3":
-            auto.mostrar_automatizaciones()
+            auto.menu_automatizaciones(nombre_hogar)
         elif opcion == "4":
             configuracion.menu_configuracion(nombre_hogar)
         elif opcion == "5":
