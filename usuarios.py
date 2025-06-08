@@ -1,6 +1,6 @@
 from datos import usuarios
 from utils import verificar_contra, verificar_usuario
-import hogares
+from ui import menu_principal_usuario
 
 def crear_usuario():
     nombre = input("Ingrese un nombre de usuario: ")
@@ -22,6 +22,6 @@ def ingresar_usuario():
     for usuario in usuarios:
         if verificar_usuario(usuario["nombre"],nombre) and verificar_contra(usuario["contra"], contrasena):
          print(f"Hola {nombre}! Bienvenido a casa")
-         hogares.menu_principal_usuario()
+         menu_principal_usuario()
         else:
          print("Usuario o contraseña incorrectos.")
