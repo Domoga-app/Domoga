@@ -1,4 +1,5 @@
-from datos import usuarios, usuario_actual
+from datos import usuarios
+from utils import verificar_contra, verificar_usuario
 import hogares
 
 def crear_usuario():
@@ -15,12 +16,11 @@ def recuperar_usuario():
     print("Funcionalidad de recuperación de usuario a implementar.")
 
 def ingresar_usuario():
-    global usuario_actual
     nombre = input("Ingrese su nombre de usuario: ")
     contrasena = input("Ingrese su contraseña: ")
 
     for usuario in usuarios:
-        if usuario["nombre"] == nombre and usuario["contra"] == contrasena:
+        if verificar_usuario(usuario["nombre"],nombre) and verificar_contra(usuario["contra"], contrasena):
          print(f"Hola {nombre}! Bienvenido a casa")
          hogares.menu_principal_usuario()
         else:
