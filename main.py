@@ -1,4 +1,6 @@
+import threading
 from usuarios import ingresar_usuario, crear_usuario, recuperar_usuario
+from automatizaciones import monitor_automatizaciones
 
 def menu_principal():
     while True:
@@ -22,4 +24,5 @@ def menu_principal():
             print("Opción no válida.")
 
 if __name__ == "__main__":
+    threading.Thread(target=monitor_automatizaciones, daemon=True).start()
     menu_principal()
