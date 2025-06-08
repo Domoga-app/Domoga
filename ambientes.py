@@ -7,9 +7,9 @@ def gestionar_ambientes(hogar):
     else:
         for amb in ambientes[hogar]:
             print(f"- {amb}")
-            for d in dispositivos:
-                if d['hogar'] == hogar and d['ambiente'] == amb:
-                    print(f"  * {d['nombre']} ({d['estado']})")
+            for dispositivo in dispositivos:
+                if dispositivo['hogar'] == hogar and d['ambiente'] == amb:
+                    print(f"  * {d['nombre']} ({dispositivo['estado']})")
     if input("\n¿Desea crear un nuevo ambiente? (s/n): ") == "s":
         nuevo = input("Nombre del nuevo ambiente: ")
         ambientes.setdefault(hogar, []).append(nuevo)
