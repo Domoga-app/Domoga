@@ -70,12 +70,17 @@ def eliminar_hogar():
         print(f"{i}. {nombre}")
 
     opcion = input("Ingrese el número del hogar a eliminar: ")
-
+    
     if opcion.isdigit():
         indice = int(opcion) - 1
         if 0 <= indice < len(hogares_disponibles):
-            eliminado = hogares_disponibles.pop(indice)
-            print(f"Hogar '{eliminado}' eliminado.")
+            nombre_hogar = hogares_disponibles[indice]
+            confirmacion = input(f"¿Está seguro que desea eliminar el hogar '{nombre_hogar}'? (s/n): ").lower()
+            if confirmacion == 's':
+                eliminado = hogares_disponibles.pop(indice)
+                print(f"Hogar '{eliminado}' eliminado.")
+            else:
+                print("Eliminación cancelada.")
         else:
             print("Número fuera de rango.")
     else:
