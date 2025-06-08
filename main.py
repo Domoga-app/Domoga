@@ -1,27 +1,23 @@
 from usuarios import ingresar_usuario, crear_usuario, recuperar_usuario
 
+from utils import mostrar_menu
+
 def menu_principal():
     opciones = {
-            "1": lambda: ingresar_usuario(),
-            "2": lambda: crear_usuario(),
-            "3": lambda: recuperar_usuario(),
-        }
+        "1": {"texto": "Ingresar usuario", "accion": ingresar_usuario},
+        "2": {"texto": "¿Aún no tienes cuenta? Crear nuevo usuario", "accion": crear_usuario},
+        "3": {"texto": "Recuperar usuario y/o contraseña", "accion": recuperar_usuario},
+        "4": {"texto": "Salir", "accion": None}
+    }
        
     while True:
-        print("\n¡Bienvenido a Domóga!")
-        print("1. Ingresar usuario")
-        print("2. ¿Aún no tienes cuenta? Crear nuevo usuario")
-        print("3. Recuperar usuario y/o contraseña")
-        print("4. Salir")
-        opcion = input("Seleccione una opción: ")
-      
-
+        opcion = mostrar_menu("¡Bienvenido a Domóga!", opciones)
         if opcion == "4":
-            break 
+            break
         elif opcion in opciones:
-            opciones[opcion]()   
+            opciones[opcion]["accion"]()
         else:
-              print("Opción no válida.")
+            print("Opción no válida.")
          
         
 
