@@ -1,12 +1,10 @@
 from usuarios import ingresar_usuario, crear_usuario, recuperar_usuario
 
-
-
 def menu_principal():
     opciones = {
-            "1": lambda: ingresar_usuario,
-            "2": lambda: crear_usuario,
-            "3": lambda: recuperar_usuario,
+            "1": lambda: ingresar_usuario(),
+            "2": lambda: crear_usuario(),
+            "3": lambda: recuperar_usuario(),
         }
        
     while True:
