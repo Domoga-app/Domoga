@@ -2,24 +2,29 @@ from datos import ambientes, dispositivos
 
 def gestionar_ambientes(hogar):
     print("\nAmbientes:")
-    if hogar not in ambientes or not ambientes[hogar]:
+    ambientes_hogar = [a for a in ambientes if a['hogar'] == hogar]
+    
+    if not ambientes_hogar:
         print("No hay ambientes creados.")
     else:
-        for amb in ambientes[hogar]:
-            print(f"- {amb}")
-            for dispositivo in dispositivos:
-                if dispositivo['hogar'] == hogar and dispositivo['ambiente'] == amb:
+        for amb in ambientes_hogar:
+            print(f"- {amb['ambiente']}")
+            if amb['dispositivos']:
+                for dispositivo in amb['dispositivos']:
                     print(f"  * {dispositivo['nombre']} ({dispositivo['estado']})")
-    
+            else:
+                print("  (Sin dispositivos)")
+
     if input("\n¿Desea crear un nuevo ambiente? (s/n): ") == "s":
         nuevo = input("Nombre del nuevo ambiente: ")
-       
-        crear_ambiente(nuevo, ambientes)
+        crear_ambiente(hogar, nuevo)
         print(f"Ambiente '{nuevo}' agregado.")
 
 
-def crear_ambiente(ambiente, arr):
+def crear_ambiente(hogar, nombre_ambiente):
     nuevo_ambiente = {
-        "ambiente": ambiente
+        "hogar": hogar,
+        "ambiente": nombre_ambiente,
+        "dispositivos": []
     }
-    arr.append(nuevo_ambiente)
+    ambientes.append(nuevo_ambiente)

@@ -1,6 +1,6 @@
 from ambientes import gestionar_ambientes
 from  dispositivos import gestionar_dispositivos
-from automatizaciones import mostrar_automatizaciones
+from automatizaciones import mostrar_automatizaciones,crear_automatizacion,eliminar_automatizacion
 from configuracion import menu_configuracion
 from hogares import agregar_hogar,eliminar_hogar
 
@@ -32,7 +32,7 @@ def menu_hogar_opciones(nombre_hogar):
     opciones = {
         "1": {"texto": "Ambientes", "accion": lambda: gestionar_ambientes(nombre_hogar)},
         "2": {"texto": "Dispositivos", "accion":   lambda: gestionar_dispositivos(nombre_hogar)},
-        "3": {"texto": "Automatizaciones del hogar", "accion": mostrar_automatizaciones},
+        "3": {"texto": "Automatizaciones del hogar", "accion": lambda: menu_automatizaciones(nombre_hogar)},
         "4": {"texto": "Configuración", "accion": lambda: menu_configuracion(nombre_hogar)},
         "5": {"texto": "Volver", "accion": None}
      }
@@ -71,3 +71,24 @@ def menu_hogar():
                 return  # volver al menú principal luego de seleccionar un hogar
 
         print("Opción no válida.")
+
+def menu_automatizaciones(nombre_hogar):
+    while True:
+        print(f"\n Automatizaciones en {nombre_hogar}")
+        print("1. Mostrar automatizaciones")
+        print("2. Crear automatizaciones")
+        print("3. Eliminar automatizaciones")
+        print("4. Volver atrás")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            mostrar_automatizaciones()
+        elif opcion == "2":
+            crear_automatizacion()
+        elif opcion == "3":
+            eliminar_automatizacion()
+        elif opcion == "4":
+            print("Hasta luego!")
+            break
+        else:
+            print("Opción no válida.")
