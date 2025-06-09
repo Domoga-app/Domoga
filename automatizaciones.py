@@ -93,6 +93,8 @@ def crear_automatizacion():
             print("Debe crear un dispositivo primero.")
             return
 
+
+        nombre = input("Nombre de la automatización: ")
         
         print("Dispositivos disponibles:")
         for i, d in enumerate(dispositivos_disponibles, 1):
