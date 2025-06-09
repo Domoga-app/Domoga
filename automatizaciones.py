@@ -1,7 +1,9 @@
 
 import time
 from datetime import datetime
-from datos import ambientes, dispositivos
+from datos import automatizaciones, ambientes
+
+
 
 def ejecutar_accion(nombre_dispositivo, accion):
     hora_accion = datetime.now().strftime("%H:%M")
@@ -82,19 +84,27 @@ def mostrar_automatizaciones():
 
 def crear_automatizacion():
     if input("\n¿Desea crear una nueva automatización? (s/n): ").lower() == "s":
-        if not dispositivos:
+        dispositivos_disponibles = []
+        for amb in ambientes:
+            for d in amb["dispositivos"]:
+                dispositivos_disponibles.append({"ambiente": amb["ambiente"], "nombre": d["nombre"]})
+
+        if not dispositivos_disponibles:
             print("Debe crear un dispositivo primero.")
             return
-        nombre = input("Nombre de la automatización: ")
+
         
-        for i, d in enumerate(dispositivos, 1):
-            print(f"{i}. {d['nombre']}")
+        print("Dispositivos disponibles:")
+        for i, d in enumerate(dispositivos_disponibles, 1):
+            print(f"{i}. {d['nombre']} (Ambiente: {d['ambiente']})")
+
         try:
             d_idx = int(input("Seleccione un dispositivo: ")) - 1
-            dispositivo = dispositivos[d_idx]['nombre']
+            dispositivo = dispositivos_disponibles[d_idx]['nombre']
         except (ValueError, IndexError):
             print("Selección inválida.")
             return
+
         
         
         letras_a_dias = {
