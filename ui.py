@@ -120,13 +120,14 @@ def menu_automatizaciones(nombre_hogar):
             "accion": lambda: None
         }
     }
-
     while True:
         resultado = mostrar_menu(f"Automatizaciones en {nombre_hogar}", opciones)
-        if resultado is None:
-            print("Hasta luego!")
+        if resultado is None or resultado == "4":
             break
-
+        elif resultado in opciones and opciones[resultado]["accion"]:
+            opciones[resultado]["accion"]()
+        else:
+            print("Opción no válida.")
         
 
 def menu_configuracion(hogar):
