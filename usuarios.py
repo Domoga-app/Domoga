@@ -6,7 +6,7 @@ def crear_usuario():
     nombre = input("Ingrese un nombre de usuario: ")
     contrasena = input("Ingrese una contraseña: ")
 
-    rol = input("Ingrese un rol (admin / usuario / lectura): ").strip().lower()
+    rol = input("Ingrese un rol (admin / usuario): ").strip().lower()
     if rol not in ["admin", "usuario", "lectura"]:
         print("Rol inválido. Se asignará 'usuario' por defecto.")
         rol = "usuario"
