@@ -29,6 +29,6 @@ def ingresar_usuario():
     for usuario in usuarios:
         if verificar_usuario(usuario["nombre"],nombre) and verificar_contra(usuario["contra"], contrasena):
          print(f"Hola {nombre}! Bienvenido a casa")
-         menu_principal_usuario()
+         menu_principal_usuario(usuario["rol"])
         else:
          print("Usuario o contraseña incorrectos.")

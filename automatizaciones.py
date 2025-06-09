@@ -1,7 +1,43 @@
 
 import time
 from datetime import datetime
-from datos import ambientes, dispositivos
+from datos import automatizaciones, ambientes
+
+
+
+def ejecutar_accion(nombre_dispositivo, accion):
+    hora_accion = datetime.now().strftime("%H:%M")
+    if accion == "encender":
+        print(f"🟢 [AUTO] {nombre_dispositivo} se encendió a las {hora_accion}")
+    else:
+        print(f"🔴 [AUTO] {nombre_dispositivo} se apagó a las {hora_accion}")
+        
+
+def parse_hora(hora_str):
+    try:
+        hora, minuto = map(int, hora_str.strip().split(":"))
+        return (hora, minuto)
+    except ValueError:
+        return None
+
+def dia_actual():
+    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+    return dias[datetime.today().weekday()]
+
+def monitor_automatizaciones():
+    while True:
+        ahora = datetime.now()
+        hoy = dia_actual()
+        for auto in automatizaciones:
+            dias_activos = [d.strip() for d in auto["dias"].split(",")]
+            if hoy in dias_activos and not auto.get("ejecutado", False):
+                hora = parse_hora(auto["hora"])
+                if hora and (ahora.hour, ahora.minute) == hora:
+                    ejecutar_accion(auto["dispositivo"], auto["accion"])
+                    auto["ejecutado"] = True
+            if hoy not in dias_activos:
+                auto["ejecutado"] = False  # Reset al día siguiente
+        time.sleep(30)
 
 def ejecutar_accion(nombre_dispositivo, accion):
     hora_accion = datetime.now().strftime("%H:%M")
@@ -48,19 +84,29 @@ def mostrar_automatizaciones():
 
 def crear_automatizacion():
     if input("\n¿Desea crear una nueva automatización? (s/n): ").lower() == "s":
-        if not dispositivos:
+        dispositivos_disponibles = []
+        for amb in ambientes:
+            for d in amb["dispositivos"]:
+                dispositivos_disponibles.append({"ambiente": amb["ambiente"], "nombre": d["nombre"]})
+
+        if not dispositivos_disponibles:
             print("Debe crear un dispositivo primero.")
             return
+
+
         nombre = input("Nombre de la automatización: ")
         
-        for i, d in enumerate(dispositivos, 1):
-            print(f"{i}. {d['nombre']}")
+        print("Dispositivos disponibles:")
+        for i, d in enumerate(dispositivos_disponibles, 1):
+            print(f"{i}. {d['nombre']} (Ambiente: {d['ambiente']})")
+
         try:
             d_idx = int(input("Seleccione un dispositivo: ")) - 1
-            dispositivo = dispositivos[d_idx]['nombre']
+            dispositivo = dispositivos_disponibles[d_idx]['nombre']
         except (ValueError, IndexError):
             print("Selección inválida.")
             return
+
         
         
         letras_a_dias = {
