@@ -1,7 +1,7 @@
 
 import time
 from datetime import datetime
-from datos import automatizaciones, dispositivos
+from datos import ambientes, dispositivos
 
 def ejecutar_accion(nombre_dispositivo, accion):
     hora_accion = datetime.now().strftime("%H:%M")

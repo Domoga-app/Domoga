@@ -1,9 +1,8 @@
 from ambientes import gestionar_ambientes
-from  dispositivos import gestionar_dispositivos
 from automatizaciones import mostrar_automatizaciones,crear_automatizacion,eliminar_automatizacion
 from configuracion import menu_configuracion
 from hogares import agregar_hogar,eliminar_hogar
-
+from dispositivos import gestionar_dispositivos
 
 from utils import mostrar_menu
 

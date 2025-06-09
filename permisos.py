@@ -12,6 +12,7 @@ permisos_por_rol = {
          "gestionar_roles",
     },
     "usuario": {
+         "gestionar_dispositivos",
         
     }
 }
