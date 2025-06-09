@@ -6,7 +6,7 @@ from dispositivos import gestionar_dispositivos
 from configuracion import eliminar_ambiente,eliminar_automatizacion,eliminar_dispositivo,eliminar_hogar
 from utils import mostrar_menu
 
-from datos import hogares_disponibles  # importá la lista de hogares
+from datos import hogares_disponibles 
 
 def menu_principal_usuario():
     opciones = {
@@ -72,25 +72,32 @@ def menu_hogar():
         print("Opción no válida.")
 
 def menu_automatizaciones(nombre_hogar):
-    while True:
-        print(f"\n Automatizaciones en {nombre_hogar}")
-        print("1. Mostrar automatizaciones")
-        print("2. Crear automatizaciones")
-        print("3. Eliminar automatizaciones")
-        print("4. Volver atrás")
-        opcion = input("Seleccione una opción: ")
+    opciones = {
+        "1": {
+            "texto": "Mostrar automatizaciones",
+            "accion": mostrar_automatizaciones
+        },
+        "2": {
+            "texto": "Crear automatizaciones",
+            "accion": crear_automatizacion
+        },
+        "3": {
+            "texto": "Eliminar automatizaciones",
+            "accion": eliminar_automatizacion
+        },
+        "4": {
+            "texto": "Volver atrás",
+            "accion": lambda: None
+        }
+    }
 
-        if opcion == "1":
-            mostrar_automatizaciones()
-        elif opcion == "2":
-            crear_automatizacion()
-        elif opcion == "3":
-            eliminar_automatizacion()
-        elif opcion == "4":
+    while True:
+        resultado = mostrar_menu(f"Automatizaciones en {nombre_hogar}", opciones)
+        if resultado is None:
             print("Hasta luego!")
             break
-        else:
-            print("Opción no válida.")
+
+        
 
 def menu_configuracion(hogar):
     opciones = {
