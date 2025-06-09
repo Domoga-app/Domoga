@@ -1,6 +1,8 @@
-usuarios = {}
+usuarios = []
 usuario_actual = None
+hogares = []
 hogares_disponibles = []
-ambientes = {}
-dispositivos = []
+ambientes = []
 automatizaciones = []
+roles = ["admin", "usuario"]
+
