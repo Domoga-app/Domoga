@@ -7,7 +7,7 @@ from utils import mostrar_menu
 
 from datos import hogares_disponibles 
 
-
+# Refactorizar funcion de ejecutar_menu
 
 def mostrar_menu_para(usuario):
     rol = usuario.get("rol")
@@ -153,7 +153,11 @@ def menu_configuracion(hogar):
     }
     while True:
         resultado = mostrar_menu("Configuración:", opciones)
-        if resultado is None:
+        if resultado in ("5", "6", None):
             break
+        elif resultado in opciones and opciones[resultado]["accion"]:
+            opciones[resultado]["accion"]()
+        else:
+            print("Opción no válida.")
 
 
