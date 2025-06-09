@@ -1,32 +1,5 @@
 from datos import ambientes, automatizaciones
-from utils import mostrar_menu
 
-def menu_configuracion(hogar):
-    opciones = {
-        "1": {
-            "texto": "Eliminar dispositivos",
-            "accion": lambda: eliminar_dispositivo(hogar)
-        },
-        "2": {
-            "texto": "Eliminar ambiente",
-            "accion": lambda: eliminar_ambiente(hogar)
-        },
-        "3": {
-            "texto": "Eliminar hogar",
-            "accion": lambda: (eliminar_hogar(hogar), None)[1]
-        },
-        "4": {
-            "texto": "Eliminar automatización",
-            "accion": eliminar_automatizacion
-        },
-        "5": {"texto": "Cerrar sesión", "accion": None},
-        "6": {"texto": "Volver", "accion": None}
-    }
-    while True:
-        resultado = mostrar_menu("Configuración:", opciones)
-        if resultado is None:
-            break
-       
 
 def eliminar_dispositivo(hogar):
     dispositivos_en_hogar = []

@@ -3,7 +3,7 @@ from automatizaciones import mostrar_automatizaciones,crear_automatizacion,elimi
 from configuracion import menu_configuracion
 from hogares import agregar_hogar,eliminar_hogar
 from dispositivos import gestionar_dispositivos
-
+from configuracion import eliminar_ambiente,eliminar_automatizacion,eliminar_dispositivo,eliminar_hogar
 from utils import mostrar_menu
 
 from datos import hogares_disponibles  # importá la lista de hogares
@@ -91,3 +91,30 @@ def menu_automatizaciones(nombre_hogar):
             break
         else:
             print("Opción no válida.")
+
+def menu_configuracion(hogar):
+    opciones = {
+        "1": {
+            "texto": "Eliminar dispositivos",
+            "accion": lambda: eliminar_dispositivo(hogar)
+        },
+        "2": {
+            "texto": "Eliminar ambiente",
+            "accion": lambda: eliminar_ambiente(hogar)
+        },
+        "3": {
+            "texto": "Eliminar hogar",
+            "accion": lambda: (eliminar_hogar(hogar), None)[1]
+        },
+        "4": {
+            "texto": "Eliminar automatización",
+            "accion": eliminar_automatizacion
+        },
+        "5": {"texto": "Cerrar sesión", "accion": None},
+        "6": {"texto": "Volver", "accion": None}
+    }
+    while True:
+        resultado = mostrar_menu("Configuración:", opciones)
+        if resultado is None:
+            break
+       
