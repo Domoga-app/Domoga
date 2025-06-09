@@ -5,12 +5,19 @@ from ui import menu_principal_usuario
 def crear_usuario():
     nombre = input("Ingrese un nombre de usuario: ")
     contrasena = input("Ingrese una contraseña: ")
-    nuevo_usuario = { 
-        "nombre":  nombre,
-        "contra": contrasena
+
+    rol = input("Ingrese un rol (admin / usuario / lectura): ").strip().lower()
+    if rol not in ["admin", "usuario", "lectura"]:
+        print("Rol inválido. Se asignará 'usuario' por defecto.")
+        rol = "usuario"
+
+    nuevo_usuario = {
+        "nombre": nombre,
+        "contra": contrasena,
+        "rol": rol
     }
     usuarios.append(nuevo_usuario)
-    print("Usuario creado con éxito.")
+    print(f"Usuario '{nombre}' creado con rol '{rol}'.")
 
 def recuperar_usuario():
     print("Funcionalidad de recuperación de usuario a implementar.")

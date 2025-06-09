@@ -8,20 +8,51 @@ from utils import mostrar_menu
 
 from datos import hogares_disponibles 
 
-def menu_principal_usuario():
-    opciones = {
-        "1": {"texto": "Seleccionar hogar", "accion": menu_hogar},
-        "2": {"texto": "Administrar automatizaciones del hogar", "accion": mostrar_automatizaciones},
-        "3": {"texto": "Agregar nuevo hogar", "accion": agregar_hogar},
-        "4": {"texto": "Eliminar hogar", "accion": eliminar_hogar},
-        "5": {"texto": "Cerrar sesión", "accion": None}
-     }
+
+
+def mostrar_menu_para(usuario):
+    rol = usuario.get("rol")
+    funcion_menu = menus_por_rol.get(rol)
+    if funcion_menu:
+        funcion_menu()
+    else:
+        print(f"Rol desconocido: {rol}")
+
+def menu_admin():
+    menu_principal_usuario("admin")
+
+def menu_usuario():
+    menu_principal_usuario("usuario")
+
+
+menus_por_rol = {
+    "admin": menu_admin,
+    "usuario": menu_usuario,
+}
+
+
+def menu_principal_usuario(rol):
+  # Opciones generales para todos
+    opciones = {}
+
+    if rol in ["admin", "usuario"]:
+        opciones["1"] = {"texto": "Seleccionar hogar", "accion": menu_hogar}
+        opciones["2"] = {"texto": "Administrar automatizaciones del hogar", "accion": mostrar_automatizaciones}
+
+    if rol == "admin":
+        opciones["3"] = {"texto": "Agregar nuevo hogar", "accion": agregar_hogar}
+        opciones["4"] = {"texto": "Eliminar hogar", "accion": eliminar_hogar}
+
+    opciones["5"] = {"texto": "Cerrar sesión", "accion": None}
+
     while True:
         opcion = mostrar_menu("Menú principal", opciones)
         if opcion == "5":
             break
         elif opcion in opciones:
-            opciones[opcion]["accion"]()
+            accion = opciones[opcion]["accion"]
+            if accion:
+                accion()
         else:
             print("Opción no válida.")
 
@@ -124,4 +155,5 @@ def menu_configuracion(hogar):
         resultado = mostrar_menu("Configuración:", opciones)
         if resultado is None:
             break
-       
+
+
