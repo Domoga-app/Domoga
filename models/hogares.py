@@ -1,7 +1,7 @@
-import datos
+import data.datos as datos
 
 
-from datos import hogares_disponibles  # importá la lista de hogares
+from data.datos import hogares_disponibles  # importá la lista de hogares
         
 def agregar_hogar():
     nuevo_hogar = input("Ingrese el nombre del nuevo hogar: ")

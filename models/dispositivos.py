@@ -1,4 +1,4 @@
-from datos import ambientes
+from data.datos import ambientes
 
 def gestionar_dispositivos(hogar):
     print("\nDispositivos:")

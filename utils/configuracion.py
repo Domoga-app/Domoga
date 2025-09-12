@@ -1,4 +1,4 @@
-from datos import ambientes, automatizaciones, hogares_disponibles
+from data.datos import ambientes, automatizaciones, hogares_disponibles
 
 
 def eliminar_dispositivo(hogar):

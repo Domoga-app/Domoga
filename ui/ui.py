@@ -1,11 +1,11 @@
-from ambientes import gestionar_ambientes
-from automatizaciones import mostrar_automatizaciones,crear_automatizacion,eliminar_automatizacion
-from hogares import agregar_hogar,eliminar_hogar
-from dispositivos import gestionar_dispositivos
-from configuracion import eliminar_ambiente,eliminar_automatizacion,eliminar_dispositivo,eliminar_hogar
-from utils import mostrar_menu
+from models.ambientes import gestionar_ambientes
+from models.automatizaciones import mostrar_automatizaciones,crear_automatizacion,eliminar_automatizacion
+from models.hogares import agregar_hogar,eliminar_hogar
+from models.dispositivos import gestionar_dispositivos
+from utils.configuracion import eliminar_ambiente,eliminar_automatizacion,eliminar_dispositivo,eliminar_hogar
+from utils.utils import mostrar_menu
 
-from datos import hogares_disponibles, usuarios
+from data.datos import hogares_disponibles, usuarios
 
 # Refactorizar funcion de ejecutar_menu
 

@@ -1,7 +1,7 @@
 
 import time
 from datetime import datetime
-from datos import automatizaciones, ambientes
+from data.datos import automatizaciones, ambientes
 
 
 

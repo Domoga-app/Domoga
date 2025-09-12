@@ -1,8 +1,8 @@
 import threading
-from usuarios import ingresar_usuario, crear_usuario, recuperar_usuario
-from automatizaciones import monitor_automatizaciones
+from models.usuarios import ingresar_usuario, crear_usuario, recuperar_usuario
+from models.automatizaciones import monitor_automatizaciones
 
-from utils import mostrar_menu
+from utils.utils import mostrar_menu
 
 def menu_principal():
     opciones = {
