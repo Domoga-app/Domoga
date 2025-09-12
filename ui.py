@@ -1,27 +1,62 @@
 from ambientes import gestionar_ambientes
 from automatizaciones import mostrar_automatizaciones,crear_automatizacion,eliminar_automatizacion
-from configuracion import menu_configuracion
 from hogares import agregar_hogar,eliminar_hogar
 from dispositivos import gestionar_dispositivos
 from configuracion import eliminar_ambiente,eliminar_automatizacion,eliminar_dispositivo,eliminar_hogar
 from utils import mostrar_menu
 
-from datos import hogares_disponibles 
+from datos import hogares_disponibles, usuarios
 
-def menu_principal_usuario():
-    opciones = {
-        "1": {"texto": "Seleccionar hogar", "accion": menu_hogar},
-        "2": {"texto": "Administrar automatizaciones del hogar", "accion": mostrar_automatizaciones},
-        "3": {"texto": "Agregar nuevo hogar", "accion": agregar_hogar},
-        "4": {"texto": "Eliminar hogar", "accion": eliminar_hogar},
-        "5": {"texto": "Cerrar sesión", "accion": None}
-     }
+# Refactorizar funcion de ejecutar_menu
+
+def mostrar_menu_para(usuario):
+    rol = usuario.get("rol")
+    funcion_menu = menus_por_rol.get(rol)
+    if funcion_menu:
+        funcion_menu()
+    else:
+        print(f"Rol desconocido: {rol}")
+
+def menu_admin():
+    menu_principal_usuario("admin")
+
+def menu_usuario():
+    menu_principal_usuario("usuario")
+
+
+menus_por_rol = {
+    "admin": menu_admin,
+    "usuario": menu_usuario,
+}
+
+
+def menu_principal_usuario(rol):
+  # Opciones generales para todos
+    opciones = {}
+
+    if rol in ["admin", "usuario"]:
+        opciones["1"] = {"texto": "Seleccionar hogar", "accion": menu_hogar}
+        opciones["2"] = {"texto": "Administrar automatizaciones del hogar", "accion": mostrar_automatizaciones}
+
+    if rol == "admin":
+        opciones["3"] = {"texto": "Agregar nuevo hogar", "accion": agregar_hogar}
+        opciones["4"] = {"texto": "Eliminar hogar", "accion": menu_eliminar_hogar}
+        opciones["5"] = {"texto": "Cambiar rol usuario", "accion": cambiar_rol_usuario}
+        opciones["6"] = {"texto": "Cerrar sesión", "accion": None}
+
+    if rol == "usuario":
+        opciones["3"] = {"texto": "Cerrar sesión", "accion": None}
+
     while True:
         opcion = mostrar_menu("Menú principal", opciones)
-        if opcion == "5":
+        if opcion == "3" and rol == "usuario":
+            break
+        elif opcion == "6" and rol == "admin":
             break
         elif opcion in opciones:
-            opciones[opcion]["accion"]()
+            accion = opciones[opcion]["accion"]
+            if accion:
+                accion()
         else:
             print("Opción no válida.")
 
@@ -71,6 +106,34 @@ def menu_hogar():
 
         print("Opción no válida.")
 
+def menu_eliminar_hogar():
+    if not hogares_disponibles:
+        print("No hay hogares disponibles para eliminar.")
+        return
+
+    while True:
+        print("\nSeleccione un hogar para eliminar:")
+        for i, nombre in enumerate(hogares_disponibles, start=1):
+            print(f"{i}. {nombre}")
+        print("0. Cancelar")
+
+        opcion = input("Ingrese el número del hogar a eliminar: ")
+
+        if opcion == "0":
+            break  # volver atrás
+
+        if opcion.isdigit():
+            indice = int(opcion) - 1
+            if 0 <= indice < len(hogares_disponibles):
+                nombre_hogar = hogares_disponibles[indice]
+
+                confirmar = input(f"¿Está seguro de eliminar el hogar '{nombre_hogar}'? (s/n): ").lower()
+                if confirmar == "s":
+                    eliminar_hogar(nombre_hogar)
+                return  # salir después de eliminar (si querés, podés sacar este return para seguir borrando más)
+
+        print("Opción no válida.")
+
 def menu_automatizaciones(nombre_hogar):
     opciones = {
         "1": {
@@ -90,13 +153,14 @@ def menu_automatizaciones(nombre_hogar):
             "accion": lambda: None
         }
     }
-
     while True:
         resultado = mostrar_menu(f"Automatizaciones en {nombre_hogar}", opciones)
-        if resultado is None:
-            print("Hasta luego!")
+        if resultado is None or resultado == "4":
             break
-
+        elif resultado in opciones and opciones[resultado]["accion"]:
+            opciones[resultado]["accion"]()
+        else:
+            print("Opción no válida.")
         
 
 def menu_configuracion(hogar):
@@ -110,18 +174,42 @@ def menu_configuracion(hogar):
             "accion": lambda: eliminar_ambiente(hogar)
         },
         "3": {
-            "texto": "Eliminar hogar",
-            "accion": lambda: (eliminar_hogar(hogar), None)[1]
-        },
-        "4": {
             "texto": "Eliminar automatización",
             "accion": eliminar_automatizacion
         },
-        "5": {"texto": "Cerrar sesión", "accion": None},
-        "6": {"texto": "Volver", "accion": None}
+        "4": {"texto": "Volver", "accion": None}
     }
     while True:
         resultado = mostrar_menu("Configuración:", opciones)
-        if resultado is None:
+        if resultado in ("4", None):
             break
-       
+        elif resultado in opciones and opciones[resultado]["accion"]:
+            opciones[resultado]["accion"]()
+        else:
+            print("Opción no válida.")
+
+def cambiar_rol_usuario():
+    cambiar_rol = input("Deseas cambiar el rol de un usuario? (s/n): ")
+    if cambiar_rol == "s":
+        for i, usuario in enumerate(usuarios, start=1):
+            print(f"{i}. {usuario["nombre"]} ({usuario["rol"]})")
+        print("0. Cancelar")
+        
+        id_usuario = input("Seleccione el id del usuario: ")
+        
+        if not id_usuario.isdigit():
+            print("ERROR: El id debe ser númerico.")
+            return
+        
+        id_usuario = int(id_usuario) - 1
+        
+        if 0 <= id_usuario <= len(usuarios):
+            usuario = usuarios[id_usuario]
+            nuevo_rol = input("Ingrese el nuevo rol (admin/usuario): ")
+            if nuevo_rol in ["admin", "usuario"]:
+                usuario["rol"] = nuevo_rol
+                return
+            else:
+                print("ERROR: Rol inexistente.")        
+        else:
+            print("ERROR: Usuario inexistente.")        
