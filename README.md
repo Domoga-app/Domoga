@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+# Proyecto Domóga - Sistema Domótico
+
+Este proyecto modular implementa un sistema domótico básico en Python.
+
+## Estructura
+- `datos.py`: Datos globales compartidos (usuarios, hogares, dispositivos, automatizaciones)
+- `automatizaciones.py`: Gestión y menú para automatizaciones (programar encendido/apagado)
+- `menu_usuario.py`: Ejemplo de menú principal de usuario que integra automatizaciones
+
+## Uso
+Ejecutar el menú principal del usuario para acceder a opciones de automatización.
+
+## Gitignore
+Ignora archivos compilados y carpetas comunes de entornos y editores.
+=======
 # Domoga
 
 **Domóga.app**  (Dom “domótica”, Óga “hogar o casa en guaraní”) surge como una alternativa a otras apps de domótica y control de dispositivos donde nos topamos con problemas de integraciones. Nuestra app permite que mediante un solo hub integrado al hogar podamos conectarnos y controlar diversos dispositivos ya sea mediante conexión wifi, señal rts, Bluetooth, etc.
@@ -13,3 +29,4 @@ Mediante notificaciones en la app y mensajería, Domóga nos informa de todos lo
 
 👤 Autor
 Domoga App – @Domoga-app
+>>>>>>> d0f00d1c4c6b8fe5cd03b8e8f72d4a9a5c017cba

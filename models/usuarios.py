@@ -1,6 +1,6 @@
-from datos import usuarios
-from utils import verificar_contra, verificar_usuario
-from ui import menu_principal_usuario
+from data.datos import usuarios
+from utils.utils import verificar_contra, verificar_usuario
+from ui.ui import menu_principal_usuario
 
 def crear_usuario():
     nombre = input("Ingrese un nombre de usuario: ")
