@@ -1,4 +1,4 @@
-from datos import ambientes, automatizaciones
+from datos import ambientes, automatizaciones, hogares_disponibles
 
 
 def eliminar_dispositivo(hogar):
@@ -41,10 +41,14 @@ def eliminar_ambiente(hogar):
     else:
         print("Selección inválida.")
 
-def eliminar_hogar(hogar):
+def eliminar_hogar(hogar):    
     global ambientes
+    global hogares_disponibles
     ambientes = [amb for amb in ambientes if amb["hogar"] != hogar]
+    if hogar in hogares_disponibles:
+        hogares_disponibles.remove(hogar)
     print(f"Hogar '{hogar}' eliminado.")
+
 
 def eliminar_automatizacion():
     if not automatizaciones:

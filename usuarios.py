@@ -4,6 +4,11 @@ from ui import menu_principal_usuario
 
 def crear_usuario():
     nombre = input("Ingrese un nombre de usuario: ")
+    for usuario in usuarios:
+        if usuario["nombre"] == nombre:
+            print(f"El usuario '{nombre}' ya existe. Intente con otro nombre.")
+            return      
+        
     contrasena = input("Ingrese una contraseña: ")
 
     rol = input("Ingrese un rol (admin / usuario): ").strip().lower()
