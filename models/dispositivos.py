@@ -42,3 +42,21 @@ def gestionar_dispositivos(hogar):
 
         ambiente_obj["dispositivos"].append(nuevo_dispositivo)
         print("Dispositivo creado con éxito.")
+
+
+def ver_dispositivos(hogar):
+    print("\nDispositivos:")
+    
+    # Filtrar ambientes del hogar
+    ambientes_hogar = [a for a in ambientes if a['hogar'] == hogar]
+    if not ambientes_hogar:
+        print("No hay ambientes creados en este hogar.")
+        return
+
+    # Mostrar todos los dispositivos existentes
+    for amb in ambientes_hogar:
+        if not amb['dispositivos']:
+            print(f"Ambiente '{amb['ambiente']}' no tiene dispositivos.")
+            continue
+        for d in amb['dispositivos']:
+            print(f"- Nombre: {d['nombre']} ({d['estado']}) - Marca: {d['marca']} - Modelo: {d['modelo']} -> Ambiente: {amb['ambiente']}")
