@@ -1,7 +1,7 @@
 from models.ambientes import gestionar_ambientes
 from models.automatizaciones import mostrar_automatizaciones,crear_automatizacion,eliminar_automatizacion
 from models.hogares import agregar_hogar,eliminar_hogar
-from models.dispositivos import gestionar_dispositivos
+from models.dispositivos import gestionar_dispositivos, ver_dispositivos
 from utils.configuracion import eliminar_ambiente,eliminar_automatizacion,eliminar_dispositivo,eliminar_hogar
 from utils.utils import mostrar_menu
 
@@ -30,28 +30,30 @@ menus_por_rol = {
 }
 
 
-def menu_principal_usuario(rol):
+def menu_principal_usuario(rol, dni):
   # Opciones generales para todos
     opciones = {}
 
-    if rol in ["admin", "usuario"]:
-        opciones["1"] = {"texto": "Seleccionar hogar", "accion": menu_hogar}
-        opciones["2"] = {"texto": "Administrar automatizaciones del hogar", "accion": mostrar_automatizaciones}
-
-    if rol == "admin":
-        opciones["3"] = {"texto": "Agregar nuevo hogar", "accion": agregar_hogar}
-        opciones["4"] = {"texto": "Eliminar hogar", "accion": menu_eliminar_hogar}
-        opciones["5"] = {"texto": "Cambiar rol usuario", "accion": cambiar_rol_usuario}
-        opciones["6"] = {"texto": "Cerrar sesión", "accion": None}
+    if rol in ["admin", "usuario"]:        
+        opciones["1"] = {"texto": "Mostrar información personal", "accion": lambda: informacion_personal(dni)}        
+        opciones["2"] = {"texto": "Seleccionar hogar", "accion": lambda: menu_hogar(rol)}
+        opciones["3"] = {"texto": "Mostrar automatizaciones activas", "accion": mostrar_automatizaciones}
 
     if rol == "usuario":
-        opciones["3"] = {"texto": "Cerrar sesión", "accion": None}
+        opciones["4"] = {"texto": "Cerrar sesión", "accion": None}
+        
+    if rol == "admin":
+        opciones["4"] = {"texto": "Agregar nuevo hogar", "accion": agregar_hogar}
+        opciones["5"] = {"texto": "Eliminar hogar", "accion": menu_eliminar_hogar}
+        opciones["6"] = {"texto": "Cambiar rol usuario", "accion": cambiar_rol_usuario}
+        opciones["7"] = {"texto": "Cerrar sesión", "accion": None}
+
 
     while True:
         opcion = mostrar_menu("Menú principal", opciones)
-        if opcion == "3" and rol == "usuario":
+        if opcion == "4" and rol == "usuario":
             break
-        elif opcion == "6" and rol == "admin":
+        elif opcion == "7" and rol == "admin":
             break
         elif opcion in opciones:
             accion = opciones[opcion]["accion"]
@@ -61,19 +63,29 @@ def menu_principal_usuario(rol):
             print("Opción no válida.")
 
             
-def menu_hogar_opciones(nombre_hogar):
+def menu_hogar_opciones(nombre_hogar, rol):
     print("Nombre hogar", nombre_hogar)
-    opciones = {
-        "1": {"texto": "Ambientes", "accion": lambda: gestionar_ambientes(nombre_hogar)},
-        "2": {"texto": "Dispositivos", "accion":   lambda: gestionar_dispositivos(nombre_hogar)},
-        "3": {"texto": "Automatizaciones del hogar", "accion": lambda: menu_automatizaciones(nombre_hogar)},
-        "4": {"texto": "Configuración", "accion": lambda: menu_configuracion(nombre_hogar)},
-        "5": {"texto": "Volver", "accion": None}
-     }
+    if rol == "admin":
+        opciones = {
+            "1": {"texto": "Ambientes", "accion": lambda: gestionar_ambientes(nombre_hogar, rol)},
+            "2": {"texto": "Dispositivos", "accion":   lambda: gestionar_dispositivos(nombre_hogar)},
+            "3": {"texto": "Automatizaciones del hogar", "accion": lambda: menu_automatizaciones(nombre_hogar)},
+            "4": {"texto": "Configuración", "accion": lambda: menu_configuracion(nombre_hogar)},
+            "5": {"texto": "Volver", "accion": None}
+        }
+    else: 
+        opciones = {
+            "1": {"texto": "Dispositivos", "accion":   lambda: ver_dispositivos(nombre_hogar)},
+            "2": {"texto": "Automatizaciones del hogar", "accion": lambda: menu_automatizaciones(nombre_hogar)},
+            "3": {"texto": "Volver", "accion": None}
+        }
+    
  
     while True:
         opcion = mostrar_menu(f"Menú de {nombre_hogar}", opciones)
-        if opcion == "5":
+        if opcion == "5" and rol == "admin":
+            break
+        elif opcion == "3" and rol == "usuario":
             break
         elif opcion in opciones:
             opciones[opcion]["accion"]()
@@ -81,10 +93,14 @@ def menu_hogar_opciones(nombre_hogar):
             print("Opción no válida.")
 
 
-def menu_hogar():
+def menu_hogar(rol):
     if not hogares_disponibles:
-        print("No hay hogares disponibles. Por favor, agregue uno primero.")
-        agregar_hogar()
+        if rol == "admin":
+            print("No hay hogares disponibles. Por favor, agregue uno primero.")
+            agregar_hogar()
+        
+        print("El administrador no ha agregado ningun hogar por el momento.")
+        
 
     while True:
         print("\nSeleccione un hogar:")
@@ -101,7 +117,7 @@ def menu_hogar():
             indice = int(opcion) - 1
             if 0 <= indice < len(hogares_disponibles):
                 nombre_hogar = hogares_disponibles[indice]
-                menu_hogar_opciones(nombre_hogar)
+                menu_hogar_opciones(nombre_hogar, rol)
                 return  # volver al menú principal luego de seleccionar un hogar
 
         print("Opción no válida.")
@@ -213,3 +229,17 @@ def cambiar_rol_usuario():
                 print("ERROR: Rol inexistente.")        
         else:
             print("ERROR: Usuario inexistente.")        
+            
+            
+def informacion_personal(dni):
+    for usuario in usuarios:
+        if usuario["dni"] == dni:
+            print("\n--- Información Personal ---")
+            print(f"Nombre: {usuario['nombre']}")
+            print(f"Apellido: {usuario['apellido']}")
+            print(f"DNI: {usuario['dni']}")
+            print(f"Rol: {usuario['rol']}")
+            return
+        
+    print("No se encontró un usuario con ese DNI.")
+    return

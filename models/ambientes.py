@@ -1,6 +1,6 @@
 from data.datos import ambientes
 
-def gestionar_ambientes(hogar):
+def gestionar_ambientes(hogar, rol):
     print("\nAmbientes:")
     ambientes_hogar = [a for a in ambientes if a['hogar'] == hogar]
     
@@ -15,10 +15,13 @@ def gestionar_ambientes(hogar):
             else:
                 print("  (Sin dispositivos)")
 
-    if input("\n¿Desea crear un nuevo ambiente? (s/n): ") == "s":
-        nuevo = input("Nombre del nuevo ambiente: ")
-        crear_ambiente(hogar, nuevo)
-        print(f"Ambiente '{nuevo}' agregado.")
+    if rol == "admin":        
+        if input("\n¿Desea crear un nuevo ambiente? (s/n): ") == "s":
+            nuevo = input("Nombre del nuevo ambiente: ")
+            crear_ambiente(hogar, nuevo)
+            print(f"Ambiente '{nuevo}' agregado.")
+    else: 
+        print("El administrador no ha creado ningún ambiente por el momento.")
 
 
 def crear_ambiente(hogar, nombre_ambiente):
