@@ -1,3 +1,5 @@
+-- Consultas DDL para la creación de tablas y relaciones
+
 -- Tabla Roles
 CREATE TABLE Roles (
     Id_Rol INT PRIMARY KEY,

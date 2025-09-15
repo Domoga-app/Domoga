@@ -1,3 +1,5 @@
+-- Consultas dml para la inserción de datos y consultas de prueba
+
 -- Roles (2)
 INSERT INTO Roles VALUES (1, 'Administrador');
 INSERT INTO Roles VALUES (2, 'Usuario');
