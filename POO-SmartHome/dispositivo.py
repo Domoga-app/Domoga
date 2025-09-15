@@ -15,5 +15,4 @@ class Dispositivo:
         print(f"🔌 Dispositivo '{self.nombre}' apagado.")
 
     def __str__(self):
-        # Un método útil para imprimir el estado del objeto
         return f"{self.nombre} ({self.tipo}) - Estado: {self.estado}"
