@@ -2,7 +2,7 @@ README – Ejecución de Scripts en SQL DBMS Online
 
 # Proyecto Dómoga – Scripts SQL
 
-Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación de la base de datos, tablas, relaciones y datos de prueba. Está pensado para ejecutarse en un DBMS online o en SQL Server Management Studio (SSMS).
+Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación de la base de datos, tablas, relaciones y datos de prueba. Está pensado para ejecutarse en un DBMS online o en MySQL.
 
 ---
 
@@ -16,16 +16,16 @@ Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación
 
 ## Cómo ejecutar los scripts en un DBMS online
 
-Se puede usar cualquier DBMS online que soporte SQL Server, en nuestro caso elegimos:
+Se puede usar cualquier DBMS online que soporte MySQL, en nuestro caso elegimos:
 
-- [OneCompiler SQL Server](https://onecompiler.com/sqlserver)
+- [OneCompiler MySQL](https://onecompiler.com/sqlserver)
 
-- Link al script 👉 https://onecompiler.com/sqlserver/43wr9eubb
+- Link al script 👉 https://onecompiler.com/mysql/43wuf54g9.
 
 ### Pasos
 
-1. Abrir el DBMS online https://onecompiler.com/sqlserver/43wr9eubb.
-2. Verificá que este seleccionado SSMS (SQL Server).
+1. Abrir el DBMS online https://onecompiler.com/mysql/43wuf54g9.
+2. Verificá que este seleccionado MySQL.
 3. Ejecuta el script desde el botón "RUN".
 
 ## Estructura de tablas
@@ -42,7 +42,7 @@ Se puede usar cualquier DBMS online que soporte SQL Server, en nuestro caso eleg
 
 ---
 
-## Autor
+## Autores
 Proyecto realizado por:
 
 DNI 38654685 - Angelo Yamila Noelia Belén.
