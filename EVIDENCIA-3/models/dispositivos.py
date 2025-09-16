@@ -60,3 +60,5 @@ def ver_dispositivos(hogar):
             continue
         for d in amb['dispositivos']:
             print(f"- Nombre: {d['nombre']} ({d['estado']}) - Marca: {d['marca']} - Modelo: {d['modelo']} -> Ambiente: {amb['ambiente']}")
+def crear_dispositivo():
+    pass
