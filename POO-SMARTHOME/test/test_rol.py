@@ -1,5 +1,5 @@
-
-from ..models.rol import Rol
+import pytest
+from models import Rol
 
 
 class TestRol:

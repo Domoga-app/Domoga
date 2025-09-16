@@ -1,4 +1,5 @@
-from ..models.hogar import Hogar
+import pytest
+from models import Hogar
 
 
 class TestHogar:

@@ -1,4 +1,5 @@
-from ..models.usuarios import Usuario
+import pytest
+from models import Usuario
 
 
 class TestUsuario:

@@ -1,4 +1,5 @@
-from ..models.automatizacion import Automatizacion
+import pytest
+from models import Automatizacion
 
 
 class TestAutomatizacion:

@@ -1,3 +1,4 @@
+import pytest
 class TestTipoDispositivo:
     def test_crear_tipo_dispositivo(self):
         tipo = TipoDispositivo(1, "Luz")

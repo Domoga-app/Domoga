@@ -1,5 +1,5 @@
-
-from ..models.dispositivos import Dispositivo
+import pytest
+from models import Dispositivo
 
 
 class TestDispositivo:

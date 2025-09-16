@@ -1,4 +1,5 @@
-from ..models.permisos import Permiso
+import pytest
+from models import Permiso
 
 
 class TestPermiso:

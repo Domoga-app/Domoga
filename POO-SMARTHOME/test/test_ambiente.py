@@ -1,5 +1,5 @@
-
-from ..models.ambiente import Ambiente
+import pytest
+from models import Ambiente
 
 
 class TestAmbiente:
