@@ -1,8 +1,8 @@
 # test_ambiente.py
-from ambiente import Ambiente
-from dispositivo import Dispositivo
+from ..models.ambiente import Ambiente
+from ..models.dispositivos import Dispositivo
 
-luz= Dispositivo(nombre="Lámpara", tipo="LED", marca="MarcaX", modelo="M1")
+luz = Dispositivo(nombre="Lámpara", tipo="LED", marca="MarcaX", modelo="M1")
 ambiente = Ambiente("Living")
 
 
@@ -11,6 +11,7 @@ def test_ambiente_inicializacion():
     assert ambiente.nombre == "Living"
     assert ambiente.dispositivos == []
     assert len(ambiente.dispositivos) == 0
+
 
 def test_ambiente_agregar_dispositivo():
     """Verifica que se puede agregar un dispositivo a la lista del ambiente."""
