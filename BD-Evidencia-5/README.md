@@ -10,7 +10,7 @@ Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación
 
 1. Consultas-DDL.sql – Contiene las sentencias para crear las tablas y relaciones (estructura de la base de datos).  
 2. Consultas-DDL.sql – Contiene los datos de ejemplo (30 registros principales) y relaciones de prueba y contiene consultas de prueba para verificar que los datos fueron insertados correctamente.
-3. Archivo README.txt con explicación y detalles.
+3. Archivo README.md con explicación y detalles.
 
 ---
 
