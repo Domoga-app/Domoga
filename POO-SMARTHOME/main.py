@@ -6,7 +6,7 @@ Este archivo demuestra cómo usar las clases desde el paquete models.
 
 # Importar desde el paquete models
 from models import (
-    Usuario, Rol, Permiso, Hogar, Ambiente, 
+    Usuario, Rol, Hogar, Ambiente, 
     Dispositivo, TipoDispositivo, Automatizacion
 )
 
