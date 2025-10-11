@@ -16,7 +16,7 @@ from .automatizacion import Automatizacion
 # Definir qué se exporta cuando se hace "from models import *"
 __all__ = [
     'Usuario', 'Rol', 'Permiso',
-    'Hogar', 'Ambiente', 
+    'Hogar', 'Ambiente',
     'Dispositivo', 'TipoDispositivo',
     'Automatizacion'
 ]
