@@ -1,3 +1,6 @@
+from usuarios import Usuario
+from dispositivos import Dispositivo
+
 class Hogar:
     """Clase para manejar hogares."""
 
@@ -5,6 +8,8 @@ class Hogar:
         self.direccion = direccion
         self.nombre = nombre
         self.id_hogar = id_hogar
+        self._usuarios = []
+        self._dispositivos = []
 
     @classmethod
     def agregar_hogar(cls, direccion, nombre, id_hogar):
@@ -23,3 +28,11 @@ class Hogar:
             "nombre": self.nombre,
             "direccion": self.direccion
         }
+
+    def agregar_usuario(self, usuario: Usuario):
+        if usuario not in self._usuarios:
+            self._usuarios.append(usuario)
+
+    def agregar_dispositivo(self, dispositivo: Dispositivo):
+        if dispositivo not in self._dispositivos:
+            self._dispositivos.append(dispositivo)

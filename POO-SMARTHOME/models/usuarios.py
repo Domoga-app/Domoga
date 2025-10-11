@@ -1,3 +1,4 @@
+from hogar import Hogar
 class Usuario:
     """Clase para manejar usuarios del sistema."""
 
@@ -7,6 +8,7 @@ class Usuario:
         self.nombre = nombre
         self.apellido = apellido
         self.contraseña = contraseña
+        self._hogares = []
 
     @classmethod
     def crear_usuario(cls, dni, id_rol, nombre, apellido, contraseña):
@@ -25,3 +27,7 @@ class Usuario:
     def ingresar_usuario(self, dni, contraseña):
         """Valida las credenciales del usuario."""
         return self.dni == dni and self.contraseña == contraseña
+
+    def agregar_hogar(self, hogar: Hogar):
+        if hogar not in self._hogares:
+            self._hogares.append(hogar)
