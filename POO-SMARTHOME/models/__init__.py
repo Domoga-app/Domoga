@@ -5,7 +5,6 @@ Contiene todas las clases del modelo de datos.
 
 # Importar todas las clases para que estén disponibles desde models
 from .rol import Rol
-from .permisos import Permiso
 from .usuarios import Usuario
 from .ambiente import Ambiente
 from .hogar import Hogar
@@ -15,7 +14,7 @@ from .automatizacion import Automatizacion
 
 # Definir qué se exporta cuando se hace "from models import *"
 __all__ = [
-    'Usuario', 'Rol', 'Permiso',
+    'Usuario', 'Rol',
     'Hogar', 'Ambiente', 
     'Dispositivo', 'TipoDispositivo',
     'Automatizacion'
