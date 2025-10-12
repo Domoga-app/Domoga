@@ -28,6 +28,14 @@ dispositivos = [
 def registrar_usuario():
     print("\n=== Registro de usuario ===")
     dni = input("DNI: ").strip()
+    
+    # 🔎 Verificar si ya existe un usuario con el mismo DNI (inmediatamente)
+    for u in usuarios:
+        if u.dni == dni:
+            print("❌ Ya existe un usuario con ese DNI. Por favor intenta con otro.")
+            return  # cancelamos registro inmediatamente
+    
+    # Si pasó la verificación, pedimos los demás datos
     nombre = input("Nombre: ").strip()
     apellido = input("Apellido: ").strip()
     contraseña = input("Contraseña: ").strip()
@@ -103,16 +111,23 @@ def actualizar_dispositivo():
 def cambiar_rol_usuario(usuario_actual):
     print("\n=== Cambiar rol de usuario ===")
 
-    # 🛡️ Caso 1: si es usuario estándar → no puede cambiar nada
+    # 🛡️ Caso 1: Usuario estándar → solo puede subir a admin (su propio rol)
     if usuario_actual.id_rol == 2:
-        print("❌ No tenés permisos para cambiar roles.")
-        return
+        confirm = input("¿Deseas cambiar tu rol a Administrador? (s/n): ").strip().lower()
+        if confirm == "s":
+            usuario_actual.id_rol = 1
+            print("✅ Ahora tienes rol de Administrador.")
+            print("⚠️ Se cerrará la sesión para aplicar el cambio.")
+            return "cerrar_sesion"  # ⬅️ return importante
+        else:
+            print("❌ Cambio cancelado.")
+        return  # ⬅️ también return aquí para salir de la función
 
-    # 🧑‍💼 Caso 2: si es admin predefinido → puede cambiar todos excepto a sí mismo
+    # 🧑‍💼 Caso 2: Admin predefinido → puede cambiar todos excepto a sí mismo
     if usuario_actual.dni == "12345678":
         for i, u in enumerate(usuarios, start=1):
             rol_str = "Administrador" if u.id_rol == 1 else "Usuario estándar"
-            print(f"{i}. {u.nombre} {u.apellido} - Rol actual: {rol_str}")
+            print(f"{i}. {u.dni} - {u.nombre} {u.apellido} - Rol actual: {rol_str}")
 
         try:
             idx = int(input("Selecciona el número del usuario: ").strip()) - 1
@@ -129,35 +144,24 @@ def cambiar_rol_usuario(usuario_actual):
             # Alternar rol
             nuevo_rol = 1 if u.id_rol == 2 else 2
             u.id_rol = nuevo_rol
-            print(f"✅ Rol de {u.nombre} {u.apellido} cambiado a {'Administrador' if nuevo_rol==1 else 'Usuario estándar'}.")
+            print(f"✅ Rol de {u.dni} - {u.nombre} {u.apellido} cambiado a {'Administrador' if nuevo_rol==1 else 'Usuario estándar'}.")
         else:
             print("❌ Índice inválido.")
         return
 
-    # 👤 Caso 3: admin común → solo puede cambiar su propio rol
+    # 👤 Caso 3: Admin común → solo puede bajarse a estándar
     if usuario_actual.id_rol == 1:
-        print(f"Actualmente tu rol es: {'Administrador' if usuario_actual.id_rol == 1 else 'Usuario estándar'}")
+        print(f"Actualmente tu rol es: Administrador")
         confirmar = input("¿Querés cambiar tu rol? (s/n): ").strip().lower()
 
         if confirmar == "s":
-            nuevo_rol = 2 if usuario_actual.id_rol == 1 else 1
-            usuario_actual.id_rol = nuevo_rol
-            print(f"✅ Tu rol ahora es: {'Administrador' if nuevo_rol == 1 else 'Usuario estándar'}.")
+            usuario_actual.id_rol = 2
+            print("✅ Tu rol ahora es: Usuario estándar.")
+            print("⚠️ Se cerrará la sesión para aplicar el cambio.")
+            return "cerrar_sesion"  # ⬅️ este return es el que faltaba 👌
         else:
             print("❌ Cambio cancelado.")
-
-
-    # Si es estándar, solo puede cambiar el suyo
-    elif usuario_actual.id_rol == 2:
-        confirm = input("¿Deseas cambiar tu rol a Administrador? (s/n): ").strip().lower()
-        if confirm == "s":
-            usuario_actual.id_rol = 1
-            print("✅ Ahora tienes rol de Administrador.")
-        else:
-            print("❌ Cambio cancelado.")
-
-    else:
-        print("❌ No tienes permisos para cambiar otros roles.")
+        return
 
 
 # 6. Menú usuario estándar
@@ -203,7 +207,11 @@ def menu_admin(usuario):
         elif opcion == "5":
             borrar_dispositivo()
         elif opcion == "6":
-            cambiar_rol_usuario(usuario)
+            # ⚡ Aquí detectamos si el cambio de rol requiere cerrar sesión
+            resultado = cambiar_rol_usuario(usuario)
+            if resultado == "cerrar_sesion":
+                print("🔐 Cerrando sesión...")
+                break  # rompe el while y vuelve al login o menú principal
         elif opcion == "7":
             print("Cerrando sesión...")
             break
