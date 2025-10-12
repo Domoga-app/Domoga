@@ -1,102 +1,239 @@
-#!/usr/bin/env python3
-"""
-Ejemplo de uso del sistema de domótica Smart Home.
-Este archivo demuestra cómo usar las clases desde el paquete models.
-"""
 
-# Importar desde el paquete models
-from models import (
-    Usuario, Rol, Hogar, Ambiente, 
-    Dispositivo, TipoDispositivo, Automatizacion
-)
+# #!/usr/bin/env python3
+# """
+# Ejemplo de uso del sistema de domótica Smart Home.
+# Este archivo demuestra cómo usar las clases desde el paquete models.
+# """
 
+# 1. Importaciones
+from models import Usuario, Rol, Dispositivo
 
-def main():
-    print("=== Sistema de Domótica Smart Home ===\n")
-    
-    try:
-        # Crear roles
-        print("1. Creando roles...")
-        rol_admin = Rol(1, "Administrador")
-        rol_usuario = Rol(2, "Usuario")
-        print(f"   - {rol_admin}")
-        print(f"   - {rol_usuario}")
-        
-        # Crear usuarios
-        print("\n2. Creando usuarios...")
-        usuario1 = Usuario.crear_usuario("12345678", 1, "Juan", "Pérez", "admin123")
-        usuario2 = Usuario("87654321", 2, "Ana", "García", "user456")
-        print(f"   - {usuario1}")
-        print(f"   - {usuario2}")
-        
-        # Autenticar usuario
-        print("\n3. Autenticando usuarios...")
-        if usuario1.ingresar_usuario("12345678", "admin123"):
-            print("   ✅ Autenticación exitosa para Juan Pérez")
+# 2. Datos iniciales
+roles = [
+    Rol(1, "Administrador"),
+    Rol(2, "Usuario")
+]
+
+usuarios = [
+    Usuario.crear_usuario("12345678", 1, "Admin", "Principal", "admin123")
+]
+
+dispositivos = [
+    Dispositivo.crear_dispositivos(1, 1, "Philips", "Hue White", "encendido"),
+    Dispositivo.crear_dispositivos(2, 2, "Xiaomi", "Mi Temperature", "activo")
+]
+
+# 3. Funciones de registro y login
+
+def registrar_usuario():
+    print("\n=== Registro de usuario ===")
+    dni = input("DNI: ").strip()
+    nombre = input("Nombre: ").strip()
+    apellido = input("Apellido: ").strip()
+    contraseña = input("Contraseña: ").strip()
+
+    # Todo usuario registrado es estándar
+    id_rol = 2
+    nuevo_usuario = Usuario.crear_usuario(dni, id_rol, nombre, apellido, contraseña)
+    usuarios.append(nuevo_usuario)
+    print(f"✅ Usuario {nombre} {apellido} registrado como Usuario estándar.")
+
+def login_usuario():
+    print("\n=== Inicio de sesión ===")
+    dni = input("DNI: ").strip()
+    contraseña = input("Contraseña: ").strip()
+
+    for user in usuarios:
+        if user.ingresar_usuario(dni, contraseña):
+            print(f"✅ Bienvenido {user.nombre} {user.apellido}")
+            return user
+    print("❌ Credenciales incorrectas.")
+    return None
+
+# 4. Funciones auxiliares
+def ver_datos_personales(usuario):
+    datos = usuario.recuperar_usuario()
+    print("\n--- Datos Personales ---")
+    print(f"DNI: {datos['dni']}")
+    print(f"Nombre: {datos['nombre']} {datos['apellido']}")
+    print(f"Rol: {'Administrador' if datos['id_rol']==1 else 'Usuario estándar'}")
+    print("------------------------")
+
+def ver_dispositivos():
+    print("\n--- Dispositivos ---")
+    if not dispositivos:
+        print("No hay dispositivos registrados.")
+        return
+    for i, d in enumerate(dispositivos, start=1):
+        info = d.ver_dispositivos()
+        print(f"{i}. {info['marca']} {info['modelo']} - Estado: {info['estado']}")
+
+# 5. Funciones CRUD y gestión (admin)
+def crear_dispositivo():
+    print("\n=== Crear dispositivo ===")
+    id_tipo = int(input("ID tipo dispositivo: ").strip())
+    id_ubicacion = int(input("ID ubicación: ").strip())
+    marca = input("Marca: ").strip()
+    modelo = input("Modelo: ").strip()
+    estado = input("Estado inicial (encendido/apagado/activo): ").strip()
+    nuevo_disp = Dispositivo.crear_dispositivos(id_tipo, id_ubicacion, marca, modelo, estado)
+    dispositivos.append(nuevo_disp)
+    print("✅ Dispositivo creado con éxito.")
+
+def borrar_dispositivo():
+    ver_dispositivos()
+    idx = int(input("Número de dispositivo a eliminar: ").strip()) - 1
+    if 0 <= idx < len(dispositivos):
+        disp = dispositivos.pop(idx)
+        print(f"✅ Dispositivo {disp.marca} {disp.modelo} eliminado.")
+    else:
+        print("❌ Índice inválido.")
+
+def actualizar_dispositivo():
+    ver_dispositivos()
+    idx = int(input("Número de dispositivo a actualizar: ").strip()) - 1
+    if 0 <= idx < len(dispositivos):
+        disp = dispositivos[idx]
+        nuevo_estado = input(f"Nuevo estado para {disp.marca} {disp.modelo}: ").strip()
+        disp.gestionar_dispositivos("cambiar_estado", {"estado": nuevo_estado})
+        print("✅ Dispositivo actualizado.")
+    else:
+        print("❌ Índice inválido.")
+
+def cambiar_rol_usuario(usuario_actual):
+    print("\n=== Cambiar rol de usuario ===")
+
+    # 🛡️ Caso 1: si es usuario estándar → no puede cambiar nada
+    if usuario_actual.id_rol == 2:
+        print("❌ No tenés permisos para cambiar roles.")
+        return
+
+    # 🧑‍💼 Caso 2: si es admin predefinido → puede cambiar todos excepto a sí mismo
+    if usuario_actual.dni == "12345678":
+        for i, u in enumerate(usuarios, start=1):
+            rol_str = "Administrador" if u.id_rol == 1 else "Usuario estándar"
+            print(f"{i}. {u.nombre} {u.apellido} - Rol actual: {rol_str}")
+
+        try:
+            idx = int(input("Selecciona el número del usuario: ").strip()) - 1
+        except ValueError:
+            print("❌ Opción inválida.")
+            return
+
+        if 0 <= idx < len(usuarios):
+            u = usuarios[idx]
+            if u.dni == "12345678":
+                print("⚠️ No podés cambiar tu propio rol (admin predefinido).")
+                return
+
+            # Alternar rol
+            nuevo_rol = 1 if u.id_rol == 2 else 2
+            u.id_rol = nuevo_rol
+            print(f"✅ Rol de {u.nombre} {u.apellido} cambiado a {'Administrador' if nuevo_rol==1 else 'Usuario estándar'}.")
         else:
-            print("   ❌ Fallo en autenticación")
-        
-        # Crear hogar
-        print("\n4. Creando hogar...")
-        hogar = Hogar.agregar_hogar("Av. Libertador 1234", "Casa Principal", 1)
-        print(f"   - {hogar}")
-        
-        # Crear ambientes
-        print("\n5. Creando ambientes...")
-        sala = Ambiente.crear_ambiente(1, 1, "Sala de estar")
-        cocina = Ambiente.crear_ambiente(2, 1, "Cocina")
-        print(f"   - {sala}")
-        print(f"   - {cocina}")
-        
-        # Crear tipos de dispositivos
-        print("\n6. Creando tipos de dispositivos...")
-        tipo_luz = TipoDispositivo(1, "Lámpara inteligente")
-        tipo_sensor = TipoDispositivo(2, "Sensor de temperatura")
-        print(f"   - {tipo_luz}")
-        print(f"   - {tipo_sensor}")
-        
-        # Crear dispositivos
-        print("\n7. Creando dispositivos...")
-        lampara_sala = Dispositivo.crear_dispositivos(1, 1, "Philips", "Hue White", "encendido")
-        sensor_cocina = Dispositivo(2, 2, "Xiaomi", "Mi Temperature", "activo")
-        print(f"   - {lampara_sala}")
-        print(f"   - {sensor_cocina}")
-        
-        # Ejecutar acciones en dispositivos
-        print("\n8. Ejecutando acciones en dispositivos...")
-        print(f"   - Estado inicial de la lámpara: {lampara_sala.estado}")
-        lampara_sala.ejecutar_accion("apagar")
-        print(f"   - Estado después de apagar: {lampara_sala.estado}")
-        
-        # Crear automatizaciones
-        print("\n9. Creando automatizaciones...")
-        auto_nocturna = Automatizacion.crear_automatizacion(
-            1, 1, "Luces nocturnas", ["lunes", "martes", "miércoles", "jueves", "viernes"], 
-            "22:00", "apagar_todas_luces"
-        )
-        auto_despertador = Automatizacion(
-            2, 1, "Despertador matutino", ["lunes", "martes", "miércoles", "jueves", "viernes"],
-            "07:00", "encender_luces_dormitorio"
-        )
-        print(f"   - {auto_nocturna}")
-        print(f"   - {auto_despertador}")
-        
-        # Mostrar información de automatizaciones
-        print("\n10. Información de automatizaciones...")
-        info_auto = auto_nocturna.mostrar_automatizaciones()
-        print(f"    - Nombre: {info_auto['nombre']}")
-        print(f"    - Días: {', '.join(info_auto['dias'])}")
-        print(f"    - Hora: {info_auto['hora']}")
-        print(f"    - Acción: {info_auto['accion']}")
-        
-        print("\n✅ === Sistema inicializado correctamente ===")
-        
-    except Exception as e:
-        print(f"\n❌ Error: {e}")
-        return 1
-    
-    return 0
+            print("❌ Índice inválido.")
+        return
+
+    # 👤 Caso 3: admin común → solo puede cambiar su propio rol
+    if usuario_actual.id_rol == 1:
+        print(f"Actualmente tu rol es: {'Administrador' if usuario_actual.id_rol == 1 else 'Usuario estándar'}")
+        confirmar = input("¿Querés cambiar tu rol? (s/n): ").strip().lower()
+
+        if confirmar == "s":
+            nuevo_rol = 2 if usuario_actual.id_rol == 1 else 1
+            usuario_actual.id_rol = nuevo_rol
+            print(f"✅ Tu rol ahora es: {'Administrador' if nuevo_rol == 1 else 'Usuario estándar'}.")
+        else:
+            print("❌ Cambio cancelado.")
 
 
+    # Si es estándar, solo puede cambiar el suyo
+    elif usuario_actual.id_rol == 2:
+        confirm = input("¿Deseas cambiar tu rol a Administrador? (s/n): ").strip().lower()
+        if confirm == "s":
+            usuario_actual.id_rol = 1
+            print("✅ Ahora tienes rol de Administrador.")
+        else:
+            print("❌ Cambio cancelado.")
+
+    else:
+        print("❌ No tienes permisos para cambiar otros roles.")
+
+
+# 6. Menú usuario estándar
+def menu_usuario_estandar(usuario):
+    while True:
+        print("\n=== Menú Usuario Estándar ===")
+        print("1 - Ver mis datos personales")
+        print("2 - Ver dispositivos")
+        print("3 - Cerrar sesión")
+        opcion = input("Selecciona una opción: ").strip()
+
+        if opcion == "1":
+            ver_datos_personales(usuario)
+        elif opcion == "2":
+            ver_dispositivos()
+        elif opcion == "3":
+            print("Cerrando sesión...")
+            break
+        else:
+            print("Opción no válida.")
+
+# 7. Menú admin
+def menu_admin(usuario):
+    while True:
+        print("\n=== Menú Administrador ===")
+        print("1 - Ver mis datos personales")       # opción común
+        print("2 - Ver dispositivos")              # opción común
+        print("3 - Crear dispositivo")             # admin exclusivo
+        print("4 - Actualizar dispositivo")        # admin exclusivo
+        print("5 - Eliminar dispositivo")          # admin exclusivo
+        print("6 - Cambiar rol de usuario")        # admin exclusivo
+        print("7 - Cerrar sesión")
+        opcion = input("Selecciona una opción: ").strip()
+
+        if opcion == "1":
+            ver_datos_personales(usuario)          
+        elif opcion == "2":
+            ver_dispositivos()                     
+        elif opcion == "3":
+            crear_dispositivo()
+        elif opcion == "4":
+            actualizar_dispositivo()
+        elif opcion == "5":
+            borrar_dispositivo()
+        elif opcion == "6":
+            cambiar_rol_usuario(usuario)
+        elif opcion == "7":
+            print("Cerrando sesión...")
+            break
+        else:
+            print("Opción no válida.")
+
+# 8. Menú principal + punto de entrada
+def menu_principal():
+    while True:
+        print("\n=== Sistema Domótica Smart Home ===")
+        print("1 - Registrarse")
+        print("2 - Iniciar sesión")
+        print("3 - Salir")
+        opcion = input("Selecciona una opción: ").strip()
+
+        if opcion == "1":
+            registrar_usuario()
+        elif opcion == "2":
+            usuario = login_usuario()
+            if usuario:
+                if usuario.id_rol == 1:
+                    menu_admin(usuario)
+                else:
+                    menu_usuario_estandar(usuario)
+        elif opcion == "3":
+            print("Saliendo del sistema...")
+            break
+        else:
+            print("Opción no válida.")
+
+# 9. Ejecutar el programa
 if __name__ == "__main__":
-    exit(main())
+    menu_principal()
