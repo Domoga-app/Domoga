@@ -1,37 +1,42 @@
-class Automatizacion:
-    """Clase para manejar automatizaciones del hogar."""
+from typing import Optional, List, Any
+from datetime import datetime
 
-    def __init__(self, id_automatizacion, id_hogar, nombre, dias, hora, accion):
-        self.id_automatizacion = id_automatizacion
+
+class Automatizacion:
+
+    def __init__(self, id_hogar: str, nombre: str, dias: List[str], hora: str, accion: str, id: Optional[str] = None):
+
+        self.id = id
+        self.fecha_creacion: Optional[datetime] = None
+        self.fecha_modificacion: Optional[datetime] = None
+
+        # Atributos del modelo
         self.id_hogar = id_hogar
         self.nombre = nombre
-        self.dias = dias
-        self.hora = hora
-        self.accion = accion
+        self.dias = dias  # Ej: ['LUN', 'MIE', 'VIE']
+        self.hora = hora  # Ej: '07:30' (formato HH:MM)
+        self.accion = accion  # Ej: 'encender_luces_sala'
 
     @classmethod
-    def crear_automatizacion(cls, id_automatizacion, id_hogar, nombre, dias, hora, accion):
+    def crear_automatizacion(cls, id_hogar: str, nombre: str, dias: List[str], hora: str, accion: str):
         """Método de clase para crear una nueva automatización."""
-        return cls(id_automatizacion, id_hogar, nombre, dias, hora, accion)
+        return cls(id_hogar, nombre, dias, hora, accion)
 
-    def monitor_automatizaciones(self):
+    def monitor_automatizaciones(self) -> bool:
         """Monitorea las automatizaciones activas."""
-        # En una implementación real, aquí se verificarían las condiciones
         return True
 
-    def ejecutar_accion(self):
+    def ejecutar_accion(self) -> bool:
         """Ejecuta la acción de la automatización."""
-        # En una implementación real, aquí se ejecutaría la acción específica
+        # Lógica real de ejecución
         return True
 
-    def borrar_automatizaciones(self):
-        """Elimina la automatización actual."""
-        return True
+    # El método 'borrar_automatizaciones' no es necesario ya que el DAO maneja 'eliminar'.
 
-    def mostrar_automatizaciones(self):
+    def mostrar_automatizaciones(self) -> dict:
         """Devuelve los datos de la automatización."""
         return {
-            "id_automatizacion": self.id_automatizacion,
+            "id": self.id,
             "id_hogar": self.id_hogar,
             "nombre": self.nombre,
             "dias": self.dias,

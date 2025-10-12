@@ -6,11 +6,6 @@ T = TypeVar('T')
 
 
 class BaseDAO(ABC, Generic[T]):
-    """
-    Clase base abstracta para todos los DAOs.
-    Proporciona operaciones CRUD estándar.
-    """
-
     def __init__(self):
         """Inicializa el DAO con almacenamiento en memoria."""
         self._storage: Dict[str, T] = {}
