@@ -228,7 +228,7 @@ def cambiar_rol_usuario(usuario_actual):
             print("❌ Opción no válida.")
         return
 
-    # Admin predefinido → puede cambiar todos excepto a sí mismo
+    # Admin predefinido puede cambiar todos excepto a sí mismo
     if usuario_actual.dni == "12345678":
         for i, u in enumerate(usuarios, start=1):
             rol_str = "Administrador" if u.id_rol == 1 else "Usuario estándar"
@@ -255,7 +255,7 @@ def cambiar_rol_usuario(usuario_actual):
             print("❌ Índice inválido.")
         return
 
-    # Admin común → solo puede bajarse a estándar
+    # Admin común solo puede bajarse a estándar
     if usuario_actual.id_rol == 1:
         confirmar = input("¿Querés cambiar tu rol? (s/n/0 para cancelar): ").strip().lower()
         if confirmar == "0" or confirmar == "n":
