@@ -16,11 +16,43 @@ dispositivos = [
     Dispositivo.crear_dispositivos(2, 2, "Xiaomi", "Mi Temperature", "activo")
 ]
 
-# 3. Funciones de registro y login
+# 3.Funciones auxiliares para entrada de datos
+def pedir_numero(mensaje):
+    """
+    Solicita un número entero al usuario.
+    Devuelve el número ingresado o None si el usuario ingresa '0' para cancelar.
+    """
+    while True:
+        valor = input(mensaje).strip()
+        if valor == "0":
+            return None  # indica cancelación
+        if valor.isdigit():
+            return int(valor)
+        print("❌ Debe ingresar un número válido. Intente nuevamente o ingrese 0 para cancelar.")
+
+def pedir_estado():
+    """
+    Permite al usuario seleccionar un estado de la lista de opciones.
+    Devuelve el estado seleccionado como string o None si ingresa 0 para cancelar.
+    """
+    opciones = ["encendido", "apagado", "activo"]
+    while True:
+        print("Seleccione el estado:")
+        for i, opcion in enumerate(opciones, start=1):
+            print(f"{i} - {opcion}")
+        print("0 - volver")
+        eleccion = input("Opción: ").strip()
+        if eleccion == "0":
+            return None
+        if eleccion.isdigit() and 1 <= int(eleccion) <= len(opciones):
+            return opciones[int(eleccion)-1]
+        print("❌ Opción inválida, intente nuevamente.")
+
+# 4. Funciones de registro y login
 
 def registrar_usuario():
     print("\n=== Registro de usuario ===")
-    print("Ingrese '0' en cualquier momento para cancelar y volver al menú.")
+    print("0 - vovler.")
 
     dni = input("DNI: ").strip()
     if dni == "0" or dni == "":
@@ -76,7 +108,7 @@ def login_usuario():
     print("❌ Credenciales incorrectas.")
     return None
 
-# 4. Funciones auxiliares
+# 5. Funciones comunes (ambos roles)
 def ver_datos_personales(usuario):
     datos = usuario.recuperar_usuario()
     print("\n--- Datos Personales ---")
@@ -93,36 +125,42 @@ def ver_dispositivos():
     for i, d in enumerate(dispositivos, start=1):
         info = d.ver_dispositivos()
         print(f"{i}. {info['marca']} {info['modelo']} - Estado: {info['estado']}")
+        
 
-# 5. Funciones CRUD y gestión (admin)
+# 6. Funciones exclusivas de admin
 def crear_dispositivo():
     print("\n=== Crear dispositivo ===")
-    print("0 - volver.")
+    print("0 - volver")
 
-    id_tipo = input("ID tipo dispositivo: ").strip()
-    if id_tipo == "0":
+    id_tipo = pedir_numero("ID tipo dispositivo: ")
+    if id_tipo is None:
         print("❌ Operación cancelada.")
         return
-    id_ubicacion = input("ID ubicación: ").strip()
-    if id_ubicacion == "0":
+
+    id_ubicacion = pedir_numero("ID ubicación: ")
+    if id_ubicacion is None:
         print("❌ Operación cancelada.")
         return
+
     marca = input("Marca: ").strip()
     if marca == "0":
         print("❌ Operación cancelada.")
         return
+
     modelo = input("Modelo: ").strip()
     if modelo == "0":
         print("❌ Operación cancelada.")
         return
-    estado = input("Estado inicial (encendido/apagado/activo): ").strip()
-    if estado == "0":
+
+    estado = pedir_estado()
+    if estado is None:
         print("❌ Operación cancelada.")
         return
 
-    nuevo_disp = Dispositivo.crear_dispositivos(int(id_tipo), int(id_ubicacion), marca, modelo, estado)
+    nuevo_disp = Dispositivo.crear_dispositivos(id_tipo, id_ubicacion, marca, modelo, estado)
     dispositivos.append(nuevo_disp)
     print("✅ Dispositivo creado con éxito.")
+
 
 def borrar_dispositivo():
     while True:
@@ -146,7 +184,7 @@ def borrar_dispositivo():
 def actualizar_dispositivo():
     while True:
         ver_dispositivos()
-        print("0 - volver.")
+        print("0 - volver")
         idx = input("Número de dispositivo a actualizar: ").strip()
         if idx == "0":
             print("❌ Operación cancelada.")
@@ -157,21 +195,25 @@ def actualizar_dispositivo():
         idx = int(idx) - 1
         if 0 <= idx < len(dispositivos):
             disp = dispositivos[idx]
-            nuevo_estado = input(f"Nuevo estado para {disp.marca} {disp.modelo} 0 - para cancelar): ").strip()
-            if nuevo_estado == "0":
+            
+            # Elegir nuevo estado con menú numerado
+            nuevo_estado = pedir_estado()
+            if nuevo_estado is None:
                 print("❌ Operación cancelada.")
                 return
+
             disp.gestionar_dispositivos("cambiar_estado", {"estado": nuevo_estado})
-            print("✅ Dispositivo actualizado.")
+            print(f"✅ Dispositivo {disp.marca} {disp.modelo} actualizado a {nuevo_estado}.")
             return
         else:
             print("❌ Índice inválido.")
+
 
 def cambiar_rol_usuario(usuario_actual):
     print("\n=== Cambiar rol de usuario ===")
     print("0 - volver.")
 
-    # Usuario estándar → solo puede subir a admin (su propio rol)
+    # Usuario estándar solo puede subir a admin (su propio rol)
     if usuario_actual.id_rol == 2:
         confirm = input("¿Deseas cambiar tu rol a Administrador? (s/n): ").strip().lower()
         if confirm == "0" or confirm == "n":
@@ -229,7 +271,7 @@ def cambiar_rol_usuario(usuario_actual):
         return
 
 
-# 6. Menú usuario estándar
+# 7. Menú usuario estándar
 def menu_usuario_estandar(usuario):
     while True:
         print("\n=== Menú Usuario Estándar ===")
@@ -248,7 +290,7 @@ def menu_usuario_estandar(usuario):
         else:
             print("Opción no válida.")
 
-# 7. Menú admin
+# 8. Menú administrador
 def menu_admin(usuario):
     while True:
         print("\n=== Menú Administrador ===")
@@ -283,7 +325,7 @@ def menu_admin(usuario):
         else:
             print("Opción no válida.")
 
-# 8. Menú principal + punto de entrada
+# 9. Menú principal
 def menu_principal():
     while True:
         print("\n=== Sistema Domótica Smart Home ===")
@@ -307,6 +349,6 @@ def menu_principal():
         else:
             print("Opción no válida.")
 
-# 9. Ejecutar el programa
+# 10. Ejecutar el programa
 if __name__ == "__main__":
     menu_principal()
