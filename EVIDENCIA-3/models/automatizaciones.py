@@ -39,40 +39,6 @@ def monitor_automatizaciones():
                 auto["ejecutado"] = False  # Reset al día siguiente
         time.sleep(30)
 
-def ejecutar_accion(nombre_dispositivo, accion):
-    hora_accion = datetime.now().strftime("%H:%M")
-    if accion == "encender":
-        print(f"🟢 [AUTO] {nombre_dispositivo} se encendió a las {hora_accion}")
-    else:
-        print(f"🔴 [AUTO] {nombre_dispositivo} se apagó a las {hora_accion}")
-        
-
-def parse_hora(hora_str):
-    try:
-        hora, minuto = map(int, hora_str.strip().split(":"))
-        return (hora, minuto)
-    except ValueError:
-        return None
-
-def dia_actual():
-    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
-    return dias[datetime.today().weekday()]
-
-def monitor_automatizaciones():
-    while True:
-        ahora = datetime.now()
-        hoy = dia_actual()
-        for auto in automatizaciones:
-            dias_activos = [d.strip() for d in auto["dias"].split(",")]
-            if hoy in dias_activos and not auto.get("ejecutado", False):
-                hora = parse_hora(auto["hora"])
-                if hora and (ahora.hour, ahora.minute) == hora:
-                    ejecutar_accion(auto["dispositivo"], auto["accion"])
-                    auto["ejecutado"] = True
-            if hoy not in dias_activos:
-                auto["ejecutado"] = False  # Reset al día siguiente
-        time.sleep(30)
-
 def mostrar_automatizaciones():
     print("\n📋 Automatizaciones:")
     if not automatizaciones:

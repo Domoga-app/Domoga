@@ -1,3 +1,6 @@
+from hogar import Hogar
+
+
 class Usuario:
     def __init__(self, dni: str, id_rol: str, nombre: str, apellido: str, contraseña: str, id: Optional[str] = None):
         self.id = id
@@ -9,6 +12,7 @@ class Usuario:
         # Campos de timestamp para compatibilidad con BaseDAO
         self.fecha_creacion: Optional[datetime] = None
         self.fecha_modificacion: Optional[datetime] = None
+        self._hogares = []
 
     @classmethod
     def crear_usuario(cls, dni: str, id_rol: str, nombre: str, apellido: str, contraseña: str):
@@ -26,3 +30,7 @@ class Usuario:
     def ingresar_usuario(self, dni: str, contraseña: str) -> bool:
         """Valida las credenciales del usuario."""
         return self.dni == dni and self.contraseña == contraseña
+
+    def agregar_hogar(self, hogar: Hogar):
+        if hogar not in self._hogares:
+            self._hogares.append(hogar)

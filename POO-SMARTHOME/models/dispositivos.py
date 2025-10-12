@@ -1,17 +1,18 @@
 class Dispositivo:
     """Clase para manejar dispositivos del hogar inteligente."""
 
-    def __init__(self, id_tipo, id_ubicacion, marca, modelo, estado):
-        self.id_tipo = id_tipo
-        self.id_ubicacion = id_ubicacion
+    def __init__(self, hogar, tipo_dispositivo, ubicacion, marca, modelo, estado):
+        self.tipo = tipo_dispositivo
+        self.hogar = hogar
+        self.ubicacion = ubicacion
         self.marca = marca
         self.modelo = modelo
         self.estado = estado
 
     @classmethod
-    def crear_dispositivos(cls, id_tipo, id_ubicacion, marca, modelo, estado):
+    def crear_dispositivos(cls, tipo_dispositivo, id_ubicacion, marca, modelo, estado):
         """Método de clase para crear un nuevo dispositivo."""
-        return cls(id_tipo, id_ubicacion, marca, modelo, estado)
+        return cls(tipo_dispositivo, id_ubicacion, marca, modelo, estado)
 
     def gestionar_dispositivos(self, accion, datos=None):
         """Gestiona operaciones sobre el dispositivo."""
@@ -23,8 +24,9 @@ class Dispositivo:
     def ver_dispositivos(self):
         """Devuelve los datos del dispositivo."""
         return {
-            "id_tipo": self.id_tipo,
-            "id_ubicacion": self.id_ubicacion,
+            "tipo": self.tipo_dispositivo,
+            "hogar": self.hogar,
+            "ubicacion": self.id_ubicacion,
             "marca": self.marca,
             "modelo": self.modelo,
             "estado": self.estado

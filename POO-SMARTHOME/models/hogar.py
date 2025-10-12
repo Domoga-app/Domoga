@@ -3,6 +3,8 @@ from datetime import datetime
 # Asumiendo que Usuario y Dispositivo están importados
 # from usuarios import Usuario
 # from dispositivos import Dispositivo
+from usuarios import Usuario
+from dispositivos import Dispositivo
 
 
 class Hogar:
@@ -20,6 +22,9 @@ class Hogar:
         self._usuarios: List['Usuario'] = []  # Lista de objetos Usuario
         # Lista de objetos Dispositivo
         self._dispositivos: List['Dispositivo'] = []
+        self.id_hogar = id_hogar
+        self._usuarios = []
+        self._dispositivos = []
 
     @classmethod
     def agregar_hogar(cls, direccion: str, nombre: str, id_hogar_negocio: str):
