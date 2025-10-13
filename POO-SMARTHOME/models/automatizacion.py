@@ -1,18 +1,17 @@
 class Automatizacion:
     """Clase para manejar automatizaciones del hogar."""
 
-    def __init__(self, id_automatizacion, id_hogar, nombre, dias, hora, accion):
+    def __init__(self, id_automatizacion, nombre, dias, hora, accion):
         self.id_automatizacion = id_automatizacion
-        self.id_hogar = id_hogar
         self.nombre = nombre
         self.dias = dias
         self.hora = hora
         self.accion = accion
 
     @classmethod
-    def crear_automatizacion(cls, id_automatizacion, id_hogar, nombre, dias, hora, accion):
+    def crear_automatizacion(cls, id_automatizacion, nombre, dias, hora, accion):
         """Método de clase para crear una nueva automatización."""
-        return cls(id_automatizacion, id_hogar, nombre, dias, hora, accion)
+        return cls(id_automatizacion, nombre, dias, hora, accion)
 
     def monitor_automatizaciones(self):
         """Monitorea las automatizaciones activas."""
@@ -32,7 +31,6 @@ class Automatizacion:
         """Devuelve los datos de la automatización."""
         return {
             "id_automatizacion": self.id_automatizacion,
-            "id_hogar": self.id_hogar,
             "nombre": self.nombre,
             "dias": self.dias,
             "hora": self.hora,

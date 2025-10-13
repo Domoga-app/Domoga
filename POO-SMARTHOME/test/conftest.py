@@ -12,19 +12,12 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Ahora podemos importar desde models
-from models import Usuario, Rol, Hogar, Ambiente, Dispositivo, TipoDispositivo, Automatizacion
+from models import Usuario, Rol, Ambiente, Dispositivo, TipoDispositivo, Automatizacion
 
 @pytest.fixture(scope="session")
 def usuario_admin():
     """Fixture de sesión que crea un usuario administrador para todos los tests."""
     return Usuario("12345678", 1, "Admin", "Sistema", "admin123")
-
-
-@pytest.fixture(scope="session")
-def hogar_principal():
-    """Fixture de sesión que crea un hogar principal para todos los tests."""
-    return Hogar("Av. Principal 123", "Casa de Pruebas", 999)
-
 
 @pytest.fixture
 def ambiente_temporal():
@@ -43,7 +36,6 @@ def base_datos_mock():
     """Fixture de clase que simula una base de datos para tests."""
     return {
         "usuarios": [],
-        "hogares": [],
         "dispositivos": [],
         "automatizaciones": []
     }

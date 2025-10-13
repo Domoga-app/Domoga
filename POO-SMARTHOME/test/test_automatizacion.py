@@ -7,7 +7,6 @@ class TestAutomatizacion:
         automatizacion = Automatizacion(1, 1, "Luces nocturnas", [
                                         "lunes", "martes"], "22:00", "apagar_luces")
         assert automatizacion.id_automatizacion == 1
-        assert automatizacion.id_hogar == 1
         assert automatizacion.nombre == "Luces nocturnas"
         assert automatizacion.dias == ["lunes", "martes"]
         assert automatizacion.hora == "22:00"
