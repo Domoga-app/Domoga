@@ -55,7 +55,7 @@ class DispositivoDAO(BaseDAO[Dispositivo]):
         """Convierte una fila de la BD a una entidad Dispositivo."""
         dispositivo = Dispositivo(
             hogar=row['hogar'],
-            tipo_dispositivo=row['tipo'],
+            tipo=row['tipo'],
             ubicacion=row['ubicacion'],
             marca=row['marca'],
             modelo=row['modelo'],
