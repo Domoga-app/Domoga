@@ -1,4 +1,4 @@
-from hogar import Hogar
+from typing import Optional
 
 
 class Usuario:
@@ -30,7 +30,3 @@ class Usuario:
     def ingresar_usuario(self, dni: str, contraseña: str) -> bool:
         """Valida las credenciales del usuario."""
         return self.dni == dni and self.contraseña == contraseña
-
-    def agregar_hogar(self, hogar: Hogar):
-        if hogar not in self._hogares:
-            self._hogares.append(hogar)

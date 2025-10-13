@@ -3,15 +3,17 @@ import os
 import mysql.connector
 
 load_dotenv()
+print(f"{os.getenv("DB_NAME")} {os.getenv("DB_PASSWORD")} {os.getenv("DB_USER")} {os.getenv("DB_HOST")} {os.getenv("DB_PORT")}")
+
 
 def get_connection():
     try:
         return mysql.connector.connect(
-            user= os.getenv('DB_USER'),
-            password = os.getenv('DB_PASSWORD'),
-            host = os.getenv('DB_HOST'),
-            database = os.getenv('DB_NAME'),
-            port = os.getenv('DB_PORT')
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_NAME'),
+            port=os.getenv('DB_PORT')
         )
     except mysql.connector.Error as err:
         print(f"Error al conectar: {err}")

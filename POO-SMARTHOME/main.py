@@ -1,22 +1,44 @@
 # 1. Importaciones
 from models import Usuario, Rol, Dispositivo
+from DAO import UsuarioDAO, DispositivoDAO
 
-# 2. Datos iniciales
-roles = [
-    Rol(1, "Administrador"),
-    Rol(2, "Usuario")
-]
 
-usuarios = [
-    Usuario.crear_usuario("12345678", 1, "Admin", "Principal", "admin123")
-]
+# 2. Inicializar DAOs
+usuario_dao = UsuarioDAO()
+dispositivo_dao = DispositivoDAO()
 
-dispositivos = [
-    Dispositivo.crear_dispositivos(1, 1, "Philips", "Hue White", "encendido"),
-    Dispositivo.crear_dispositivos(2, 2, "Xiaomi", "Mi Temperature", "activo")
-]
+# 3. Datos iniciales (solo si no existen en BD)
 
-# 3.Funciones auxiliares para entrada de datos
+
+def inicializar_datos():
+    """Carga datos iniciales si la BD está vacía."""
+    # Verificar si existe el admin predefinido
+    admin_existente = usuario_dao.buscar_por_dni("12345678")
+    if not admin_existente:
+        try:
+            admin = Usuario.crear_usuario(
+                "12345678", "1", "Admin", "Principal", "admin123")
+            usuario_dao.crear(admin)
+            print("✅ Usuario administrador creado.")
+        except Exception as e:
+            print(f"⚠️ Error al crear admin: {e}")
+
+    # Verificar si hay dispositivos
+    if dispositivo_dao.contar() == 0:
+        try:
+            disp1 = Dispositivo(1, "luz", 1, "Philips",
+                                "Hue White", "encendido")
+            disp2 = Dispositivo(1, "sensor", 2, "Xiaomi",
+                                "Mi Temperature", "apagado")
+            dispositivo_dao.crear(disp1)
+            dispositivo_dao.crear(disp2)
+            print("✅ Dispositivos iniciales creados.")
+        except Exception as e:
+            print(f"⚠️ Error al crear dispositivos: {e}")
+
+# 4. Funciones auxiliares para entrada de datos
+
+
 def pedir_numero(mensaje):
     """
     Solicita un número entero al usuario.
@@ -30,12 +52,13 @@ def pedir_numero(mensaje):
             return int(valor)
         print("❌ Debe ingresar un número válido. Intente nuevamente o ingrese 0 para cancelar.")
 
+
 def pedir_estado():
     """
     Permite al usuario seleccionar un estado de la lista de opciones.
     Devuelve el estado seleccionado como string o None si ingresa 0 para cancelar.
     """
-    opciones = ["encendido", "apagado", "activo"]
+    opciones = ["encendido", "apagado", "standby", "desconocido"]
     while True:
         print("Seleccione el estado:")
         for i, opcion in enumerate(opciones, start=1):
@@ -48,11 +71,12 @@ def pedir_estado():
             return opciones[int(eleccion)-1]
         print("❌ Opción inválida, intente nuevamente.")
 
-# 4. Funciones de registro y login
+# 5. Funciones de registro y login
+
 
 def registrar_usuario():
     print("\n=== Registro de usuario ===")
-    print("0 - vovler.")
+    print("0 - volver.")
 
     dni = input("DNI: ").strip()
     if dni == "0" or dni == "":
@@ -60,10 +84,9 @@ def registrar_usuario():
         return
 
     # Verificar si ya existe un usuario con el mismo DNI
-    for u in usuarios:
-        if u.dni == dni:
-            print("❌ Ya existe un usuario con ese DNI. Intenta con otro.")
-            return
+    if usuario_dao.existe_dni(dni):
+        print("❌ Ya existe un usuario con ese DNI. Intenta con otro.")
+        return
 
     nombre = input("Nombre: ").strip()
     if nombre == "0" or nombre == "":
@@ -81,10 +104,17 @@ def registrar_usuario():
         return
 
     # Todo usuario registrado es estándar
-    id_rol = 2
-    nuevo_usuario = Usuario.crear_usuario(dni, id_rol, nombre, apellido, contraseña)
-    usuarios.append(nuevo_usuario)
-    print(f"✅ Usuario {nombre} {apellido} registrado como Usuario estándar.")
+    try:
+        nuevo_usuario = Usuario.crear_usuario(
+            dni, "2", nombre, apellido, contraseña)
+        usuario_dao.crear(nuevo_usuario)
+        print(
+            f"✅ Usuario {nombre} {apellido} registrado como Usuario estándar.")
+    except ValueError as e:
+        print(f"❌ Error al registrar: {e}")
+    except Exception as e:
+        print(f"❌ Error inesperado: {e}")
+
 
 def login_usuario():
     print("\n=== Inicio de sesión ===")
@@ -100,40 +130,59 @@ def login_usuario():
         print("❌ Login cancelado.")
         return None
 
-    for user in usuarios:
-        if user.ingresar_usuario(dni, contraseña):
-            print(f"✅ Bienvenido {user.nombre} {user.apellido}")
-            return user
+    try:
+        usuario = usuario_dao.autenticar_usuario(dni, contraseña)
+        if usuario:
+            print(f"✅ Bienvenido {usuario.nombre} {usuario.apellido}")
+            return usuario
+        else:
+            print("❌ Credenciales incorrectas.")
+            return None
+    except Exception as e:
+        print(f"❌ Error al iniciar sesión: {e}")
+        return None
 
-    print("❌ Credenciales incorrectas.")
-    return None
+# 6. Funciones comunes (ambos roles)
 
-# 5. Funciones comunes (ambos roles)
+
 def ver_datos_personales(usuario):
     datos = usuario.recuperar_usuario()
     print("\n--- Datos Personales ---")
     print(f"DNI: {datos['dni']}")
     print(f"Nombre: {datos['nombre']} {datos['apellido']}")
-    print(f"Rol: {'Administrador' if datos['id_rol']==1 else 'Usuario estándar'}")
+    print(
+        f"Rol: {'Administrador' if datos['id_rol'] == '1' else 'Usuario estándar'}")
     print("------------------------")
+
 
 def ver_dispositivos():
     print("\n--- Dispositivos ---")
-    if not dispositivos:
-        print("No hay dispositivos registrados.")
-        return
-    for i, d in enumerate(dispositivos, start=1):
-        info = d.ver_dispositivos()
-        print(f"{i}. {info['marca']} {info['modelo']} - Estado: {info['estado']}")
-        
+    try:
+        dispositivos = dispositivo_dao.listar()
+        if not dispositivos:
+            print("No hay dispositivos registrados.")
+            return
+        for i, d in enumerate(dispositivos, start=1):
+            info = d.ver_dispositivos()
+            print(
+                f"{i}. ID: {d.id} | {info['marca']} {info['modelo']} - Estado: {info['estado']}")
+    except Exception as e:
+        print(f"❌ Error al listar dispositivos: {e}")
 
-# 6. Funciones exclusivas de admin
+# 7. Funciones exclusivas de admin
+
+
 def crear_dispositivo():
     print("\n=== Crear dispositivo ===")
     print("0 - volver")
 
-    id_tipo = pedir_numero("ID tipo dispositivo: ")
-    if id_tipo is None:
+    id_hogar = pedir_numero("ID hogar: ")
+    if id_hogar is None:
+        print("❌ Operación cancelada.")
+        return
+
+    tipo = input("Tipo de dispositivo: ").strip()
+    if tipo == "0":
         print("❌ Operación cancelada.")
         return
 
@@ -157,56 +206,79 @@ def crear_dispositivo():
         print("❌ Operación cancelada.")
         return
 
-    nuevo_disp = Dispositivo.crear_dispositivos(id_tipo, id_ubicacion, marca, modelo, estado)
-    dispositivos.append(nuevo_disp)
-    print("✅ Dispositivo creado con éxito.")
+    try:
+        nuevo_disp = Dispositivo(
+            id_hogar, tipo, id_ubicacion, marca, modelo, estado)
+        dispositivo_dao.crear(nuevo_disp)
+        print("✅ Dispositivo creado con éxito.")
+    except ValueError as e:
+        print(f"❌ Error al crear dispositivo: {e}")
+    except Exception as e:
+        print(f"❌ Error inesperado: {e}")
 
 
 def borrar_dispositivo():
     while True:
         ver_dispositivos()
         print("0 - volver.")
-        idx = input("Número de dispositivo a eliminar: ").strip()
-        if idx == "0":
+
+        dispositivos = dispositivo_dao.listar()
+        if not dispositivos:
+            print("No hay dispositivos para eliminar.")
+            return
+
+        id_disp = input("ID del dispositivo a eliminar: ").strip()
+        if id_disp == "0":
             print("❌ Operación cancelada.")
             return
-        if not idx.isdigit():
-            print("❌ Debe ingresar un número válido.")
-            continue
-        idx = int(idx) - 1
-        if 0 <= idx < len(dispositivos):
-            disp = dispositivos.pop(idx)
-            print(f"✅ Dispositivo {disp.marca} {disp.modelo} eliminado.")
-            return
-        else:
-            print("❌ Índice inválido.")
+
+        try:
+            if dispositivo_dao.eliminar(id_disp):
+                print(f"✅ Dispositivo eliminado.")
+                return
+            else:
+                print("❌ Dispositivo no encontrado.")
+        except Exception as e:
+            print(f"❌ Error al eliminar: {e}")
+
 
 def actualizar_dispositivo():
     while True:
         ver_dispositivos()
         print("0 - volver")
-        idx = input("Número de dispositivo a actualizar: ").strip()
-        if idx == "0":
+
+        dispositivos = dispositivo_dao.listar()
+        if not dispositivos:
+            print("No hay dispositivos para actualizar.")
+            return
+
+        id_disp = input("ID del dispositivo a actualizar: ").strip()
+        if id_disp == "0":
             print("❌ Operación cancelada.")
             return
-        if not idx.isdigit():
-            print("❌ Debe ingresar un número válido.")
-            continue
-        idx = int(idx) - 1
-        if 0 <= idx < len(dispositivos):
-            disp = dispositivos[idx]
-            
-            # Elegir nuevo estado con menú numerado
-            nuevo_estado = pedir_estado()
-            if nuevo_estado is None:
-                print("❌ Operación cancelada.")
-                return
 
-            disp.gestionar_dispositivos("cambiar_estado", {"estado": nuevo_estado})
-            print(f"✅ Dispositivo {disp.marca} {disp.modelo} actualizado a {nuevo_estado}.")
+        disp = dispositivo_dao.obtener_por_id(id_disp)
+        if not disp:
+            print("❌ Dispositivo no encontrado.")
+            continue
+
+        # Elegir nuevo estado con menú numerado
+        nuevo_estado = pedir_estado()
+        if nuevo_estado is None:
+            print("❌ Operación cancelada.")
             return
-        else:
-            print("❌ Índice inválido.")
+
+        try:
+            if dispositivo_dao.cambiar_estado(id_disp, nuevo_estado):
+                print(
+                    f"✅ Dispositivo {disp.marca} {disp.modelo} actualizado a {nuevo_estado}.")
+                return
+            else:
+                print("❌ No se pudo actualizar el dispositivo.")
+        except ValueError as e:
+            print(f"❌ Error: {e}")
+        except Exception as e:
+            print(f"❌ Error inesperado: {e}")
 
 
 def cambiar_rol_usuario(usuario_actual):
@@ -214,70 +286,91 @@ def cambiar_rol_usuario(usuario_actual):
     print("0 - volver.")
 
     # Usuario estándar solo puede subir a admin (su propio rol)
-    if usuario_actual.id_rol == 2:
-        confirm = input("¿Deseas cambiar tu rol a Administrador? (s/n): ").strip().lower()
+    if usuario_actual.id_rol == "2":
+        confirm = input(
+            "¿Deseas cambiar tu rol a Administrador? (s/n): ").strip().lower()
         if confirm == "0" or confirm == "n":
             print("❌ Cambio cancelado.")
             return
         elif confirm == "s":
-            usuario_actual.id_rol = 1
-            print("✅ Ahora tienes rol de Administrador.")
-            print("⚠️ Se cerrará la sesión para aplicar el cambio.")
-            return "cerrar_sesion"
+            try:
+                if usuario_dao.modificar(usuario_actual.id, {'id_rol': 1}):
+                    usuario_actual.id_rol = "1"
+                    print("✅ Ahora tienes rol de Administrador.")
+                    print("⚠️ Se cerrará la sesión para aplicar el cambio.")
+                    return "cerrar_sesion"
+            except Exception as e:
+                print(f"❌ Error al cambiar rol: {e}")
         else:
             print("❌ Opción no válida.")
         return
 
     # Admin predefinido puede cambiar todos excepto a sí mismo
     if usuario_actual.dni == "12345678":
-        for i, u in enumerate(usuarios, start=1):
-            rol_str = "Administrador" if u.id_rol == 1 else "Usuario estándar"
-            print(f"{i}. {u.dni} - {u.nombre} {u.apellido} - Rol actual: {rol_str}")
+        try:
+            usuarios = usuario_dao.listar()
+            for i, u in enumerate(usuarios, start=1):
+                rol_str = "Administrador" if u.id_rol == "1" else "Usuario estándar"
+                print(
+                    f"{i}. {u.dni} - {u.nombre} {u.apellido} - Rol actual: {rol_str}")
 
-        idx = input("Selecciona el número del usuario (o '0' para cancelar): ").strip()
-        if idx == "0":
-            print("❌ Operación cancelada.")
-            return
-        if not idx.isdigit():
-            print("❌ Opción inválida.")
-            return
-
-        idx = int(idx) - 1
-        if 0 <= idx < len(usuarios):
-            u = usuarios[idx]
-            if u.dni == "12345678":
-                print("⚠️ No podés cambiar tu propio rol (admin predefinido).")
+            idx = input(
+                "Selecciona el número del usuario (o '0' para cancelar): ").strip()
+            if idx == "0":
+                print("❌ Operación cancelada.")
                 return
-            nuevo_rol = 1 if u.id_rol == 2 else 2
-            u.id_rol = nuevo_rol
-            print(f"✅ Rol de {u.dni} - {u.nombre} {u.apellido} cambiado a {'Administrador' if nuevo_rol==1 else 'Usuario estándar'}.")
-        else:
-            print("❌ Índice inválido.")
+            if not idx.isdigit():
+                print("❌ Opción inválida.")
+                return
+
+            idx = int(idx) - 1
+            if 0 <= idx < len(usuarios):
+                u = usuarios[idx]
+                if u.dni == "12345678":
+                    print("⚠️ No podés cambiar tu propio rol (admin predefinido).")
+                    return
+                nuevo_rol = 1 if u.id_rol == "2" else 2
+                if usuario_dao.modificar(u.id, {'id_rol': nuevo_rol}):
+                    print(
+                        f"✅ Rol de {u.dni} - {u.nombre} {u.apellido} cambiado a {'Administrador' if nuevo_rol == 1 else 'Usuario estándar'}.")
+                else:
+                    print("❌ No se pudo cambiar el rol.")
+            else:
+                print("❌ Índice inválido.")
+        except Exception as e:
+            print(f"❌ Error: {e}")
         return
 
     # Admin común solo puede bajarse a estándar
-    if usuario_actual.id_rol == 1:
-        confirmar = input("¿Querés cambiar tu rol? (s/n/0 para cancelar): ").strip().lower()
+    if usuario_actual.id_rol == "1":
+        confirmar = input(
+            "¿Querés cambiar tu rol? (s/n/0 para cancelar): ").strip().lower()
         if confirmar == "0" or confirmar == "n":
             print("❌ Cambio cancelado.")
             return
         elif confirmar == "s":
-            usuario_actual.id_rol = 2
-            print("✅ Tu rol ahora es: Usuario estándar.")
-            print("⚠️ Se cerrará la sesión para aplicar el cambio.")
-            return "cerrar_sesion"
+            try:
+                if usuario_dao.modificar(usuario_actual.id, {'id_rol': 2}):
+                    usuario_actual.id_rol = "2"
+                    print("✅ Tu rol ahora es: Usuario estándar.")
+                    print("⚠️ Se cerrará la sesión para aplicar el cambio.")
+                    return "cerrar_sesion"
+            except Exception as e:
+                print(f"❌ Error al cambiar rol: {e}")
         else:
             print("❌ Opción no válida.")
         return
 
+# 8. Menú usuario estándar
 
-# 7. Menú usuario estándar
+
 def menu_usuario_estandar(usuario):
     while True:
         print("\n=== Menú Usuario Estándar ===")
         print("1 - Ver mis datos personales")
         print("2 - Ver dispositivos")
-        print("3 - Cerrar sesión")
+        print("3 - Cambiar rol a Administrador")
+        print("4 - Cerrar sesión")
         opcion = input("Selecciona una opción: ").strip()
 
         if opcion == "1":
@@ -285,28 +378,35 @@ def menu_usuario_estandar(usuario):
         elif opcion == "2":
             ver_dispositivos()
         elif opcion == "3":
+            resultado = cambiar_rol_usuario(usuario)
+            if resultado == "cerrar_sesion":
+                print("🔐 Cerrando sesión...")
+                break
+        elif opcion == "4":
             print("Cerrando sesión...")
             break
         else:
             print("Opción no válida.")
 
-# 8. Menú administrador
+# 9. Menú administrador
+
+
 def menu_admin(usuario):
     while True:
         print("\n=== Menú Administrador ===")
-        print("1 - Ver mis datos personales")       # opción común
-        print("2 - Ver dispositivos")              # opción común
-        print("3 - Crear dispositivo")             # admin exclusivo
-        print("4 - Actualizar dispositivo")        # admin exclusivo
-        print("5 - Eliminar dispositivo")          # admin exclusivo
-        print("6 - Cambiar rol de usuario")        # admin exclusivo
+        print("1 - Ver mis datos personales")
+        print("2 - Ver dispositivos")
+        print("3 - Crear dispositivo")
+        print("4 - Actualizar dispositivo")
+        print("5 - Eliminar dispositivo")
+        print("6 - Cambiar rol de usuario")
         print("7 - Cerrar sesión")
         opcion = input("Selecciona una opción: ").strip()
 
         if opcion == "1":
-            ver_datos_personales(usuario)          
+            ver_datos_personales(usuario)
         elif opcion == "2":
-            ver_dispositivos()                     
+            ver_dispositivos()
         elif opcion == "3":
             crear_dispositivo()
         elif opcion == "4":
@@ -314,19 +414,23 @@ def menu_admin(usuario):
         elif opcion == "5":
             borrar_dispositivo()
         elif opcion == "6":
-            # ⚡ Aquí detectamos si el cambio de rol requiere cerrar sesión
             resultado = cambiar_rol_usuario(usuario)
             if resultado == "cerrar_sesion":
                 print("🔐 Cerrando sesión...")
-                break  # rompe el while y vuelve al login o menú principal
+                break
         elif opcion == "7":
             print("Cerrando sesión...")
             break
         else:
             print("Opción no válida.")
 
-# 9. Menú principal
+# 10. Menú principal
+
+
 def menu_principal():
+    print("\n🏠 Inicializando sistema...")
+    inicializar_datos()
+
     while True:
         print("\n=== Sistema Domótica Smart Home ===")
         print("1 - Registrarse")
@@ -339,7 +443,7 @@ def menu_principal():
         elif opcion == "2":
             usuario = login_usuario()
             if usuario:
-                if usuario.id_rol == 1:
+                if usuario.id_rol == "1":
                     menu_admin(usuario)
                 else:
                     menu_usuario_estandar(usuario)
@@ -349,6 +453,7 @@ def menu_principal():
         else:
             print("Opción no válida.")
 
-# 10. Ejecutar el programa
+
+# 11. Ejecutar el programa
 if __name__ == "__main__":
     menu_principal()
