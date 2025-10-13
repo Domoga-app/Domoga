@@ -1,9 +1,8 @@
 class Dispositivo:
     """Clase para manejar dispositivos del hogar inteligente."""
 
-    def __init__(self, hogar, tipo_dispositivo, ubicacion, marca, modelo, estado):
+    def __init__(self, tipo_dispositivo, ubicacion, marca, modelo, estado):
         self.tipo = tipo_dispositivo
-        self.hogar = hogar
         self.ubicacion = ubicacion
         self.marca = marca
         self.modelo = modelo
@@ -25,7 +24,6 @@ class Dispositivo:
         """Devuelve los datos del dispositivo."""
         return {
             "tipo": self.tipo_dispositivo,
-            "hogar": self.hogar,
             "ubicacion": self.id_ubicacion,
             "marca": self.marca,
             "modelo": self.modelo,
