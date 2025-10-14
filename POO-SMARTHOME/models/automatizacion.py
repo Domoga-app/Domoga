@@ -1,45 +1,31 @@
-from typing import Optional, List, Any
-from datetime import datetime
-
+from .dispositivo import Dispositivo
 
 class Automatizacion:
+    def __init__(self, id_automatizacion: int, nombre: str, dias: str, hora, accion: str):
+        self._id_automatizacion = id_automatizacion
+        self._nombre = nombre
+        self._dias = dias
+        self._hora = hora
+        self._accion = accion
+        self._dispositivos_afectados = []
 
-    def __init__(self, id_hogar: str, nombre: str, dias: List[str], hora: str, accion: str, id: Optional[str] = None):
+    @property
+    def id_automatizacion(self):
+        return self._id_automatizacion
 
-        self.id = id
-        self.fecha_creacion: Optional[datetime] = None
-        self.fecha_modificacion: Optional[datetime] = None
+    @property
+    def nombre(self):
+        return self._nombre
 
-        # Atributos del modelo
-        self.id_hogar = id_hogar
-        self.nombre = nombre
-        self.dias = dias  # Ej: ['LUN', 'MIE', 'VIE']
-        self.hora = hora  # Ej: '07:30' (formato HH:MM)
-        self.accion = accion  # Ej: 'encender_luces_sala'
+    @property
+    def dispositivos_afectados(self):
+        return self._dispositivos_afectados
 
-    @classmethod
-    def crear_automatizacion(cls, id_hogar: str, nombre: str, dias: List[str], hora: str, accion: str):
-        """Método de clase para crear una nueva automatización."""
-        return cls(id_hogar, nombre, dias, hora, accion)
+    def agregar_dispositivo(self, dispositivo):
+        if dispositivo not in self._dispositivos_afectados:
+            self._dispositivos_afectados.append(dispositivo)
 
-    def monitor_automatizaciones(self) -> bool:
-        """Monitorea las automatizaciones activas."""
-        return True
-
-    def ejecutar_accion(self) -> bool:
-        """Ejecuta la acción de la automatización."""
-        # Lógica real de ejecución
-        return True
-
-    # El método 'borrar_automatizaciones' no es necesario ya que el DAO maneja 'eliminar'.
-
-    def mostrar_automatizaciones(self) -> dict:
-        """Devuelve los datos de la automatización."""
-        return {
-            "id": self.id,
-            "id_hogar": self.id_hogar,
-            "nombre": self.nombre,
-            "dias": self.dias,
-            "hora": self.hora,
-            "accion": self.accion
-        }
+    def __str__(self):
+        num_disp = len(self._dispositivos_afectados)
+        return (f"ID: {self._id_automatizacion}, Nombre: {self._nombre}, "
+                f"Acción: {self._accion}, Afecta a {num_disp} dispositivo(s)")
