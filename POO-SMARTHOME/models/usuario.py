@@ -1,6 +1,4 @@
 class Usuario:
-    """Clase para manejar usuarios del sistema."""
-
     def __init__(self, dni, nombre, apellido, contrasena, es_admin=False):
         self._dni = dni
         self._nombre = nombre
@@ -23,6 +21,10 @@ class Usuario:
     @property
     def apellido(self):
         return self._apellido
+    
+    @property
+    def nombre_completo(self):
+        return f"{self._nombre} {self._apellido}" 
 
     @property
     def contrasena(self):

@@ -1,14 +1,19 @@
 from .tipo_dispositivo import TipoDispositivo
 
 class Dispositivo:
-    """Clase para manejar dispositivos del hogar inteligente."""
 
-    def __init__(self, tipo_dispositivo: TipoDispositivo, ubicacion, marca, modelo, estado):
+    def __init__(self, id_dispositivo, tipo_dispositivo: TipoDispositivo, ubicacion, marca, modelo, estado):
+        self._id_dispositivo = id_dispositivo
         self._tipo = tipo_dispositivo
         self._ubicacion = ubicacion
         self._marca = marca
         self._modelo = modelo
         self._estado = estado
+        
+        
+    @property
+    def id_dispositivo(self):
+        return self._id_dispositivo
 
     @property
     def tipo(self):
@@ -32,6 +37,7 @@ class Dispositivo:
 
     def __str__(self):
         return (
+            f"id: {self._id_dispositivo}, "
             f"tipo: {self._tipo.nombre if self._tipo else 'N/A'}, "
             f"ubicación: {self._ubicacion}, marca: {self._marca}, "
             f"modelo: {self._modelo}, estado: {self._estado}"

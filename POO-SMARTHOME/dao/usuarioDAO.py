@@ -1,21 +1,17 @@
-# dao/usuarioDAO.py
 from conn.db_conn import get_connection
 from models.usuario import Usuario
 from dao.interface.i_usuarioDAO import IUsuarioDAO
 
-
 class UsuarioDAO(IUsuarioDAO):
-    
     def __init__(self):
         pass
 
-    def crear(self, usuario: Usuario):
+    def crear(self, usuario: Usuario) -> bool:
         conn = get_connection()
         if not conn: return False
         try:
             cursor = conn.cursor()
             query = "INSERT INTO usuarios (dni, es_admin, nombre, apellido, contrasena) VALUES (%s, %s, %s, %s, %s)"
-            # Un usuario creado por registro siempre es no-admin (False)
             params = (usuario._dni, False, usuario._nombre, usuario._apellido, usuario._contrasena)
             cursor.execute(query, params)
             conn.commit()
@@ -35,7 +31,7 @@ class UsuarioDAO(IUsuarioDAO):
             cursor.execute("SELECT dni, es_admin, nombre, apellido, contrasena FROM usuarios WHERE dni = %s", (dni,))
             row = cursor.fetchone()
             if row:
-                row['es_admin'] = bool(row['es_admin']) # Convertir 0/1 a False/True
+                row['es_admin'] = bool(row['es_admin'])
                 return Usuario(**row)
             return None
         except Exception as e:
@@ -63,7 +59,7 @@ class UsuarioDAO(IUsuarioDAO):
             if conn.is_connected():
                 conn.close()
 
-    def actualizar(self, usuario: Usuario, dni: str):
+    def actualizar(self, usuario: Usuario, dni: str) -> bool:
         conn = get_connection()
         if not conn: return False
         try:
@@ -84,7 +80,7 @@ class UsuarioDAO(IUsuarioDAO):
             if conn.is_connected():
                 conn.close()
 
-    def eliminar(self, dni: str):
+    def eliminar(self, dni: str) -> bool:
         conn = get_connection()
         if not conn: return False
         try:
@@ -99,7 +95,7 @@ class UsuarioDAO(IUsuarioDAO):
             if conn.is_connected():
                 conn.close()
 
-    def cambiar_rol(self, dni: str, es_nuevo_admin: bool):
+    def cambiar_rol(self, dni: str, es_nuevo_admin: bool) -> bool:
         conn = get_connection()
         if not conn: return False
         try:
