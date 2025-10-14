@@ -88,7 +88,7 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 3.  **Instalar Dependencias**
     Asegúrate de estar dentro de la carpeta `POO-SMARTHOME` y ejecuta:
     ```bash
-    pip install -r requirements.txt
+     pip install pytest mysql-connector-python python-dotenv
     ```
 
 4.  **Configurar la Base de Datos**
