@@ -1,38 +1,31 @@
+from .dispositivo import Dispositivo
+
 class Automatizacion:
-    """Clase para manejar automatizaciones del hogar."""
+    def __init__(self, id_automatizacion: int, nombre: str, dias: str, hora, accion: str):
+        self._id_automatizacion = id_automatizacion
+        self._nombre = nombre
+        self._dias = dias
+        self._hora = hora
+        self._accion = accion
+        self._dispositivos_afectados = []
 
-    def __init__(self, id_automatizacion, nombre, dias, hora, accion):
-        self.id_automatizacion = id_automatizacion
-        self.nombre = nombre
-        self.dias = dias
-        self.hora = hora
-        self.accion = accion
+    @property
+    def id_automatizacion(self):
+        return self._id_automatizacion
 
-    @classmethod
-    def crear_automatizacion(cls, id_automatizacion, nombre, dias, hora, accion):
-        """Método de clase para crear una nueva automatización."""
-        return cls(id_automatizacion, nombre, dias, hora, accion)
+    @property
+    def nombre(self):
+        return self._nombre
 
-    def monitor_automatizaciones(self):
-        """Monitorea las automatizaciones activas."""
-        # En una implementación real, aquí se verificarían las condiciones
-        return True
+    @property
+    def dispositivos_afectados(self):
+        return self._dispositivos_afectados
 
-    def ejecutar_accion(self):
-        """Ejecuta la acción de la automatización."""
-        # En una implementación real, aquí se ejecutaría la acción específica
-        return True
+    def agregar_dispositivo(self, dispositivo):
+        if dispositivo not in self._dispositivos_afectados:
+            self._dispositivos_afectados.append(dispositivo)
 
-    def borrar_automatizaciones(self):
-        """Elimina la automatización actual."""
-        return True
-
-    def mostrar_automatizaciones(self):
-        """Devuelve los datos de la automatización."""
-        return {
-            "id_automatizacion": self.id_automatizacion,
-            "nombre": self.nombre,
-            "dias": self.dias,
-            "hora": self.hora,
-            "accion": self.accion
-        }
+    def __str__(self):
+        num_disp = len(self._dispositivos_afectados)
+        return (f"ID: {self._id_automatizacion}, Nombre: {self._nombre}, "
+                f"Acción: {self._accion}, Afecta a {num_disp} dispositivo(s)")
