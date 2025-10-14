@@ -12,6 +12,8 @@ Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación
 2. Consultas-DDL.sql – Contiene los datos de ejemplo (30 registros principales) y relaciones de prueba y contiene consultas de prueba para verificar que los datos fueron insertados correctamente.
 3. Se incorporan consultas multitablas.
 
+4. Consulta-DDL-para-programa-refactorizado.sql - Contiene sentencias para crear la tablas y relaciones para el programa simplificado de la evidencia 6
+
 ---
 
 ## Cómo ejecutar los scripts en un DBMS online
