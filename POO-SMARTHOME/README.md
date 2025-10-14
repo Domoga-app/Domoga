@@ -33,3 +33,16 @@ Es probable que en varios archivos de prueba (`test_*.py`) no se incluya `import
 ```python
 import pytest
 ```
+
+⚙️ Dependencias adicionales del proyecto
+
+Para la conexión a la base de datos MySQL y la carga segura de variables de entorno, este proyecto requiere las siguientes dependencias adicionales:
+
+- ``mysql-connector-python`` → permite conectarse a bases de datos MySQL desde Python.
+- ``python-dotenv`` → carga las variables del archivo .env (como credenciales de conexión, rutas, etc.).
+
+Instalación recomendada:
+
+```
+pip install mysql-connector-python python-dotenv
+```
