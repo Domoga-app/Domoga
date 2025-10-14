@@ -12,7 +12,7 @@ def iniciar_sesion(usuario_dao: UsuarioDAO):
     
     if usuario and usuario._contrasena == contrasena:
         rol_str = "Administrador" if usuario.es_admin else "Estandar"
-        print(f"\n¡Bienvenido {usuario.nombre}! (Rol: {rol_str})")
+        print(f"\n¡Bienvenido {usuario.nombre_completo}! (Rol: {rol_str})")
         return usuario
     else:
         print("DNI o contraseña incorrectos.")
@@ -199,7 +199,7 @@ def main():
     tipo_dispositivo_dao = TipoDispositivoDAO()
 
     while True:
-        print("\n--- Bienvenido a Domotichome ---")
+        print("\n--- Bienvenido a Domoga ---")
         print("1. Iniciar sesión")
         print("2. Registrarse")
         print("3. Salir")
