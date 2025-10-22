@@ -1,38 +1,41 @@
 class Usuario:
     def __init__(self, dni, nombre, apellido, contrasena, es_admin=False):
-        self._dni = dni
-        self._nombre = nombre
-        self._apellido = apellido
-        self._contrasena = contrasena
-        self._es_admin = es_admin
+        self.__dni = dni
+        self.__nombre = nombre
+        self.__apellido = apellido
+        self.__contrasena = contrasena
+        self.__es_admin = es_admin
 
     @property
     def dni(self):
-        return self._dni
+        return self.__dni
 
     @property
     def es_admin(self):
-        return self._es_admin
+        return self.__es_admin
 
     @property
     def nombre(self):
-        return self._nombre
+        return self.__nombre
 
     @property
     def apellido(self):
-        return self._apellido
+        return self.__apellido
     
     @property
     def nombre_completo(self):
-        return f"{self._nombre} {self._apellido}" 
+        return f"{self.__nombre} {self.__apellido}" 
 
     @property
     def contrasena(self):
-        return self._contrasena
+        return self.__contrasena
+    
+    def verificar_contrasena(self, contrasena):
+        return self.__contrasena == contrasena
 
     def __str__(self):
-        rol_str = "Administrador" if self._es_admin else "Estandar"
+        rol_str = "Administrador" if self.__es_admin else "Estandar"
         return (
-            f"dni: {self._dni}, rol: {rol_str}, "
-            f"nombre: {self._nombre}, apellido: {self._apellido}"
+            f"dni: {self.__dni}, rol: {rol_str}, "
+            f"nombre: {self.__nombre}, apellido: {self.__apellido}"
         )

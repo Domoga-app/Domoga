@@ -1,5 +1,5 @@
 from conn.db_conn import get_connection
-from dao.interface.i_tipo_dispositivoDAO import ITipoDispositivoDAO
+from dao.interfaces.i_tipo_dispositivoDAO import ITipoDispositivoDAO
 from models.tipo_dispositivo import TipoDispositivo
 
 class TipoDispositivoDAO(ITipoDispositivoDAO):

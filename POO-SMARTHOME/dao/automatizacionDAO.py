@@ -1,5 +1,5 @@
 from conn.db_conn import get_connection
-from dao.interface.i_automatizacionDAO import IAutomatizacionDAO
+from dao.interfaces.i_automatizacionDAO import IAutomatizacionDAO
 from models.automatizacion import Automatizacion
 from models.dispositivo import Dispositivo
 from models.tipo_dispositivo import TipoDispositivo

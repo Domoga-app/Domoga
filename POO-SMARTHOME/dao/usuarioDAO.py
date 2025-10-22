@@ -1,18 +1,18 @@
 from conn.db_conn import get_connection
 from models.usuario import Usuario
-from dao.interface.i_usuarioDAO import IUsuarioDAO
+from dao.interfaces.i_usuarioDAO import IUsuarioDAO
 
 class UsuarioDAO(IUsuarioDAO):
     def __init__(self):
         pass
 
-    def crear(self, usuario: Usuario) -> bool:
+    def crear(self, dni: str, nombre: str, apellido: str, contrasena: str) -> bool:
         conn = get_connection()
         if not conn: return False
         try:
             cursor = conn.cursor()
             query = "INSERT INTO usuarios (dni, es_admin, nombre, apellido, contrasena) VALUES (%s, %s, %s, %s, %s)"
-            params = (usuario._dni, False, usuario._nombre, usuario._apellido, usuario._contrasena)
+            params = (dni, False, nombre, apellido, contrasena)
             cursor.execute(query, params)
             conn.commit()
             return True

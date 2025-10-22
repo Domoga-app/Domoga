@@ -4,12 +4,12 @@ class IUsuarioDAO(ABC):
     """Interfaz para operaciones CRUD y de gestión de roles de Usuario."""
 
     @abstractmethod
-    def crear(self, usuario):
+    def crear(self, dni: str, nombre: str, apellido: str, contrasena: str):
         """Guarda un nuevo usuario en la base de datos."""
         pass
 
     @abstractmethod
-    def obtener_por_dni(self, dni):
+    def obtener_por_dni(self, dni: str):
         """Busca y devuelve un usuario por su DNI."""
         pass
 

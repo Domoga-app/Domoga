@@ -3,42 +3,42 @@ from .tipo_dispositivo import TipoDispositivo
 class Dispositivo:
 
     def __init__(self, id_dispositivo, tipo_dispositivo: TipoDispositivo, ubicacion, marca, modelo, estado):
-        self._id_dispositivo = id_dispositivo
-        self._tipo = tipo_dispositivo
-        self._ubicacion = ubicacion
-        self._marca = marca
-        self._modelo = modelo
-        self._estado = estado
+        self.__id_dispositivo = id_dispositivo
+        self.__tipo = tipo_dispositivo
+        self.__ubicacion = ubicacion
+        self.__marca = marca
+        self.__modelo = modelo
+        self.__estado = estado
         
         
     @property
     def id_dispositivo(self):
-        return self._id_dispositivo
+        return self.__id_dispositivo
 
     @property
     def tipo(self):
-        return self._tipo
+        return self.__tipo
 
     @property
     def ubicacion(self):
-        return self._ubicacion
+        return self.__ubicacion
 
     @property
     def marca(self):
-        return self._marca
+        return self.__marca
 
     @property
     def modelo(self):
-        return self._modelo
+        return self.__modelo
 
     @property
     def estado(self):
-        return self._estado
+        return self.__estado
 
     def __str__(self):
         return (
-            f"id: {self._id_dispositivo}, "
-            f"tipo: {self._tipo.nombre if self._tipo else 'N/A'}, "
-            f"ubicación: {self._ubicacion}, marca: {self._marca}, "
-            f"modelo: {self._modelo}, estado: {self._estado}"
+            f"id: {self.__id_dispositivo}, "
+            f"tipo: {self.__tipo.nombre if self.__tipo else 'N/A'}, "
+            f"ubicación: {self.__ubicacion}, marca: {self.__marca}, "
+            f"modelo: {self.__modelo}, estado: {self.__estado}"
         )

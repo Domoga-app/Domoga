@@ -3,8 +3,6 @@ import os
 import mysql.connector
 
 load_dotenv()
-print(f"{os.getenv("DB_NAME")} {os.getenv("DB_PASSWORD")} {os.getenv("DB_USER")} {os.getenv("DB_HOST")} {os.getenv("DB_PORT")}")
-
 
 def get_connection():
     try:
