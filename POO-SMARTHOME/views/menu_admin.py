@@ -1,139 +1,181 @@
-from models import Dispositivo
+# views/menu_admin.py
+from services import UsuarioService, DispositivoService, TipoDispositivoService
+from models import Usuario
 
-def menu_admin(usuario_dao, dispositivo_dao, tipo_dispositivo_dao):
+def menu_admin(usuario: Usuario,
+               usuario_service: UsuarioService, 
+               dispositivo_service: DispositivoService, 
+               tipo_service: TipoDispositivoService):
     while True:
         print("\n--- Menú Administrador ---")
-        print("1. Gestionar dispositivos (CRUD)")
-        print("2. Cambiar rol de un usuario")
-        print("3. Cerrar sesión")
+        print(f"Usuario: {usuario.nombre} {usuario.apellido}")
+        print("\n-- Gestión de Dispositivos --")
+        print("1. Ver todos los dispositivos")
+        print("2. Crear nuevo dispositivo")
+        print("3. Actualizar un dispositivo")
+        print("4. Eliminar un dispositivo")
+        print("\n-- Gestión de Usuarios --")
+        print("5. Cambiar rol de un usuario")
+        print("6. Ver todos los usuarios")
+        print("\n-- Sistema --")
+        print("7. Cerrar sesión")
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            gestionar_dispositivos_admin(dispositivo_dao, tipo_dispositivo_dao)
+            _ver_dispositivos(dispositivo_service)
         elif opcion == "2":
-            dni_a_cambiar = input("Ingrese el DNI del usuario a modificar: ")
-            usuario_a_modificar = usuario_dao.obtener_por_dni(dni_a_cambiar)
-            
-            if not usuario_a_modificar:
-                print("Error: Usuario no encontrado.")
-                continue
-
-            
-            if usuario_a_modificar.es_admin:
-                rol_actual_str = "Administrador"
-                accion_propuesta = "¿Desea cambiarlo a Estandar? (s/n): "
-                es_nuevo_admin = False
-            else:
-                rol_actual_str = "Estandar"
-                accion_propuesta = "¿Desea hacerlo Administrador? (s/n): "
-                es_nuevo_admin = True
-            
-            print(f"El rol actual del usuario {dni_a_cambiar} es: {rol_actual_str}")
-            confirmacion = input(accion_propuesta).lower()
-            
-            if confirmacion == 's':
-                if usuario_dao.cambiar_rol(dni_a_cambiar, es_nuevo_admin):
-                    print("Rol actualizado correctamente.")
-                else:
-                    print("Error: No se pudo actualizar el rol.")
-            else:
-                print("Operación cancelada.")
+            _crear_dispositivo(dispositivo_service, tipo_service)
         elif opcion == "3":
-            print("Cerrando sesión...")
+            _actualizar_dispositivo(dispositivo_service, tipo_service)
+        elif opcion == "4":
+            _eliminar_dispositivo(dispositivo_service)
+        elif opcion == "5":
+            _cambiar_rol_usuario(usuario_service)
+        elif opcion == "6":
+            _ver_usuarios(usuario_service)
+        elif opcion == "7":
+            print("Cerrando sesión de administrador...")
             break
         else:
             print("Opción inválida.")
-
-def gestionar_dispositivos_admin(dispositivo_dao, tipo_dispositivo_dao):
-    while True:
-        print("\n--- Gestión de Dispositivos (CRUD) ---")
-        print("1. Crear dispositivo")
-        print("2. Listar todos los dispositivos")
-        print("3. Actualizar dispositivo")
-        print("4. Eliminar dispositivo")
-        print("5. Volver al menú de Administrador")
-        opcion = input("Seleccione una opción: ")
-
-        if opcion == '1':
-            print("\n--- Crear Nuevo Dispositivo ---")
-            tipos = tipo_dispositivo_dao.obtener_todos()
-            for t in tipos:
-                print(f"ID: {t.id_tipo} - Nombre: {t.nombre}")
-            id_tipo = int(input("Seleccione el ID del tipo de dispositivo: "))
-            tipo_seleccionado = next((t for t in tipos if t.id_tipo == id_tipo), None)
             
-            if not tipo_seleccionado:
-                print("ID de tipo inválido.")
-                continue
             
-            ubicacion = input("Ubicación (ej. Living): ")
-            marca = input("Marca: ")
-            modelo = input("Modelo: ")
-            estado = input("Estado inicial (ej. apagado): ")
+def _ver_dispositivos(dispositivo_service: DispositivoService):
+    '''Muestra todos los dispositivos.'''
+    print("\n--- Listado de Dispositivos ---")
+    dispositivos = dispositivo_service.obtener_todos()
+    if not dispositivos:
+        print("No hay dispositivos registrados.")
+    else:
+        for d in dispositivos:
+            print(f"- {d}")
 
-            nuevo_disp = Dispositivo(None, tipo_seleccionado, ubicacion, marca, modelo, estado)
-            if dispositivo_dao.crear(nuevo_disp):
-                print("Dispositivo creado con éxito.")
+def _crear_dispositivo(dispositivo_service: DispositivoService, tipo_service: TipoDispositivoService):
+    try:
+        print("\n--- Crear Nuevo Dispositivo ---")
+        tipos = tipo_service.obtener_todos()
+        if not tipos:
+            print("Error: No hay tipos de dispositivo definidos.")
+            return # Sale de la función si no hay tipos
+        for t in tipos:
+            print(f"ID: {t.id_tipo} - {t.nombre}")
+        
+        id_tipo_sel = int(input("Seleccione el ID del tipo de dispositivo: "))
+        tipo_seleccionado = tipo_service.obtener_por_id(id_tipo_sel) 
+        
+        if not tipo_seleccionado:
+            print("Error: ID de tipo inválido.")
+            return
+
+        ubicacion = input("Ubicación (ej. Sala de Estar): ")
+        marca = input("Marca (Opcional): ")
+        modelo = input("Modelo (Opcional): ")
+        estado = input("Estado inicial (ej. apagado): ")
+        
+        if dispositivo_service.crear_dispositivo(tipo_seleccionado, ubicacion, marca, modelo, estado):
+            print("Dispositivo creado con éxito.")
+    
+    except ValueError:
+        print("Error: El ID del tipo debe ser un número.")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado: {e}")
+
+def _actualizar_dispositivo(dispositivo_service: DispositivoService, tipo_service: TipoDispositivoService):
+    try:
+        id_a_actualizar = int(input("Ingrese el ID del dispositivo a actualizar: "))
+        disp_existente = dispositivo_service.obtener_por_id(id_a_actualizar)
+        
+        if not disp_existente:
+            print("Error: Dispositivo no encontrado.")
+            return
+
+        print(f"Actualizando: {disp_existente}")
+        
+        # Pide el tipo de dispositivo
+        tipo_final = disp_existente.tipo
+        tipos = tipo_service.obtener_todos()
+        for t in tipos:
+            print(f"ID: {t.id_tipo} - {t.nombre}")
+        id_tipo_nuevo_str = input(f"Nuevo ID de tipo (actual: {disp_existente.tipo.id_tipo}) (deje vacío para no cambiar): ")
+        
+        if id_tipo_nuevo_str:
+            id_tipo_nuevo = int(id_tipo_nuevo_str)
+            tipo_seleccionado = tipo_service.obtener_por_id(id_tipo_nuevo)
+            if tipo_seleccionado:
+                tipo_final = tipo_seleccionado
             else:
-                print("Error al crear dispositivo.")
+                print("Advertencia: ID de tipo inválido. Se mantendrá el tipo actual.")
         
-        elif opcion == '2':
-            print("\n--- Listado de Todos los Dispositivos ---")
-            todos_los_dispositivos = dispositivo_dao.obtener_todos()
-            if not todos_los_dispositivos:
-                print("No hay ningún dispositivo en el sistema.")
-            for d in todos_los_dispositivos:
-                print(f"- {d}")
+        ubicacion = input(f"Nueva ubicación (actual: {disp_existente.ubicacion}) (deje vacío para no cambiar): ") or disp_existente.ubicacion
+        marca = input(f"Nueva marca (actual: {disp_existente.marca}) (deje vacío para no cambiar): ") or disp_existente.marca
+        modelo = input(f"Nuevo modelo (actual: {disp_existente.modelo}) (deje vacío para no cambiar): ") or disp_existente.modelo
+        estado = input(f"Nuevo estado (actual: {disp_existente.estado}) (deje vacío para no cambiar): ") or disp_existente.estado
+
+        # Llama al servicio con los datos
+        if dispositivo_service.actualizar_dispositivo(id_a_actualizar, tipo_final, ubicacion, marca, modelo, estado):
+            print("Dispositivo actualizado con éxito.") 
+
+    except ValueError:
+        print("Error: El ID debe ser un número.")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado: {e}")
+
+def _eliminar_dispositivo(dispositivo_service: DispositivoService):
+    '''Pide ID y confirmación para eliminar.'''
+    try:
+        id_a_borrar = int(input("Ingrese el ID del dispositivo a eliminar: "))
+        disp = dispositivo_service.obtener_por_id(id_a_borrar)
+        if not disp:
+            print("Error: Dispositivo no encontrado.")
+            return
         
-        elif opcion == '3':
-            print("\n--- Actualizar Dispositivo ---")
-            try:
-                id_a_actualizar = int(input("Ingrese el ID del dispositivo que desea actualizar: "))
-                disp_existente = dispositivo_dao.obtener_por_id(id_a_actualizar)
-
-                if not disp_existente:
-                    print("Error: Dispositivo no encontrado.")
-                    continue
-
-                print(f"Datos actuales: {disp_existente}")
-                print("--- Ingrese los nuevos datos (deje en blanco para no cambiar) ---")
-                
-                tipos = tipo_dispositivo_dao.obtener_todos()
-                for t in tipos:
-                    print(f"ID: {t.id_tipo} - Nombre: {t.nombre}")
-                id_tipo_nuevo_str = input(f"Nuevo ID de tipo (actual: {disp_existente.tipo.id_tipo}): ")
-                
-                tipo_final = disp_existente.tipo
-                if id_tipo_nuevo_str:
-                    tipo_seleccionado = next((t for t in tipos if t.id_tipo == int(id_tipo_nuevo_str)), None)
-                    if tipo_seleccionado:
-                        tipo_final = tipo_seleccionado
-                    else:
-                        print("Advertencia: ID de tipo inválido. Se mantendrá el tipo actual.")
-                        
-                ubicacion = input(f"Nueva ubicación (actual: {disp_existente.ubicacion}): ") or disp_existente.ubicacion
-                marca = input(f"Nueva marca (actual: {disp_existente.marca}): ") or disp_existente.marca
-                modelo = input(f"Nuevo modelo (actual: {disp_existente.modelo}): ") or disp_existente.modelo
-                estado = input(f"Nuevo estado (actual: {disp_existente.estado}): ") or disp_existente.estado
-
-                disp_actualizado = Dispositivo(None, tipo_final, ubicacion, marca, modelo, estado)
-                
-                if dispositivo_dao.actualizar(disp_actualizado, id_a_actualizar):
-                    print("Dispositivo actualizado con éxito.")
-                else:
-                    print("Error al actualizar el dispositivo.")
-
-            except ValueError:
-                print("Error: El ID debe ser un número.")
-        
-        elif opcion == '4':
-            id_a_borrar = int(input("Ingrese el ID del dispositivo a eliminar: "))
-            if dispositivo_dao.eliminar(id_a_borrar):
+        confirm = input(f"¿Seguro que desea eliminar '{disp}'? (s/n): ").lower()
+        if confirm == 's':
+            if dispositivo_service.eliminar_dispositivo(id_a_borrar):
                 print("Dispositivo eliminado con éxito.")
-            else:
-                print("Error al eliminar (verifique el ID).")
-        
-        elif opcion == '5':
-            break
         else:
-            print("Opción inválida.")
+            print("Operación cancelada.")
+    except ValueError:
+        print("Error: El ID debe ser un número.")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado: {e}")
+
+def _cambiar_rol_usuario(usuario_service: UsuarioService):
+    '''Pide DNI, confirma y cambia rol.'''
+    try:
+        dni_a_cambiar = input("Ingrese el DNI del usuario a modificar: ")
+        usuario_a_modificar = usuario_service.obtener_por_dni(dni_a_cambiar)
+        
+        if not usuario_a_modificar:
+            print("Error: Usuario no encontrado.")
+            return # Sale de la función
+
+        if usuario_a_modificar.es_admin:
+            rol_actual_str = "Administrador"
+            accion_propuesta = "¿Desea cambiarlo a Estandar? (s/n): "
+            es_nuevo_admin = False
+        else:
+            rol_actual_str = "Estandar"
+            accion_propuesta = "¿Desea hacerlo Administrador? (s/n): "
+            es_nuevo_admin = True
+        
+        print(f"El rol actual del usuario {dni_a_cambiar} es: {rol_actual_str}")
+        confirmacion = input(accion_propuesta).lower()
+        
+        if confirmacion == 's':
+            if usuario_service.cambiar_rol_usuario(dni_a_cambiar, es_nuevo_admin):
+                print("Rol actualizado con éxito.") 
+        else:
+            print("Operación cancelada.")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado: {e}")
+
+def _ver_usuarios(usuario_service: UsuarioService):
+    '''Muestra todos los usuarios.'''
+    print("\n--- Listado de Usuarios ---")
+    usuarios = usuario_service.obtener_todos_los_usuarios()
+    if not usuarios:
+        print("No hay usuarios registrados.")
+    else:
+        for u in usuarios:
+            print(f"- {u}")
