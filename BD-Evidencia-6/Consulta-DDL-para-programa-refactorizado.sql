@@ -1,36 +1,37 @@
 
-CREATE DATABASE IF NOT EXISTS domotica;
-USE domotica;
+CREATE DATABASE IF NOT EXISTS domoga;
+USE domoga;
 
 CREATE TABLE usuarios (
-    dni VARCHAR(20) PRIMARY KEY,
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    dni VARCHAR(8) NOT NULL UNIQUE,
     es_admin BOOLEAN NOT NULL DEFAULT FALSE,
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
+    nombre VARCHAR(30) NOT NULL,
+    apellido VARCHAR(30) NOT NULL,
     contrasena VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE tipos_dispositivo (
     id_tipo INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) UNIQUE NOT NULL
+    nombre VARCHAR(50) UNIQUE NOT NULL
 );
 
 CREATE TABLE dispositivos (
     id_dispositivo INT PRIMARY KEY AUTO_INCREMENT,
-    id_tipo INT,
-    ubicacion VARCHAR(100),
-    marca VARCHAR(100),
-    modelo VARCHAR(100),
-    estado VARCHAR(50) DEFAULT 'apagado',
+    id_tipo INT NOT NULL,
+    ubicacion VARCHAR(30) NOT NULL,
+    marca VARCHAR(30),
+    modelo VARCHAR(30),
+    estado VARCHAR(30) NOT NULL DEFAULT 'apagado',
     FOREIGN KEY (id_tipo) REFERENCES tipos_dispositivo(id_tipo)
 );
 
 CREATE TABLE automatizaciones (
     id_automatizacion INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    dias VARCHAR(100),
-    hora TIME,
-    accion VARCHAR(50)
+    nombre VARCHAR(30) NOT NULL,
+    dias VARCHAR(7) NOT NULL,
+    hora TIME NOT NULL,
+    accion VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE automatizacion_dispositivo (
