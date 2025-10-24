@@ -1,34 +1,29 @@
+# dao/interfaces/i_usuarioDAO.py
 from abc import ABC, abstractmethod
+from models import Usuario
 
 class IUsuarioDAO(ABC):
-    """Interfaz para operaciones CRUD y de gestión de roles de Usuario."""
-
+    
     @abstractmethod
-    def crear(self, dni: str, nombre: str, apellido: str, contrasena: str):
-        """Guarda un nuevo usuario en la base de datos."""
+    def crear(self, usuario: Usuario) -> bool:
         pass
 
     @abstractmethod
-    def obtener_por_dni(self, dni: str):
-        """Busca y devuelve un usuario por su DNI."""
+    def obtener_por_dni(self, dni: str) -> Usuario | None:
         pass
 
     @abstractmethod
-    def obtener_todos(self):
-        """Devuelve una lista de todos los usuarios."""
+    def obtener_todos(self) -> list[Usuario]:
+        pass
+    
+    @abstractmethod
+    def actualizar(self, dni: str, usuario: Usuario) -> bool:
         pass
 
     @abstractmethod
-    def actualizar(self, usuario, dni):
-        """Actualiza los datos de un usuario existente."""
+    def eliminar(self, dni: str) -> bool:
         pass
 
     @abstractmethod
-    def eliminar(self, dni):
-        """Elimina un usuario de la base de datos por su DNI."""
-        pass
-
-    @abstractmethod
-    def cambiar_rol(self, dni, es_nuevo_admin):
-        """Modifica el rol de un usuario (admin o estándar)."""
+    def cambiar_rol(self, dni: str, es_nuevo_admin: bool) -> bool:
         pass

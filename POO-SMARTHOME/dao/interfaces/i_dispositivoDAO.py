@@ -1,39 +1,25 @@
+# dao/interfaces/i_dispositivoDAO.py
 from abc import ABC, abstractmethod
+from models import Dispositivo
 
 class IDispositivoDAO(ABC):
-    """Interfaz para operaciones CRUD de la entidad Dispositivo."""
 
     @abstractmethod
-    def crear(self, dispositivo):
-        """
-        Guarda un nuevo dispositivo en la base de datos.
-        """
+    def crear(self, dispositivo: Dispositivo) -> bool:
         pass
 
     @abstractmethod
-    def obtener_todos(self):
-        """
-        Devuelve una lista con todos los dispositivos de la base de datos.
-        """
+    def obtener_todos(self) -> list[Dispositivo]:
         pass
 
     @abstractmethod
-    def obtener_por_id(self, id_dispositivo):
-        """
-        Busca y devuelve un dispositivo por su ID.
-        """
+    def obtener_por_id(self, id_dispositivo: int) -> Dispositivo | None:
         pass
 
     @abstractmethod
-    def actualizar(self, dispositivo, id_dispositivo):
-        """
-        Actualiza los datos de un dispositivo existente en la base de datos.
-        """
+    def actualizar(self, id_dispositivo: int, dispositivo: Dispositivo) -> bool:
         pass
 
     @abstractmethod
-    def eliminar(self, id_dispositivo):
-        """
-        Elimina un dispositivo de la base de datos por su ID.
-        """
+    def eliminar(self, id_dispositivo: int) -> bool:
         pass
