@@ -97,6 +97,9 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 
 3.  **📦 Instalar Dependencias**
     Asegúrate de estar dentro de la carpeta `POO-SMARTHOME` y ejecuta:
+    ```bash
+     pip install pytest mysql-connector-python python-dotenv
+    ```
 
     * Puedes instalarlas usando el siguiente comando _(RECOMENDADO)_:
         ```bash
@@ -128,36 +131,3 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
     ```bash
     python main.py
     ```
-
-## 🧪 Pruebas Unitarias
-
-El proyecto incluye pruebas unitarias centradas exclusivamente en los **modelos POO** y las **validaciones implementadas en sus setters**, ubicadas en la carpeta `tests` dentro de `POO-SMARTHOME`.  
-
-Para ejecutar todas las pruebas, asegurate de estar dentro de la carpeta `POO-SMARTHOME` y ejecutar:
-
-```bash
-pytest
-```
-
-Opcionalmente, podés ejecutar un archivo de pruebas específico:
-
-```bash
-pytest tests/test_usuario.py
-```
-
-> 💡 *Estas pruebas no cubren la lógica de negocio (services) ni el acceso a datos (DAO).*
-> *Gracias a la configuración de pytest.ini, se aplican automáticamente opciones de verbosidad, filtros de warnings y marcadores personalizados.*
-
-
----
-## 🧩 Ejecución de la Versión Original (EVIDENCIA-3)
-
-Si deseas ejecutar el proyecto original antes de la refactorización, simplemente navega a la carpeta EVIDENCIA-3 y ejecuta el archivo principal:
-
-```bash
-cd EVIDENCIA-3
-python main.py
-```
-
-
-> 🟢 *Esta versión no requiere librerías adicionales ni configuración de entorno, ya que no depende de base de datos ni variables externas.*
