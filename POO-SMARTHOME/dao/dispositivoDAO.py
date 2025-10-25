@@ -1,6 +1,6 @@
 # dao/dispositivoDAO.py
 from models import Dispositivo, TipoDispositivo
-from .interfaces.i_dispositivoDAO import IDispositivoDAO
+from .interfaces import IDispositivoDAO
 from .db_base import get_db_cursor
 
 class DispositivoDAO(IDispositivoDAO):

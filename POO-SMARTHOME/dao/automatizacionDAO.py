@@ -1,3 +1,4 @@
+# dao/automatizacionDAO.py
 from models import Automatizacion, Dispositivo, TipoDispositivo
 from .interfaces.i_automatizacionDAO import IAutomatizacionDAO
 from .db_base import get_db_cursor

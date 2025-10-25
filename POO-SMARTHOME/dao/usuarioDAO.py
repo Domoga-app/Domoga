@@ -1,6 +1,6 @@
 # dao/usuarioDAO.py
 from models.usuario import Usuario
-from .interfaces.i_usuarioDAO import IUsuarioDAO
+from .interfaces import IUsuarioDAO
 from .db_base import get_db_cursor 
 
 class UsuarioDAO(IUsuarioDAO):
