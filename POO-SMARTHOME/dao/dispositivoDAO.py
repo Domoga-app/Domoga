@@ -35,15 +35,16 @@ class DispositivoDAO(IDispositivoDAO):
                 """
                 cursor.execute(query)
                 for row in cursor.fetchall():
-                    tipo = TipoDispositivo(id_tipo=row['id_tipo'], nombre=row['tipo_nombre'])
-                    disp = Dispositivo(
-                        id_dispositivo=row['id_dispositivo'],
-                        tipo_dispositivo=tipo,
-                        ubicacion=row['ubicacion'],
-                        marca=row['marca'],
-                        modelo=row['modelo'],
-                        estado=row['estado']
-                    )
+                    tipo = TipoDispositivo(id_tipo=row['id_tipo'])
+                    tipo.nombre=row['tipo_nombre']
+                    
+                    disp = Dispositivo(id_dispositivo=row['id_dispositivo'])
+                    disp.tipo=tipo
+                    disp.ubicacion=row['ubicacion']
+                    disp.marca=row['marca']
+                    disp.modelo=row['modelo']
+                    disp.estado=row['estado']
+                    
                     dispositivos.append(disp)
             return dispositivos
         except Exception as e:
@@ -63,15 +64,17 @@ class DispositivoDAO(IDispositivoDAO):
                 cursor.execute(query, (id_dispositivo,))
                 row = cursor.fetchone()
                 if row:
-                    tipo = TipoDispositivo(id_tipo=row['id_tipo'], nombre=row['tipo_nombre'])
-                    return Dispositivo(
-                        id_dispositivo=row['id_dispositivo'],
-                        tipo_dispositivo=tipo,
-                        ubicacion=row['ubicacion'],
-                        marca=row['marca'],
-                        modelo=row['modelo'],
-                        estado=row['estado']
-                    )
+                    tipo = TipoDispositivo(id_tipo=row['id_tipo'])
+                    tipo.nombre=row['tipo_nombre']
+                    
+                    disp = Dispositivo(id_dispositivo=row['id_dispositivo'])
+                    disp.tipo=tipo
+                    disp.ubicacion=row['ubicacion']
+                    disp.marca=row['marca']
+                    disp.modelo=row['modelo']
+                    disp.estado=row['estado']
+                    
+                    return disp
                 return None
         except Exception as e:
             print(f"Error al obtener dispositivo por ID: {e}")

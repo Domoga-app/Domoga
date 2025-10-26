@@ -25,7 +25,11 @@ class AutomatizacionDAO(IAutomatizacionDAO):
                 if not row: 
                     return None
                 
-                auto = Automatizacion(**row)
+                auto = Automatizacion(id_automatizacion=row['id_automatizacion'])
+                auto.nombre = row['nombre']
+                auto.dias = row['dias']
+                auto.hora = row['hora']
+                auto.accion = row['accion']
                 
                 # Buscamos los dispositivos vinculados
                 dispositivos = self._obtener_dispositivos_vinculados(cursor, id_automatizacion)
@@ -53,15 +57,16 @@ class AutomatizacionDAO(IAutomatizacionDAO):
         cursor.execute(query, (id_automatizacion,))
         dispositivos = []
         for row in cursor.fetchall():
-            tipo = TipoDispositivo(id_tipo=row['id_tipo'], nombre=row['tipo_nombre'])
-            disp = Dispositivo(
-                id_dispositivo=row['id_dispositivo'],
-                tipo_dispositivo=tipo,
-                ubicacion=row['ubicacion'],
-                marca=row['marca'],
-                modelo=row['modelo'],
-                estado=row['estado']
-            )
+            tipo = TipoDispositivo(id_tipo=row['id_tipo'])
+            tipo.nombre = row['tipo_nombre']
+            
+            disp = Dispositivo(id_dispositivo=row['id_dispositivo'])
+            disp.tipo=tipo
+            disp.ubicacion=row['ubicacion']
+            disp.marca=row['marca']
+            disp.modelo=row['modelo']
+            disp.estado=row['estado']
+            
             dispositivos.append(disp)
         return dispositivos
 
@@ -72,7 +77,12 @@ class AutomatizacionDAO(IAutomatizacionDAO):
                 cursor.execute("SELECT * FROM automatizaciones")
                 rows = cursor.fetchall()
                 for row in rows:
-                    auto = Automatizacion(**row)
+                    auto = Automatizacion(id_automatizacion=row['id_automatizacion'])
+                    auto.nombre = row['nombre']
+                    auto.dias = row['dias']
+                    auto.hora = row['hora']
+                    auto.accion = row['accion']
+                    
                     automatizaciones.append(auto)
             return automatizaciones
         except Exception as e:

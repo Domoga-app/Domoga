@@ -22,7 +22,10 @@ class TipoDispositivoDAO(ITipoDispositivoDAO):
             with get_db_cursor() as (conn, cursor):
                 cursor.execute("SELECT * FROM tipos_dispositivo")
                 for row in cursor.fetchall():
-                    tipos.append(TipoDispositivo(row["id_tipo"], row["nombre"]))
+                    tipo = TipoDispositivo(row["id_tipo"])
+                    tipo.nombre = row["nombre"]
+                    
+                    tipos.append(tipo)
             return tipos
         except Exception as e:
             print(f"Error al obtener tipos de dispositivos: {e}")
@@ -34,7 +37,10 @@ class TipoDispositivoDAO(ITipoDispositivoDAO):
                 cursor.execute("SELECT * FROM tipos_dispositivo WHERE id_tipo = %s", (id_tipo,))
                 row = cursor.fetchone()
                 if row:
-                    return TipoDispositivo(row["id_tipo"], row["nombre"])
+                    tipo = TipoDispositivo(row["id_tipo"])
+                    tipo.nombre = row["nombre"]
+                    
+                    return tipo
                 return None
         except Exception as e:
             print(f"Error al obtener tipo de dispositivo por ID: {e}")
