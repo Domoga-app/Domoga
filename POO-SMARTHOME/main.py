@@ -7,39 +7,25 @@ from dao.db_base import _get_connection
 
 
 def verificar_variables_env() -> bool:
-    '''
-    Esta función sirve para comprobar que el archivo .env este creado
-    y cuente con todas las variables necesarias
-    '''
-    
+    """
+    Esta función verifica que exista el archivo .env
+    y que contenga todas las variables necesarias para la conexión.
+    """
     if not os.path.exists(".env"):
         print("No se encontró el archivo .env en el directorio actual.")
         return False
-    
-    load_dotenv()
-    
-    DB_HOST = os.getenv("DB_HOST")
-    DB_PORT = os.getenv("DB_PORT")
-    DB_USER = os.getenv("DB_USER")
-    DB_PASSWORD = os.getenv("DB_PASSWORD")
-    DB_NAME = os.getenv("DB_NAME")
 
-    if DB_HOST is None:
-        print("Falta la variable DB_HOST en el archivo .env")
-        return False
-    if DB_PORT is None:
-        print("Falta la variable DB_PORT en el archivo .env")
-        return False
-    if DB_USER is None:
-        print("Falta la variable DB_USER en el archivo .env")
-        return False
-    if DB_PASSWORD is None:
-        print("Falta la variable DB_PASSWORD en el archivo .env")
-        return False
-    if DB_NAME is None:
-        print("Falta la variable DB_NAME en el archivo .env")
-        return False
-    
+    load_dotenv()
+
+    # Lista de variables requeridas
+    variables_requeridas = ["DB_HOST", "DB_PORT", "DB_USER", "DB_PASSWORD", "DB_NAME"]
+
+    # Verificamos cada variable con for para evitar repetición de código
+    for var in variables_requeridas:
+        if os.getenv(var) is None:
+            print(f"Falta la variable {var} en el archivo .env")
+            return False
+
     return True
 
 
