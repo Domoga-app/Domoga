@@ -23,13 +23,17 @@ class UsuarioDAO(IUsuarioDAO):
                 cursor.execute("SELECT id_usuario, nombre_usuario, nombre, apellido, dni, es_admin, contrasena FROM usuarios WHERE nombre_usuario = %s", (nombre_usuario,))
                 row = cursor.fetchone()
                 if row:
-                    usuario = Usuario(row['id_usuario'])
+                    usuario = Usuario(id_usuario = row['id_usuario'], contrasena = row['contrasena'])
                     usuario.nombre_usuario = row['nombre_usuario']
                     usuario.nombre = row['nombre']
                     usuario.apellido = row['apellido']
                     usuario.dni = str(row['dni'])
                     usuario.es_admin = bool(row['es_admin'])
-                    usuario.contrasena = row['contrasena']
+                    # usuario.contrasena = row['contrasena']
+                    # Originalmente traíamos la contraseña y la haciamos pasar por el getter,
+                    # pero al hashear la clave no nos conviene que pase por el getter
+                    # porque la base de datos almacena la contraseña encriptada con solo minúsculas y números
+                    # mientras que el setter exige mayúscula, minúscula, número y símbolos.
                     return usuario
                 return None
         except Exception as e:
@@ -53,13 +57,17 @@ class UsuarioDAO(IUsuarioDAO):
             with get_db_cursor() as (conn, cursor):
                 cursor.execute("SELECT id_usuario, nombre_usuario, nombre, apellido, dni, es_admin, contrasena FROM usuarios")
                 for row in cursor.fetchall():
-                    usuario = Usuario(row['id_usuario'])
+                    usuario = Usuario(id_usuario = row['id_usuario'], contrasena = row['contrasena'])
                     usuario.nombre_usuario = row['nombre_usuario']
                     usuario.nombre = row['nombre']
                     usuario.apellido = row['apellido']
                     usuario.dni = str(row['dni'])
                     usuario.es_admin = bool(row['es_admin'])
-                    usuario.contrasena = row['contrasena']
+                    # usuario.contrasena = row['contrasena']
+                    # Originalmente traíamos la contraseña y la haciamos pasar por el getter,
+                    # pero al hashear la clave no nos conviene que pase por el getter
+                    # porque la base de datos almacena la contraseña encriptada con solo minúsculas y números
+                    # mientras que el setter exige mayúscula, minúscula, número y símbolos.
                     
                     usuarios.append(usuario)
             return usuarios

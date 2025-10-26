@@ -1,5 +1,6 @@
 # models/usuario.py
 
+import hashlib
 import re
 import string
 
@@ -83,10 +84,10 @@ class Usuario:
         if not any(caracter in string.punctuation for caracter in nueva_contrasena):
             raise ValueError("Debe contener al menos un carácter especial")
         
-        self.__contrasena = nueva_contrasena
+        self.__contrasena = hashlib.sha256(nueva_contrasena.encode()).hexdigest()
 
     def verificar_contrasena(self, contrasena):
-        return self.__contrasena == contrasena
+        return self.__contrasena == hashlib.sha256(contrasena.encode()).hexdigest()
 
     # Rol
     @property

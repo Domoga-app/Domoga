@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from services import UsuarioService, DispositivoService, TipoDispositivoService
 from views import menu_principal
 from dao.db_base import _get_connection
+from utils import ejecutar_con_cierre_controlado
 
 
 def verificar_variables_env() -> bool:
@@ -75,4 +76,4 @@ def main():
 
 if __name__ == "__main__":
     limpiar_consola()
-    main()
+    ejecutar_con_cierre_controlado(main)

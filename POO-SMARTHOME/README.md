@@ -103,7 +103,7 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
     Se abrirá el menú principal en consola, con las siguientes opciones:
 
     * Inicio de sesión
-        > El usuario administrador creado por defecto cuenta con DNI: 00000000 y Contraseña: P@sw0rd!
+        > El usuario administrador creado por defecto cuenta con nombre de usuario: `admin` y Contraseña: `P@ssw0rd`
     * Registro de usuario
         > Todos los nuevos usuarios registrados seran creados con rol de usuario estándar
     * Cerrar el programa
@@ -144,7 +144,7 @@ pytest tests/test_usuario.py
 * **Administrador**: puede gestionar usuarios y dispositivos.
 * **Estándar**: puede consultar información personal y ver los dispositivos disponibles.
 
-El sistema incluye un usuario administrador por defecto definido en la base de datos inicial. Cuyo DNI es `00000000` y contraseña es `P@sw0rd!`
+El sistema incluye un usuario administrador por defecto definido en la base de datos inicial. Cuya cuenta de usuario es `admin` y contraseña es `P@ssw0rd`
 
 ## 🧠 Buenas Prácticas Implementadas
 
