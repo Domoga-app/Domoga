@@ -17,8 +17,9 @@ Raíz del proyecto
 
 ```tree
 DOMOGA/
-├───BD-Evidencia-5          # Base de datos del proyecto original (EV3) adaptada a EV5 y EV6
-├───BD-Evidencia-6          # Base de datos del proyecto refactorizado (EV6)
+├───DATA-BASES              # Proyecto original previo al refactor (EV5 y EV6)
+│   ├───BD-Evidencia-5      # Base de datos del proyecto original (EV3) adaptada a EV5 y EV6
+│   └── BD-Evidencia-6      # Base de datos del proyecto refactorizado (EV6)
 ├───DC-Evidencia-5          # Diagramas actualizados del proyecto refactorizado (EV5 y EV6)
 ├───EVIDENCIA-3             # Proyecto original previo al refactor (EV5 y EV6)
 │   ├───data                # Datos de ejecución almacenados en diccionarios
@@ -139,7 +140,7 @@ Sigue estos pasos para ejecutar el **proyecto final y refactorizado** en tu máq
     Se abrirá el menú principal en consola, con las siguientes opciones:
 
     * Inicio de sesión
-        > El usuario administrador creado por defecto cuenta con DNI: 00000000 y Contraseña: P@sw0rd!
+        > El usuario administrador creado por defecto cuenta con nombre de usuario: `admin` y Contraseña: `P@ssw0rd`
     * Registro de usuario
         > Todos los nuevos usuarios seran creados con rol de usuario estándar
     * Cerrar el programa

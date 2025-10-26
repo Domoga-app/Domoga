@@ -4,16 +4,16 @@
 
 -- Usuarios
 INSERT INTO usuarios (nombre_usuario, nombre, apellido, dni, es_admin, contrasena) VALUES
-('admin',    'Admin',    'User',      '00000000',  TRUE,  'P@sw0rd!'),
-('user',     'Usuario',  'Estandar',  '3456789',   FALSE, 'P@sw0rd!'),
-('lucia',    'Lucía',    'Gómez',     '27894512',  FALSE, 'P@sw0rd!'),
-('carlos',   'Carlos',   'Pérez',     '4012345',   FALSE, 'P@sw0rd!'),
-('mariana',  'Mariana',  'Lopez',     '50123456',  TRUE,  'P@sw0rd!'),
-('sofia',    'Sofía',    'Martínez',  '61234567',  FALSE, 'P@sw0rd!'),
-('andres',   'Andrés',   'Fernández', '7234567',   FALSE, 'P@sw0rd!'),
-('laura',    'Laura',    'Sosa',      '82345678',  FALSE, 'P@sw0rd!'),
-('ricardo',  'Ricardo',  'Romero',    '9345678',   TRUE,  'P@sw0rd!'),
-('julieta',  'Julieta',  'Benítez',   '1234567',   FALSE, 'P@sw0rd!');
+('admin',    'Admin',    'User',      '00000000',  TRUE,  SHA2('P@ssw0rd', 256)),
+('user',     'Usuario',  'Estandar',  '3456789',   FALSE, SHA2('P@ssw0rd', 256)),
+('lucia',    'Lucía',    'Gómez',     '27894512',  FALSE, SHA2('P@ssw0rd', 256)),
+('carlos',   'Carlos',   'Pérez',     '4012345',   FALSE, SHA2('P@ssw0rd', 256)),
+('mariana',  'Mariana',  'Lopez',     '50123456',  TRUE,  SHA2('P@ssw0rd', 256)),
+('sofia',    'Sofía',    'Martínez',  '61234567',  FALSE, SHA2('P@ssw0rd', 256)),
+('andres',   'Andrés',   'Fernández', '7234567',   FALSE, SHA2('P@ssw0rd', 256)),
+('laura',    'Laura',    'Sosa',      '82345678',  FALSE, SHA2('P@ssw0rd', 256)),
+('ricardo',  'Ricardo',  'Romero',    '9345678',   TRUE,  SHA2('P@ssw0rd', 256)),
+('julieta',  'Julieta',  'Benítez',   '1234567',   FALSE, SHA2('P@ssw0rd', 256));
 
 
 -- Tipos de dispositivos
