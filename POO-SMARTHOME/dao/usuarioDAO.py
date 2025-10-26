@@ -1,5 +1,5 @@
 # dao/usuarioDAO.py
-from models.usuario import Usuario
+from models import Usuario
 from .interfaces import IUsuarioDAO
 from .db_base import get_db_cursor 
 
@@ -8,8 +8,8 @@ class UsuarioDAO(IUsuarioDAO):
     def crear(self, usuario: Usuario) -> bool:
         try:
             with get_db_cursor() as (conn, cursor):
-                query = "INSERT INTO usuarios (dni, es_admin, nombre, apellido, contrasena) VALUES (%s, %s, %s, %s, %s)"
-                params = (usuario.dni, usuario.es_admin, usuario.nombre, usuario.apellido, usuario._contrasena_real())
+                query = "INSERT INTO usuarios (nombre_usuario, nombre, apellido, dni, es_admin, contrasena) VALUES (%s, %s, %s, %s, %s)"
+                params = (usuario.nombre_usuario, usuario.nombre, usuario.apellido, usuario.dni, usuario.es_admin, usuario._contrasena_real())
                 cursor.execute(query, params)
                 conn.commit() 
             return True
@@ -17,24 +17,30 @@ class UsuarioDAO(IUsuarioDAO):
             print(f"Error al crear usuario: {e}")
             return False
 
-    def obtener_por_dni(self, dni: str) -> Usuario | None:
+    def obtener_por_nombre_usuario(self, nombre_usuario: str) -> Usuario | None:
         try:
             with get_db_cursor() as (conn, cursor):
-                cursor.execute("SELECT id_usuario, dni, es_admin, nombre, apellido, contrasena FROM usuarios WHERE dni = %s", (dni,))
+                cursor.execute("SELECT id_usuario, nombre_usuario, nombre, apellido, dni, es_admin, contrasena FROM usuarios WHERE nombre_usuario = %s", (nombre_usuario,))
                 row = cursor.fetchone()
                 if row:
-                    row['es_admin'] = bool(row['es_admin'])
-                    return Usuario(**row)
+                    usuario = Usuario(row['id_usuario'])
+                    usuario.nombre_usuario = row['nombre_usuario']
+                    usuario.nombre = row['nombre']
+                    usuario.apellido = row['apellido']
+                    usuario.dni = str(row['dni'])
+                    usuario.es_admin = bool(row['es_admin'])
+                    usuario.contrasena = row['contrasena']
+                    return usuario
                 return None
         except Exception as e:
-            print(f"Error al obtener usuario por DNI: {e}")
+            print(f"Error al obtener usuario por nombre de usuario: {e}")
             return None
 
-    def cambiar_rol(self, dni: str, es_nuevo_admin: bool) -> bool:
+    def cambiar_rol(self, nombre_usuario: str, es_nuevo_admin: bool) -> bool:
         try:
             with get_db_cursor() as (conn, cursor):
-                query = "UPDATE usuarios SET es_admin = %s WHERE dni = %s"
-                cursor.execute(query, (es_nuevo_admin, dni))
+                query = "UPDATE usuarios SET es_admin = %s WHERE nombre_usuario = %s"
+                cursor.execute(query, (es_nuevo_admin, nombre_usuario))
                 conn.commit()
                 return cursor.rowcount > 0
         except Exception as e:
@@ -45,29 +51,37 @@ class UsuarioDAO(IUsuarioDAO):
         usuarios = []
         try:
             with get_db_cursor() as (conn, cursor):
-                cursor.execute("SELECT id_usuario, dni, es_admin, nombre, apellido, contrasena FROM usuarios")
+                cursor.execute("SELECT id_usuario, nombre_usuario, nombre, apellido, dni, es_admin, contrasena FROM usuarios")
                 for row in cursor.fetchall():
-                    row['es_admin'] = bool(row['es_admin'])
-                    usuarios.append(Usuario(**row))
+                    usuario = Usuario(row['id_usuario'])
+                    usuario.nombre_usuario = row['nombre_usuario']
+                    usuario.nombre = row['nombre']
+                    usuario.apellido = row['apellido']
+                    usuario.dni = str(row['dni'])
+                    usuario.es_admin = bool(row['es_admin'])
+                    usuario.contrasena = row['contrasena']
+                    
+                    usuarios.append(usuario)
             return usuarios
         except Exception as e:
             print(f"Error al obtener todos los usuarios: {e}")
             return []
 
-    def actualizar(self, dni: str, usuario: Usuario) -> bool:
+    def actualizar(self, nombre_usuario: str, usuario: Usuario) -> bool:
         try:
             with get_db_cursor() as (conn, cursor):
                 query = """
                     UPDATE usuarios SET 
-                        nombre = %s, apellido = %s, contrasena = %s, es_admin = %s 
-                    WHERE dni = %s
+                        nombre = %s, apellido = %s, dni = %s, contrasena = %s, es_admin = %s 
+                    WHERE nombre_usuario = %s
                 """
                 params = (
                     usuario.nombre, 
                     usuario.apellido, 
+                    usuario.dni,
                     usuario.contrasena, 
                     usuario.es_admin,
-                    dni
+                    nombre_usuario
                 )
                 cursor.execute(query, params)
                 conn.commit()
@@ -76,10 +90,10 @@ class UsuarioDAO(IUsuarioDAO):
             print(f"Error al actualizar usuario: {e}")
             return False
 
-    def eliminar(self, dni: str) -> bool:
+    def eliminar(self, nombre_usuario: str) -> bool:
         try:
             with get_db_cursor() as (conn, cursor):
-                cursor.execute("DELETE FROM usuarios WHERE dni = %s", (dni,))
+                cursor.execute("DELETE FROM usuarios WHERE nombre_usuario = %s", (nombre_usuario,))
                 conn.commit()
                 return cursor.rowcount > 0
         except Exception as e:

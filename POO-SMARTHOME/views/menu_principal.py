@@ -26,9 +26,9 @@ def menu_principal(usuario_service: UsuarioService,
       
             
 def _iniciar_sesion(usuario_service: UsuarioService, dispositivo_service: DispositivoService, tipo_service: TipoDispositivoService):
-    dni = input("Ingrese su DNI: ")
+    nombre_usuario = input("Ingrese su nombre de usuario: ")
     contrasena = input("Ingrese su contraseña: ")
-    usuario = usuario_service.iniciar_sesion(dni, contrasena) 
+    usuario = usuario_service.iniciar_sesion(nombre_usuario, contrasena) 
     
     if usuario:
         if usuario.es_admin:
@@ -38,11 +38,12 @@ def _iniciar_sesion(usuario_service: UsuarioService, dispositivo_service: Dispos
             
 def _registrar_usuario(usuario_service: UsuarioService):
     try:
-        dni = input("Ingrese su DNI (7 u 8 dígitos): ")
+        nombre_usuario = input("Ingrese su nombre de usuario: ")
         nombre = input("Ingrese su nombre: ")
         apellido = input("Ingrese su apellido: ")
+        dni = input("Ingrese su DNI (7 u 8 dígitos): ")
         contrasena = input("La contraseña debe tener minimo 8 caracteres y debe contener al menos una mayúscula, una minúscula, un número y un simbolo. \nIngrese su contraseña: ")
-        usuario_service.registrar_usuario(dni, nombre, apellido, contrasena)
+        usuario_service.registrar_usuario(nombre_usuario, nombre, apellido, dni, contrasena)
     
     except Exception as e:
         print(f"Ocurrió un error en el registro: {e}")

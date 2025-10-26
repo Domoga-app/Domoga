@@ -144,34 +144,9 @@ def _eliminar_dispositivo(dispositivo_service: DispositivoService):
         print(f"Ocurrió un error inesperado: {e}")
 
 def _cambiar_rol_usuario(usuario_service: UsuarioService):
-    '''Pide DNI, confirma y cambia rol.'''
-    try:
-        dni_a_cambiar = input("Ingrese el DNI del usuario a modificar: ")
-        usuario_a_modificar = usuario_service.obtener_por_dni(dni_a_cambiar)
-        
-        if not usuario_a_modificar:
-            print("Error: Usuario no encontrado.")
-            return # Sale de la función
-
-        if usuario_a_modificar.es_admin:
-            rol_actual_str = "Administrador"
-            accion_propuesta = "¿Desea cambiarlo a Estandar? (s/n): "
-            es_nuevo_admin = False
-        else:
-            rol_actual_str = "Estandar"
-            accion_propuesta = "¿Desea hacerlo Administrador? (s/n): "
-            es_nuevo_admin = True
-        
-        print(f"El rol actual del usuario {dni_a_cambiar} es: {rol_actual_str}")
-        confirmacion = input(accion_propuesta).lower()
-        
-        if confirmacion == 's':
-            if usuario_service.cambiar_rol_usuario(dni_a_cambiar, es_nuevo_admin):
-                print("Rol actualizado con éxito.") 
-        else:
-            print("Operación cancelada.")
-    except Exception as e:
-        print(f"Ocurrió un error inesperado: {e}")
+    '''Pide nombre de usuario y llama al servicio para cambiar su rol.'''
+    nombre_usuario = input("Ingrese el Nombre de Usuario del usuario a modificar el rol: ")
+    usuario_service.cambiar_rol_usuario(nombre_usuario)
 
 def _ver_usuarios(usuario_service: UsuarioService):
     '''Muestra todos los usuarios.'''

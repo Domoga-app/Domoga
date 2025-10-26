@@ -13,6 +13,10 @@ def test_usuario_validaciones():
     usuario.dni = "12345678"
     assert usuario.dni == "12345678"
     
+    # Nombre de usuario válido
+    usuario.nombre_usuario = "gera"
+    assert usuario.nombre_usuario == "gera"
+    
     # Nombre válido
     usuario.nombre = "Gerardo"
     assert usuario.nombre == "Gerardo"
@@ -37,6 +41,38 @@ def test_usuario_validaciones():
     assert usuario.es_admin is True
     usuario.es_admin = False
     assert usuario.es_admin is False
+    
+    # Crea un usuario con todos los valores en constructor
+    # Cómo para simular los que se traen de la base de datos y se crearian desde el DAO
+    usuario2 = Usuario(
+        id_usuario=11,
+        nombre_usuario="gera",
+        nombre="Gerardo",
+        apellido="Catalas",
+        dni="12345678",
+        es_admin=False,
+        contrasena="P@sw0rd!"
+    )
+    assert usuario2.nombre_usuario == "gera"
+    assert usuario2.nombre == "Gerardo"
+    assert usuario2.apellido == "Catalas"
+    assert usuario2.dni == "12345678"
+    assert usuario2.es_admin == False
+    assert usuario2._contrasena_real() == "P@sw0rd!"
+    
+    # Prueba el str
+    str_esperado = "Usuario: gera, Nombre: Gerardo, Apellido: Catalas, DNI: 12345678, Rol: Estandar"
+    assert str(usuario2) == str_esperado
+    
+
+def test_usuario_nombre_usuario_invalido():
+    usuario = Usuario()
+    with pytest.raises(ValueError):
+        usuario.nombre_usuario = "A"  # Muy corto
+    with pytest.raises(ValueError):
+        usuario.nombre_usuario = ""   # Vacío
+    with pytest.raises(ValueError):
+        usuario.nombre_usuario = "nombredeusuarioconmasde30caracteres"   # Muy largo
 
 def test_usuario_dni_invalido():
     usuario = Usuario()
@@ -53,6 +89,8 @@ def test_usuario_nombre_invalido():
         usuario.nombre = "A"  # Muy corto
     with pytest.raises(ValueError):
         usuario.nombre = ""   # Vacío
+    with pytest.raises(ValueError):
+        usuario.nombre = "nombreconmasde30caracteressssss"   # Muy largo
 
 def test_usuario_apellido_invalido():
     usuario = Usuario()
@@ -60,6 +98,8 @@ def test_usuario_apellido_invalido():
         usuario.apellido = "B"  # Muy corto
     with pytest.raises(ValueError):
         usuario.apellido = ""   # Vacío
+    with pytest.raises(ValueError):
+        usuario.apellido = "apellidoconmasde30caracteressssss"   # Muy largo
 
 def test_usuario_contrasena_invalida():
     usuario = Usuario()

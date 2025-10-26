@@ -4,20 +4,31 @@ import re
 import string
 
 class Usuario:
-    def __init__(self, id_usuario: int = None, dni: str = None, nombre: str = None, apellido: str = None, contrasena:str = None, es_admin: bool = False):
+    def __init__(self, id_usuario: int = None, nombre_usuario: str = None, nombre: str = None, apellido: str = None, dni: str = None, es_admin: bool = False, contrasena:str = None):
         self.__id_usuario = id_usuario
-        self.__dni = str(dni) # Le puse el str porque si bien el DNI son números en Argentina, no hacemos calculos u otra operación con esos números
+        self.__nombre_usuario = nombre_usuario
         self.__nombre = nombre
         self.__apellido = apellido
-        self.__contrasena = contrasena
+        self.__dni = str(dni) # Le puse el str porque si bien el DNI son números en Argentina, no hacemos calculos u otra operación con esos números
         self.__es_admin = bool(es_admin)
+        self.__contrasena = contrasena
 
     # ID
     @property
     def id(self):
         return self.__id_usuario    
-    
-    
+      
+    # Nombre de usuario
+    @property
+    def nombre_usuario(self):
+        return self.__nombre_usuario
+
+    @nombre_usuario.setter
+    def nombre_usuario(self, nombre_usuario):
+        if not nombre_usuario or not (4 <= len(nombre_usuario.strip()) <= 30):
+            raise ValueError("El nombre de usuario debe tener entre 4 y 30 caracteres.")
+        self.__nombre_usuario = str(nombre_usuario)
+
     # DNI
     @property
     def dni(self):
@@ -36,8 +47,8 @@ class Usuario:
 
     @nombre.setter
     def nombre(self, nombre):
-        if not nombre or len(nombre.strip()) < 2:
-            raise ValueError("El nombre no puede estar vacío o ser tan corto.")
+        if not nombre or not (2 <= len(nombre.strip()) <= 30):
+            raise ValueError("El nombre debe tener entre 2 y 30 caracteres.")
         self.__nombre = nombre.strip()
     
     # Apellido
@@ -47,8 +58,8 @@ class Usuario:
 
     @apellido.setter
     def apellido(self, apellido):
-        if not apellido or len(apellido.strip()) < 2:
-            raise ValueError("El apellido no puede estar vacío o ser tan corto.")
+        if not apellido or not (2 <= len(apellido.strip()) <= 30):
+            raise ValueError("El apellido debe tener entre 2 y 30 caracteres.")
         self.__apellido = apellido.strip()
 
     # Contraseña
@@ -90,6 +101,6 @@ class Usuario:
     def __str__(self):
         rol_str = "Administrador" if self.__es_admin else "Estandar"
         return (
-            f"DNI: {self.__dni}, Rol: {rol_str}, "
-            f"Nombre: {self.__nombre}, Apellido: {self.__apellido}"
+            f"Usuario: {self.__nombre_usuario}, Nombre: {self.__nombre}, Apellido: {self.__apellido}, "
+            f"DNI: {self.__dni}, Rol: {rol_str}"
         )

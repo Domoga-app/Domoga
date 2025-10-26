@@ -9,7 +9,7 @@ class IUsuarioDAO(ABC):
         pass
 
     @abstractmethod
-    def obtener_por_dni(self, dni: str) -> Usuario | None:
+    def obtener_por_nombre_usuario(self, nombre_usuario: str) -> Usuario | None:
         pass
 
     @abstractmethod
@@ -17,13 +17,13 @@ class IUsuarioDAO(ABC):
         pass
     
     @abstractmethod
-    def actualizar(self, dni: str, usuario: Usuario) -> bool:
+    def actualizar(self, nombre_usuario: str, usuario: Usuario) -> bool:
         pass
 
     @abstractmethod
-    def eliminar(self, dni: str) -> bool:
+    def eliminar(self, nombre_usuario: str) -> bool:
         pass
 
     @abstractmethod
-    def cambiar_rol(self, dni: str, es_nuevo_admin: bool) -> bool:
+    def cambiar_rol(self, nombre_usuario: str, es_nuevo_admin: bool) -> bool:
         pass
