@@ -6,6 +6,17 @@ def menu_admin(usuario: Usuario,
                usuario_service: UsuarioService, 
                dispositivo_service: DispositivoService, 
                tipo_service: TipoDispositivoService):
+
+    # Diccionario que mapea opciones a funciones y argumentos
+    acciones = {
+        "1": (_ver_dispositivos, (dispositivo_service,)),
+        "2": (_crear_dispositivo, (dispositivo_service, tipo_service)),
+        "3": (_actualizar_dispositivo, (dispositivo_service, tipo_service)),
+        "4": (_eliminar_dispositivo, (dispositivo_service,)),
+        "5": (_cambiar_rol_usuario, (usuario_service,)),
+        "6": (_ver_usuarios, (usuario_service,))
+    }
+
     while True:
         print("\n--- Menú Administrador ---")
         print(f"Usuario: {usuario.nombre} {usuario.apellido}")
@@ -19,23 +30,15 @@ def menu_admin(usuario: Usuario,
         print("6. Ver todos los usuarios")
         print("\n-- Sistema --")
         print("7. Cerrar sesión")
+
         opcion = input("Seleccione una opción: ")
 
-        if opcion == "1":
-            _ver_dispositivos(dispositivo_service)
-        elif opcion == "2":
-            _crear_dispositivo(dispositivo_service, tipo_service)
-        elif opcion == "3":
-            _actualizar_dispositivo(dispositivo_service, tipo_service)
-        elif opcion == "4":
-            _eliminar_dispositivo(dispositivo_service)
-        elif opcion == "5":
-            _cambiar_rol_usuario(usuario_service)
-        elif opcion == "6":
-            _ver_usuarios(usuario_service)
-        elif opcion == "7":
+        if opcion == "7":
             print("Cerrando sesión de administrador...")
             break
+        elif opcion in acciones:
+            func, args = acciones[opcion]
+            func(*args)  # Llamada dinámica a la función con los argumentos
         else:
             print("Opción inválida.")
             
