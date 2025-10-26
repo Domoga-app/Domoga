@@ -13,24 +13,33 @@ Este repositorio documenta la evolución del proyecto a través de diferentes et
 
 ## 📂 Estructura del Repositorio
 
-El proyecto está organizado siguiendo el patrón de diseño DAO (Data Access Object) para separar la lógica de negocio de la lógica de acceso a datos.
+Raíz del proyecto
 
-```
-├───BD-Evidencia-5      # Base de datos del proyecto original (EV3) adaptada a EV5 y EV6
-├───BD-Evidencia-6      # Base de datos del proyecto refactorizado (EV6)
-├───DC-Evidencia-5      # Diagramas actualizados del proyecto refactorizado (EV5 y EV6)
-├───EVIDENCIA-3         # Proyecto original previo al refactor (EV5 y EV6)
-│   ├───data            # Datos de ejecución almacenados en diccionarios
-│   ├───models          # Modelos iniciales, luego convertidos a objetos en EV5
-│   ├───ui              # Menús e interfaz de consola
-│   └───utils           # Funciones auxiliares del programa
-└───POO-SMARTHOME       # Proyecto principal refactorizado (EV6)
-    ├───dao             # Clases de acceso a datos
-    │   └───interfaces  # Interfaces DAO
-    ├───models          # Modelos POO del sistema
-    ├───services        # Lógica de negocio y conexión entre DAO y views
-    ├───tests           # Pruebas unitarias centradas en los modelos POO y sus validaciones; no cubren servicios ni DAO
-    └───views           # Capa de presentación (interfaz de usuario)
+```tree
+DOMOGA/
+├───BD-Evidencia-5          # Base de datos del proyecto original (EV3) adaptada a EV5 y EV6
+├───BD-Evidencia-6          # Base de datos del proyecto refactorizado (EV6)
+├───DC-Evidencia-5          # Diagramas actualizados del proyecto refactorizado (EV5 y EV6)
+├───EVIDENCIA-3             # Proyecto original previo al refactor (EV5 y EV6)
+│   ├───data                # Datos de ejecución almacenados en diccionarios
+│   ├───models              # Modelos iniciales, luego convertidos a objetos en EV5
+│   ├───ui                  # Menús e interfaz de consola
+│   ├───utils               # Funciones auxiliares del programa
+│   └── main.py             # Punto de entrada de la aplicación inicial
+├───POO-SMARTHOME           # Proyecto principal refactorizado (EV6)
+│   ├───dao                 # Clases de acceso a datos
+│   │   └───interfaces      # Interfaces DAO
+│   ├───models              # Modelos POO del sistema
+│   ├───services            # Lógica de negocio y conexión entre DAO y views
+│   ├───tests               # Pruebas unitarias centradas en los modelos POO y sus validaciones; no cubren servicios ni DAO
+│   ├───views               # Capa de presentación (interfaz de usuario)
+│   ├── .env.example        # Ejemplo de variables de entorno
+│   ├── requirements.txt    # Dependencias del proyecto
+│   ├── pytest.ini          # Configuración de pytest (marcadores, opciones y filtros de warnings)
+│   └── main.py             # Punto de entrada de la aplicación final
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 ## ✨ Funcionalidades
@@ -78,17 +87,16 @@ Los usuarios creados desde la consola son de tipo **Estándar** por defecto.
 
 ## 🚀 Instalación y Uso
 
-Sigue estos pasos para ejecutar el proyecto en tu máquina local.
+Sigue estos pasos para ejecutar el **proyecto final y refactorizado** en tu máquina local.
 
 1.  **🖥️ Clonar el Repositorio**
     ```bash
     git clone https://github.com/Domoga-app/Domoga.git
-    cd Domoga
+    cd Domoga/POO-SMARTHOME
     ```
 
 2.  **⚡ Crear un Entorno Virtual**
     ```bash
-    cd POO-SMARTHOME
     python -m venv venv
     ```
     Actívalo:
@@ -110,7 +118,7 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 
 4.  **💾 Configurar la Base de Datos**
     * Asegúrate de tener un servidor MySQL en funcionamiento.
-    * Ejecuta el script SQL ubicado en `BD-Evidencia-6` para crear la base de datos `domoga` y sus tablas.
+    * Ejecuta el script SQL (`CONSULTAS-DDL.sql`) ubicado en `BD-Evidencia-6` para crear la base de datos `domoga` y sus tablas.
 
 5.  **🔑 Configurar las Variables de Entorno**
     * Dentro de la carpeta `POO-SMARTHOME`, renombra el archivo `.env.example` a `.env`.
@@ -128,6 +136,13 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
     ```bash
     python main.py
     ```
+    Se abrirá el menú principal en consola, con las siguientes opciones:
+
+    * Inicio de sesión
+        > El usuario administrador creado por defecto cuenta con DNI: 00000000 y Contraseña: P@sw0rd!
+    * Registro de usuario
+        > Todos los nuevos usuarios seran creados con rol de usuario estándar
+    * Cerrar el programa
 
 ## 🧪 Pruebas Unitarias
 
@@ -161,3 +176,10 @@ python main.py
 
 
 > 🟢 *Esta versión no requiere librerías adicionales ni configuración de entorno, ya que no depende de base de datos ni variables externas.*
+
+## 🧑‍💻 Integrantes del equipo
+
+* Luis Gerardo Catalas
+* Yamila Noelia Belen Angelo
+* Hector Marcelo Murua
+* Santiago Ezequiel Delebecq 
