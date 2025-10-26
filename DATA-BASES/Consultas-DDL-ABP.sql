@@ -1,7 +1,12 @@
+-- Consultas DDL
 
+-- DEFINICION DE ESTRUCTURA DE LA BASE DE DATOS
+
+-- Creamos la base de datos
 CREATE DATABASE IF NOT EXISTS domoga;
 USE domoga;
 
+-- Creamos tabla usuarios
 CREATE TABLE usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     dni VARCHAR(8) NOT NULL UNIQUE,
@@ -11,11 +16,13 @@ CREATE TABLE usuarios (
     contrasena VARCHAR(255) NOT NULL
 );
 
+-- Creamos tabla tipos_dispositivo
 CREATE TABLE tipos_dispositivo (
     id_tipo INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) UNIQUE NOT NULL
 );
 
+-- Creamos tabla dispositivos
 CREATE TABLE dispositivos (
     id_dispositivo INT PRIMARY KEY AUTO_INCREMENT,
     id_tipo INT NOT NULL,
@@ -26,6 +33,7 @@ CREATE TABLE dispositivos (
     FOREIGN KEY (id_tipo) REFERENCES tipos_dispositivo(id_tipo)
 );
 
+-- Creamos tabla automatizaciones
 CREATE TABLE automatizaciones (
     id_automatizacion INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(30) NOT NULL,
@@ -34,6 +42,7 @@ CREATE TABLE automatizaciones (
     accion VARCHAR(30) NOT NULL
 );
 
+-- Creamos tabla automatizacion_dispositivo
 CREATE TABLE automatizacion_dispositivo (
     automatizacion_id INT,
     dispositivo_id INT,
@@ -41,17 +50,3 @@ CREATE TABLE automatizacion_dispositivo (
     FOREIGN KEY (automatizacion_id) REFERENCES automatizaciones(id_automatizacion) ON DELETE CASCADE,
     FOREIGN KEY (dispositivo_id) REFERENCES dispositivos(id_dispositivo) ON DELETE CASCADE
 );
-
-
-INSERT INTO usuarios (dni, es_admin, nombre, apellido, contrasena) VALUES 
-('1', TRUE, 'Admin', 'User', '1'),
-('2', FALSE, 'Usuario', 'Estandar', '1234');
-
-INSERT INTO tipos_dispositivo (id_tipo, nombre) VALUES
-(1, 'Lámpara Inteligente'),
-(2, 'Termostato'),
-(3, 'Cámara de Seguridad');
-
-INSERT INTO dispositivos (id_tipo, ubicacion, marca, modelo, estado) VALUES
-(1, 'Living', 'Philips', 'Hue', 'apagado'),
-(2, 'Dormitorio', 'Google', 'Nest', 'encendido');
