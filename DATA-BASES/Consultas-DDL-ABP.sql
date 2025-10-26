@@ -9,10 +9,11 @@ USE domoga;
 -- Creamos tabla usuarios
 CREATE TABLE usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    dni VARCHAR(8) NOT NULL UNIQUE,
-    es_admin BOOLEAN NOT NULL DEFAULT FALSE,
+    nombre_usuario VARCHAR(30) NOT NULL UNIQUE,
     nombre VARCHAR(30) NOT NULL,
     apellido VARCHAR(30) NOT NULL,
+    dni VARCHAR(8) NOT NULL UNIQUE,
+    es_admin BOOLEAN NOT NULL DEFAULT FALSE,
     contrasena VARCHAR(255) NOT NULL
 );
 

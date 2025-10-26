@@ -9,9 +9,9 @@ Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación
 ## Contenido del repositorio
 
 1. BDD-Evidencia-5 contiene las consultas DDL y DML pertenecientes a la Evidencia número 5.  
-2. BDD-Evidencia-6 contiene las consultas DDL y DML pertenecientes a la Evidencia número 6.
-4. Consultas-DDL-ABP.sql - Contiene sentencias para crear la tablas y relaciones para el programa simplificado del Proyecto Final ABP
-5. Consultas-DML-ABP.sql - Contiene sentencias para insertar registros en las tablas creadas, ademas de consultas multitabla y subconsultas del Proyecto Final ABP
+2. BDD-Evidencia-6 contiene las consultas DDL y DML pertenecientes a la Evidencia número 6 con correciones de la Evidencia número 5.
+4. Consultas-DDL-ABP.sql - Contiene sentencias para crear la tablas y relaciones para el programa simplificado del Proyecto Final ABP.
+5. Consultas-DML-ABP.sql - Contiene sentencias para inserción de registros en las tablas creadas, ademas de ejemplos de consultas multitabla y subconsultas del Proyecto Final ABP.
 ---
 
 ## Cómo ejecutar los scripts en un DBMS online
@@ -30,9 +30,9 @@ Se puede usar cualquier DBMS online que soporte MySQL, en nuestro caso elegimos:
 
 ## Estructura de tablas
 
-- Usuarios: almacena información de los usuarios, su DNI y si son administradores.
+- Usuarios: almacena información de los usuarios y su rol por ejemplo si son administradores.
 
-- Tipos_Dispositivo: almacena los tipos de dispositivos disponibles (Lámpara, Termostato, Cámara, etc.).
+- Tipos_Dispositivo: almacena los tipos de dispositivos disponibles (Lámpara, Termostato, Cámara, etc.) y su id.
 
 - Dispositivos: dispositivos registrados, con su tipo, ubicación, marca, modelo y estado (encendido/apagado).
 

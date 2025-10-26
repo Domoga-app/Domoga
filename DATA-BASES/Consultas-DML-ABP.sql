@@ -3,17 +3,18 @@
 -- INSERCIÓN DE DATOS
 
 -- Usuarios
-INSERT INTO usuarios (dni, es_admin, nombre, apellido, contrasena) VALUES 
-('1', TRUE, 'Admin', 'User', '1'),
-('2', FALSE, 'Usuario', 'Estandar', '1234'),
-('3', FALSE, 'Lucía', 'Gómez', 'abcd1234'),
-('4', FALSE, 'Carlos', 'Pérez', 'pass456'),
-('5', TRUE, 'Mariana', 'Lopez', 'admin123'),
-('6', FALSE, 'Sofía', 'Martínez', 'sof456'),
-('7', FALSE, 'Andrés', 'Fernández', 'andres1'),
-('8', FALSE, 'Laura', 'Sosa', 'ls123'),
-('9', TRUE, 'Ricardo', 'Romero', 'rradmin'),
-('10', FALSE, 'Julieta', 'Benítez', 'jb789');
+INSERT INTO usuarios (nombre_usuario, nombre, apellido, dni, es_admin, contrasena) VALUES
+('admin',    'Admin',    'User',      '00000000',  TRUE,  'P@sw0rd!'),
+('user',     'Usuario',  'Estandar',  '3456789',   FALSE, 'P@sw0rd!'),
+('lucia',    'Lucía',    'Gómez',     '27894512',  FALSE, 'P@sw0rd!'),
+('carlos',   'Carlos',   'Pérez',     '4012345',   FALSE, 'P@sw0rd!'),
+('mariana',  'Mariana',  'Lopez',     '50123456',  TRUE,  'P@sw0rd!'),
+('sofia',    'Sofía',    'Martínez',  '61234567',  FALSE, 'P@sw0rd!'),
+('andres',   'Andrés',   'Fernández', '7234567',   FALSE, 'P@sw0rd!'),
+('laura',    'Laura',    'Sosa',      '82345678',  FALSE, 'P@sw0rd!'),
+('ricardo',  'Ricardo',  'Romero',    '9345678',   TRUE,  'P@sw0rd!'),
+('julieta',  'Julieta',  'Benítez',   '1234567',   FALSE, 'P@sw0rd!');
+
 
 -- Tipos de dispositivos
 INSERT INTO tipos_dispositivo (id_tipo, nombre) VALUES
@@ -104,7 +105,7 @@ WHERE a.hora > '20:00:00';
 
 -- SUBCONSULTAS
 
---  Dispositivos que pertenecen al mismo tipo que el 'Termostato'
+--  Dispositivos que pertenecen al mismo tipo que en este caso 'Termostato'
 SELECT * FROM dispositivos
 WHERE id_tipo = (
     SELECT id_tipo FROM tipos_dispositivo WHERE nombre = 'Termostato'
