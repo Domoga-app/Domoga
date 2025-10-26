@@ -8,11 +8,10 @@ Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación
 
 ## Contenido del repositorio
 
-1. Consultas-DDL-ABP.sql – Contiene las sentencias para crear las tablas y relaciones (estructura de la base de datos).  
-2. Consultas-DDL-ABP.sql – Contiene los datos de ejemplo (30 registros principales) y relaciones de prueba y contiene consultas de prueba para verificar que los datos fueron insertados correctamente.
-3. Se incorporan consultas multitablas.
-4. Consultas-DDL-ABP.sql - Contiene sentencias para crear la tablas y relaciones para el programa simplificado de la evidencia 6
-5. Consultas-DML-ABP.sql - Contiene sentencias para insertar registros en las tablas creadas, ademas de consultas multitabla y subconsultas.
+1. BDD-Evidencia-5 contiene las consultas DDL y DML pertenecientes a la Evidencia número 5.  
+2. BDD-Evidencia-6 contiene las consultas DDL y DML pertenecientes a la Evidencia número 6.
+4. Consultas-DDL-ABP.sql - Contiene sentencias para crear la tablas y relaciones para el programa simplificado del Proyecto Final ABP
+5. Consultas-DML-ABP.sql - Contiene sentencias para insertar registros en las tablas creadas, ademas de consultas multitabla y subconsultas del Proyecto Final ABP
 ---
 
 ## Cómo ejecutar los scripts en un DBMS online
@@ -31,15 +30,15 @@ Se puede usar cualquier DBMS online que soporte MySQL, en nuestro caso elegimos:
 
 ## Estructura de tablas
 
-- Roles: almacena los roles (Administrador, Usuario).  
-- Usuarios: almacena información de los usuarios y su rol.  
-- Hogares: información de los hogares.  
-- UsuariosxHogares: relación entre usuarios y hogares.  
-- Tipos_Dispositivos: tipos de dispositivos.  
-- Dispositivos: dispositivos disponibles.  
-- Ambientes: ambientes dentro de cada hogar.  
-- Automatizaciones: reglas de automatización por hogar.  
-- Automatizaciones_Dispositivos: dispositivos asociados a cada automatización.
+- Usuarios: almacena información de los usuarios, su DNI y si son administradores.
+
+- Tipos_Dispositivo: almacena los tipos de dispositivos disponibles (Lámpara, Termostato, Cámara, etc.).
+
+- Dispositivos: dispositivos registrados, con su tipo, ubicación, marca, modelo y estado (encendido/apagado).
+
+- Automatizaciones: reglas de automatización, indicando días, hora y acción a ejecutar.
+
+- Automatizacion_Dispositivo: relación entre automatizaciones y dispositivos asociados, permite múltiples dispositivos por automatización y viceversa.
 
 ---
 
