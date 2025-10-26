@@ -1,8 +1,98 @@
 README – Ejecución de Scripts en SQL DBMS Online
 
-# Proyecto Dómoga – Scripts SQL
+# Proyecto Dómoga
 
-Este repositorio contiene los scripts SQL del proyecto , incluyendo la creación de la base de datos, tablas, relaciones y datos de prueba. Está pensado para ejecutarse en un DBMS online o en MySQL.
+⚙️ Lógica de negocio
+
+1. Gestión de usuarios
+
+Los usuarios son las personas que pueden operar el sistema.
+
+Cada usuario tiene:
+
+Un nombre_usuario único (para autenticación).
+
+Un dni único (para identificación).
+
+Un campo booleano es_admin que diferencia usuarios comunes de administradores.
+
+Una contrasena encriptada.
+
+🔹 Regla de negocio: Solo los administradores (es_admin = TRUE) pueden crear o gestionar otros usuarios y dispositivos.
+
+2. Gestión de tipos de dispositivos
+
+La tabla tipos_dispositivo define las categorías generales de equipos que el sistema puede manejar (luces, cámaras, sensores, etc.).
+
+Cada tipo tiene un nombre único.
+
+🔹 Regla de negocio: Los dispositivos solo pueden pertenecer a un tipo existente. No se puede crear un dispositivo sin un tipo definido.
+
+3. Gestión de dispositivos
+
+La tabla dispositivos representa los equipos físicos inteligentes instalados.
+
+Cada dispositivo tiene:
+
+Un tipo (relación con tipos_dispositivo).
+
+Una ubicacion (dónde está instalado).
+
+Su estado (por defecto 'apagado').
+
+🔹 Regla de negocio:
+
+Un dispositivo siempre pertenece a un tipo (id_tipo obligatorio).
+
+Un dispositivo no puede existir sin un tipo registrado.
+
+El estado solo puede ser 'encendido' o 'apagado' (según la lógica de la aplicación).
+
+4. Gestión de automatizaciones
+
+Las automatizaciones representan acciones programadas (por tiempo y día) para controlar dispositivos.
+
+Cada automatización define:
+
+Días de ejecución (dias, por ejemplo LMMJVSD = todos los días).
+
+Una hora (hora).
+
+Una acción (accion), como “encender”, “apagar”, “subir” o “bajar”.
+
+🔹 Regla de negocio:
+
+Una automatización tiene una acción asociada a uno o varios dispositivos.
+
+La relación se define en la tabla automatizacion_dispositivo.
+
+5. Relación automatización–dispositivo
+
+Tabla intermedia (automatizacion_dispositivo) que une automatizaciones con dispositivos.
+
+Tiene clave primaria compuesta (automatizacion_id, dispositivo_id).
+
+🔹 Regla de negocio:
+
+Si una automatización o dispositivo se elimina, la relación también desaparece (ON DELETE CASCADE).
+
+Un dispositivo puede participar en más de una automatización.
+
+Una automatización puede controlar más de un dispositivo.
+→ Relación muchos a muchos.
+
+6. Consultas y subconsultas: reglas operativas
+
+Las consultas SQL al final reflejan comportamientos reales del sistema:
+
+| Tipo de consulta                         | Lógica de negocio                                                |
+|------------------------------------------|------------------------------------------------------------------|
+| **Dispositivos con su tipo**             | Mostrar información combinada para gestión del inventario.       |
+| **Automatizaciones con dispositivos**    | Ver qué acciones están programadas sobre qué equipos.            |
+| **Cantidad de dispositivos por tipo**    | Estadística de distribución de dispositivos.                     |
+| **Automatizaciones después de las 20:00**| Control de rutinas nocturnas.                                   |
+| **Dispositivos del mismo tipo**          | Filtrar por categoría, útil para configuración o mantenimiento.  |
+| **Dispositivos sin automatización**      | Detectar equipos sin programación activa.                        |
 
 ---
 
