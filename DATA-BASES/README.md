@@ -2,9 +2,9 @@ README – Ejecución de Scripts en SQL DBMS Online
 
 # Proyecto Dómoga
 
-⚙️ Lógica de negocio
+## ⚙️ Lógica de negocio
 
-1. Gestión de usuarios
+## Gestión de usuarios
 
 Los usuarios son las personas que pueden operar el sistema.
 
@@ -20,7 +20,7 @@ Una contrasena encriptada.
 
 🔹 Regla de negocio: Solo los administradores (es_admin = TRUE) pueden crear o gestionar otros usuarios y dispositivos.
 
-2. Gestión de tipos de dispositivos
+## Gestión de tipos de dispositivos
 
 La tabla tipos_dispositivo define las categorías generales de equipos que el sistema puede manejar (luces, cámaras, sensores, etc.).
 
@@ -28,7 +28,7 @@ Cada tipo tiene un nombre único.
 
 🔹 Regla de negocio: Los dispositivos solo pueden pertenecer a un tipo existente. No se puede crear un dispositivo sin un tipo definido.
 
-3. Gestión de dispositivos
+## Gestión de dispositivos
 
 La tabla dispositivos representa los equipos físicos inteligentes instalados.
 
@@ -48,7 +48,7 @@ Un dispositivo no puede existir sin un tipo registrado.
 
 El estado solo puede ser 'encendido' o 'apagado' (según la lógica de la aplicación).
 
-4. Gestión de automatizaciones
+## Gestión de automatizaciones
 
 Las automatizaciones representan acciones programadas (por tiempo y día) para controlar dispositivos.
 
@@ -66,7 +66,7 @@ Una automatización tiene una acción asociada a uno o varios dispositivos.
 
 La relación se define en la tabla automatizacion_dispositivo.
 
-5. Relación automatización–dispositivo
+## Relación automatización–dispositivo
 
 Tabla intermedia (automatizacion_dispositivo) que une automatizaciones con dispositivos.
 
@@ -81,7 +81,7 @@ Un dispositivo puede participar en más de una automatización.
 Una automatización puede controlar más de un dispositivo.
 → Relación muchos a muchos.
 
-6. Consultas y subconsultas: reglas operativas
+## Consultas y subconsultas: reglas operativas
 
 Las consultas SQL al final reflejan comportamientos reales del sistema:
 
