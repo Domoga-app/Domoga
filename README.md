@@ -70,7 +70,7 @@ DOMOGA/
 ├── .gitignore
 ├── LICENSE
 └── README.md
-
+```
 
 ## ✨ Funcionalidades
 
