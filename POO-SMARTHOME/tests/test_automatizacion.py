@@ -50,7 +50,9 @@ def test_automatizacion_nombre_invalido():
     with pytest.raises(ValueError):
         auto.nombre = ""
     with pytest.raises(ValueError):
-        auto.nombre = "ab"
+        auto.nombre = "a"
+    with pytest.raises(ValueError):
+        auto.nombre = "nombremasde30caracteres123456489"
 
 def test_automatizacion_dias_invalidos():
     auto = Automatizacion()
@@ -69,4 +71,6 @@ def test_automatizacion_accion_invalida():
     with pytest.raises(ValueError):
         auto.accion = ""
     with pytest.raises(ValueError):
-        auto.accion = "ab"
+        auto.accion = "a"
+    with pytest.raises(ValueError):
+        auto.accion = "accionmasde30caracteres123456489"

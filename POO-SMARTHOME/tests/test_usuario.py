@@ -27,8 +27,8 @@ def test_usuario_validaciones():
     
     # Contraseña válida
     # Tiene una mayúscula, una minúscula, un número y un símbolo
-    contrasena_valida = "Abcdef1!"
-    usuario.contrasena = contrasena_valida
+    contrasena_valida = "b03ddf3ca2e714a6548e7495e2a03f5e824eaac9837cd7f159c67b90fb4b7342" # Este es el hash de P@ssw0rd
+    usuario.contrasena = "P@ssw0rd"
     
     # Contraseña real es la que se envia a la base de datos
     assert usuario._contrasena_real() == contrasena_valida
@@ -51,14 +51,14 @@ def test_usuario_validaciones():
         apellido="Catalas",
         dni="12345678",
         es_admin=False,
-        contrasena="P@sw0rd!"
+        contrasena="P@ssw0rd"
     )
     assert usuario2.nombre_usuario == "gera"
     assert usuario2.nombre == "Gerardo"
     assert usuario2.apellido == "Catalas"
     assert usuario2.dni == "12345678"
     assert usuario2.es_admin == False
-    assert usuario2._contrasena_real() == "P@sw0rd!"
+    assert usuario2._contrasena_real() == "P@ssw0rd"
     
     # Prueba el str
     str_esperado = "Usuario: gera, Nombre: Gerardo, Apellido: Catalas, DNI: 12345678, Rol: Estandar"

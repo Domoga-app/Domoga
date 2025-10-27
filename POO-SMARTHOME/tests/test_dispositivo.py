@@ -66,6 +66,8 @@ def test_dispositivo_ubicacion_invalida():
         dispositivo.ubicacion = "ab"  # Menos de 3 caracteres
     with pytest.raises(ValueError):
         dispositivo.ubicacion = "   "  # Solo espacios
+    with pytest.raises(ValueError):
+        dispositivo.ubicacion = "ubicaciónconmásde30carácteressss" 
 
 def test_dispositivo_estado_invalido():
     dispositivo = Dispositivo(tipo_dispositivo=TipoDispositivo(nombre="Cámara"))
@@ -75,3 +77,5 @@ def test_dispositivo_estado_invalido():
         dispositivo.estado = "ab"  # Menos de 3 caracteres
     with pytest.raises(ValueError):
         dispositivo.estado = "   "  # Solo espacios
+    with pytest.raises(ValueError):
+        dispositivo.estado = "estadoconmásde30carácteressssss" 

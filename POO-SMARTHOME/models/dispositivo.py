@@ -34,8 +34,8 @@ class Dispositivo:
     
     @ubicacion.setter
     def ubicacion(self, ubicacion):
-        if not ubicacion or len(ubicacion.strip()) < 3:
-            raise ValueError("La ubicación no puede estar vacía y/o necesita tener más de 3 carácteres")
+        if not ubicacion or not (3 <= len(ubicacion.strip()) <= 30):
+            raise ValueError("La ubicación debe tener entre 3 y 30 caracteres.")
         self.__ubicacion = ubicacion.strip()
 
     # Marca
@@ -63,8 +63,8 @@ class Dispositivo:
     
     @estado.setter
     def estado(self, estado):
-        if not estado or len(estado.strip()) < 3:
-            raise ValueError("El estado no puede estar vacío y/o necesita tener más de 3 carácteres")
+        if not estado or not (3 <= len(estado.strip()) <= 30):
+            raise ValueError("El estado debe tener entre 3 y 30 caracteres.")
         self.__estado = estado
 
     # print(Dispositivo())

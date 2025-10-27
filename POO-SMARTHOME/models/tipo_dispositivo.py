@@ -16,8 +16,8 @@ class TipoDispositivo:
 
     @nombre.setter
     def nombre(self, nombre):
-        if not nombre or len(nombre.strip()) < 3:
-            raise ValueError("El nombre del tipo no puede estar vacío o ser tan corto.")
+        if not nombre or not (2 <= len(nombre.strip()) <= 50):
+            raise ValueError("El nombre debe tener entre 2 y 50 caracteres.")
         self.__nombre = nombre.strip()
         
         

@@ -26,8 +26,12 @@ def test_tipo_dispositivo_nombre_invalido():
         
     # Nombre demasiado corto
     with pytest.raises(ValueError):
-        tipo.nombre = "AB"
+        tipo.nombre = "A"
         
     # Nombre con solo espacios
     with pytest.raises(ValueError):
         tipo.nombre = "   "
+        
+    # Nombre con más de 50 carácteres
+    with pytest.raises(ValueError):
+        tipo.nombre = "nombreconmásde50carácteres12345678901234567890123456789"

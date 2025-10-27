@@ -23,8 +23,8 @@ class Automatizacion:
     
     @nombre.setter
     def nombre(self, nombre):
-        if not nombre or len(nombre.strip()) < 3:
-            raise ValueError("El nombre de la automatización no puede estar vacío.")
+        if not nombre or not (2 <= len(nombre.strip()) <= 30):
+            raise ValueError("El nombre debe tener entre 2 y 30 caracteres.")
         self.__nombre = nombre.strip()
         
     # Días
@@ -90,8 +90,8 @@ class Automatizacion:
 
     @accion.setter
     def accion(self, accion):
-        if not accion or len(accion.strip()) < 3:
-            raise ValueError("La acción no puede estar vacía.")
+        if not accion or not (2 <= len(accion.strip()) <= 30):
+            raise ValueError("La acción debe tener entre 2 y 30 caracteres.")
         self.__accion = accion
 
     # Lista de dispositivos
