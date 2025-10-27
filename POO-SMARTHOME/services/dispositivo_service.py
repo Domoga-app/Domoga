@@ -1,8 +1,9 @@
 # services/dispositivo_service.py
 from dao import DispositivoDAO
 from models import Dispositivo, TipoDispositivo
+from .interfaces import IDispositivoService
 
-class DispositivoService:
+class DispositivoService(IDispositivoService):
     def __init__(self):
         self.dispositivo_dao = DispositivoDAO()
 
@@ -13,14 +14,14 @@ class DispositivoService:
             print(f"Error en servicio al obtener todos los dispositivos: {e}")
             return [] # Devuelve una lista vacía en caso de error
 
-    def obtener_por_id(self, id_dispositivo):
+    def obtener_por_id(self, id_dispositivo: int):
         try:
             return self.dispositivo_dao.obtener_por_id(id_dispositivo)
         except Exception as e:
             print(f"Error en servicio al obtener dispositivo por ID: {e}")
             return None
 
-    def crear_dispositivo(self, tipo_seleccionado: TipoDispositivo, ubicacion, marca, modelo, estado) -> bool:
+    def crear_dispositivo(self, tipo_seleccionado: TipoDispositivo, ubicacion: str, marca: str, modelo: str, estado: str) -> bool:
         try:
             
             nuevo_dispositivo = Dispositivo()
