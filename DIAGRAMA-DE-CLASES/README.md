@@ -1,29 +1,138 @@
-## 📐 Diseño Orientado a Objetos (Diagrama de Clases UML)
+# README - Diagrama UML de Domoga
 
-El siguiente diagrama UML muestra la estructura lógica de la aplicación **Domoga**, definiendo las clases principales, sus atributos, operaciones y las relaciones entre la lógica de negocio (`models`) y la persistencia de datos (`DAO`).
+## 🌟 Descripción General
 
-![Diagrama de Clases de Domoga](DIAGRAMA DE CLASES/DC-Evidencia-6/Diagrama de clasea nuevo.drawio.png)
+Este proyecto modela un **sistema de Smarthome**, incluyendo usuarios, dispositivos, tipos de dispositivos y automatizaciones.  
+La arquitectura sigue un enfoque en capas, separando **modelos**, **DAOs** (Data Access Objects), **servicios** y **vistas**, para mantener el código modular y escalable.
+
 ---
 
-### **Componentes y Relaciones Clave**
+## 🏠 Modelos
 
-El sistema se estructura en las siguientes clases y tipos de relaciones:
+### **Usuario**
+Representa a un usuario del sistema.
 
-#### **Clases de Dominio (Modelos)**
-* **`Usuario`**: Representa a la persona que interactúa con el sistema (Administrador o Estándar). Contiene atributos como `dni`, `nombre` y `rol`.
-* **`Dispositivo`**: Es la clase base para cualquier objeto del hogar (Luz, Sensor, etc.). Sus atributos son genéricos (`id`, `nombre`, `estado`).
-* **Subclases de Dispositivo**: (e.g., `Luz`, `Termostato`): **Heredan (Generalización)** de la clase `Dispositivo` y añaden atributos o métodos específicos.
+**Atributos:**
+- `id_usuario`: Identificador único.
+- `nombre_usuario`: Nombre de usuario para login.
+- `nombre` y `apellido`: Datos personales.
+- `dni`: Documento de identidad.
+- `es_admin`: Indica si el usuario tiene privilegios de administrador.
+- `contrasena`: Contraseña del usuario.
 
-#### **Relaciones de Persistencia (DAO)**
-* **Realización / Implementación:** Las clases de Acceso a Datos (e.g., `UsuarioDAO`, `DispositivoDAO`) **implementan** la lógica de conexión y manipulación de datos para sus respectivas clases de modelo.
-* **Relación:** `Usuario` es gestionado por `UsuarioDAO` (relación de dependencia o realización). Esto separa la lógica de negocio de la base de datos.
+**Métodos:**
+- `verificar_contrasena(contrasena: str): bool` — Comprueba si la contraseña ingresada es correcta.
 
-#### **Asociaciones Lógicas**
-* **Asociación entre `Usuario` y `Dispositivo`**: Un `Usuario` (especialmente el Administrador) **controla** la gestión y el estado de múltiples `Dispositivos`.
-* **Multiplicidad:** Se establece la cardinalidad para definir cuántos objetos de una clase se relacionan con cuántos objetos de otra (ej. 1 Usuario puede controlar 0 a muchos Dispositivos: `1 -- 0..*`).
+---
 
-| Relación | Clases Involucradas | Tipo UML | Descripción |
-| :--- | :--- | :--- | :--- |
-| **Persistencia** | `Usuario` y `UsuarioDAO` | Realización/Dependencia | El DAO contiene la lógica SQL para la clase Modelo. |
-| **Control** | `Usuario` y `Dispositivo` | Asociación | El usuario administra y opera los dispositivos. |
-| **Especialización** | `Dispositivo` y Subclases | Herencia / Generalización | Las subclases extienden la funcionalidad base del dispositivo. |
+### **TipoDispositivo**
+Representa el tipo de un dispositivo (ej. Sensor, Bombilla, Termostato).
+
+**Atributos:**
+- `id_tipo`: Identificador único del tipo.
+- `nombre`: Nombre del tipo.
+
+---
+
+### **Dispositivo**
+Representa un dispositivo físico dentro del hogar.
+
+**Atributos:**
+- `id_dispositivo`: Identificador único.
+- `tipo`: Referencia a `TipoDispositivo`.
+- `ubicacion`: Ubicación dentro del hogar.
+- `marca`, `modelo`: Información técnica.
+- `estado`: Estado actual.
+
+**Relaciones:**
+- Cada dispositivo tiene un tipo  
+  `Dispositivo "1" *-- "1" TipoDispositivo : tiene`
+
+---
+
+### **Automatizacion**
+Define reglas automáticas que afectan a dispositivos.
+
+**Atributos:**
+- `id_automatizacion`: Identificador único.
+- `nombre`: Nombre de la automatización.
+- `dias`: Lista de días en que se ejecuta.
+- `hora`: Hora de ejecución.
+- `accion`: Acción a realizar.
+- `dispositivos_afectados`: Lista de dispositivos que se ven afectados.
+
+**Métodos:**
+- `agregar_dispositivo(dispositivo: Dispositivo)` — Vincula un dispositivo a la automatización.
+
+**Relaciones:**
+- Una automatización puede afectar múltiples dispositivos  
+  `Automatizacion "1" -- "0..*" Dispositivo : afecta`
+
+---
+
+## 🗃️ Interfaces DAO
+
+Los DAOs definen métodos de acceso a datos para cada modelo:
+
+- `IUsuarioDAO`, `IDispositivoDAO`, `ITipoDispositivoDAO`, `IAutomatizacionDAO`.
+
+**Métodos incluyen:**
+- Crear, obtener, actualizar, eliminar.
+- Operaciones específicas, como vincular dispositivos a automatizaciones.
+
+---
+
+## 📦 Clases DAO
+
+- `UsuarioDAO`, `DispositivoDAO`, `TipoDispositivoDAO`, `AutomatizacionDAO`  
+
+**Implementan sus respectivas interfaces DAO** (`<<implementa Interface>>`) y **manejan directamente un modelo**:  
+Ejemplo: `UsuarioDAO --> Usuario : maneja`
+
+---
+
+## ⚙️ Interfaces Service
+
+Las capas de servicio exponen la **lógica de negocio** del sistema:
+
+- `IUsuarioService`, `IDispositivoService`, `ITipoDispositivoService`.
+
+**Métodos incluyen:**  
+- Operaciones de negocio como registrar usuarios, iniciar sesión, crear dispositivos y obtener listas completas.
+
+---
+
+## 🛠️ Clases Service
+
+- `UsuarioService`, `DispositivoService`, `TipoDispositivoService`  
+
+**Implementan sus interfaces de servicio** y **usan su DAO correspondiente**:  
+Ejemplo: `DispositivoService --> DispositivoDAO : usa`
+
+---
+
+## 🔗 Relaciones entre Capas
+
+### Modelos y DAOs
+- Cada DAO tiene una relación de manejo con su modelo.  
+  Ejemplo: `DispositivoDAO --> Dispositivo : maneja`
+
+### DAOs y Interfaces
+- Los DAOs implementan interfaces que definen los métodos obligatorios.  
+  Ejemplo: `UsuarioDAO ..|> IUsuarioDAO`
+
+### Servicios y DAOs
+- Los servicios utilizan los DAOs para acceder a la base de datos.  
+  Ejemplo: `DispositivoService --> DispositivoDAO : usa`
+
+### Servicios e Interfaces
+- Los servicios implementan interfaces que definen la lógica de negocio a exponer.  
+  Ejemplo: `UsuarioService ..|> IUsuarioService`
+
+---
+
+## 📝 Notas
+
+- El sistema está diseñado para ser **modular**, permitiendo reemplazar la capa de acceso a datos sin afectar la lógica de negocio.
+- Los métodos específicos de negocio (como `verificar_contrasena` o `agregar_dispositivo`) se encuentran en los modelos y servicios según corresponda.
+- Este diagrama proporciona una **visión conceptual**, sin entrar en detalles de implementación como getters/setters de cada atributo.
