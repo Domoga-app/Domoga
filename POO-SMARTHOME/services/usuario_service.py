@@ -1,12 +1,13 @@
 # services/usuario_service.py
 from models import Usuario
 from dao import UsuarioDAO
+from .interfaces import IUsuarioService
 
-class UsuarioService:
+class UsuarioService(IUsuarioService):
     def __init__(self):
         self.usuario_dao = UsuarioDAO()
 
-    def iniciar_sesion(self, nombre_usuario, contrasena):
+    def iniciar_sesion(self, nombre_usuario: str, contrasena: str):
         if not nombre_usuario or not contrasena:
             print("Error: Nombre de usuario y contraseña son obligatorios.")
             return None
@@ -22,7 +23,7 @@ class UsuarioService:
             print(f"Error en servicio de inicio de sesión: {e}")
             return None
 
-    def registrar_usuario(self, nombre_usuario, nombre, apellido, dni, contrasena):
+    def registrar_usuario(self, nombre_usuario: str, nombre: str, apellido: str, dni: str, contrasena: str):
         try:
             if self.usuario_dao.obtener_por_nombre_usuario(nombre_usuario):
                 print("Error: El usuario ya está registrado.")
