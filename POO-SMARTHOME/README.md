@@ -29,6 +29,7 @@ POO-SMARTHOME/
 ├── services/           # Capa de negocio: lógica entre DAO y vistas
 ├── views/              # Menús e interacción por consola
 ├── tests/              # Pruebas unitarias (pytest) centradas en los modelos
+├── utils/              # Funciones auxiliares del programa
 ├── .env.example        # Ejemplo de configuración de variables de entorno
 ├── requirements.txt    # Dependencias necesarias del proyecto
 ├── pytest.ini          # Configuración de pytest (marcadores, opciones, warnings)

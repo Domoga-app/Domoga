@@ -2,46 +2,75 @@
 
 Este proyecto es una aplicación de consola para la gestión de un sistema de hogar inteligente (domótica), desarrollada aplicando los principios de la Programación Orientada a Objetos (POO). El sistema permite la gestión de usuarios con diferentes roles (Administrador y Estándar) y el control de dispositivos dentro del hogar.
 
-##  Evolución del Proyecto 📈
+## 📈 Evolución del Proyecto
 
-Este repositorio documenta la evolución del proyecto a través de diferentes etapas o "Evidencias de aprendizaje":
+Este repositorio documenta la evolución del proyecto **Domoga**, desarrollado a lo largo de distintas etapas denominadas **“Evidencias de Aprendizaje”**, que reflejan la aplicación progresiva de **Programación Orientada a Objetos (POO)**, **arquitectura en capas**, **buenas prácticas** y **pruebas unitarias**.
 
-* `EVIDENCIA-3`: Punto de partida del proyecto. Programa funcional original que incluye la lógica de usuarios, dispositivos y automatizaciones, sin POO.
-* `DC-Evidencia-5`: Diagramas de Clases creados durante la Evidencia 5, orientados a POO y basados en los modelos de la `EVIDENCIA-3`, luego refactorizados para alinearse con el código de la Evidencia 6.
-* ``BD-Evidencia-5`` y `BD-Evidencia-6`: Evolución de la base de datos. La carpeta `BD-Evidencia-5` adapta la base original de la ``EVIDENCIA-3`` a los requisitos de la EV5 y EV6, mientras que `BD-Evidencia-6` contiene el script final coherente con el proyecto refactorizado.
-* `POO-SMARTHOME`: Carpeta principal del proyecto final. Contiene los modelos de la `EVIDENCIA-3` convertidos a POO según la EV5, refactorizados y simplificados para cumplir los requisitos de la Evidencia 6 y las correcciones indicadas por los profesores (validaciones de modelos, acceso a datos, cierre de cursores, TDD, y corrección de excepciones en el menú).
+- **EVIDENCIA-3** → Punto de partida del proyecto.  
+  Contiene el **primer prototipo funcional** que incluye la lógica de usuarios, dispositivos y automatizaciones, sin POO.  
+  En esta etapa, los datos se almacenan en estructuras básicas (diccionarios y listas), y la interacción se realiza desde una interfaz de consola sencilla.
+
+- **DIAGRAMA-DE-CLASES / DC-Evidencia-5** → Transición hacia POO.  
+  Incluye los **diagramas UML** elaborados durante la Evidencia 5, que representan el diseño orientado a objetos del sistema basado en los modelos de la EVIDENCIA-3.  
+  La subcarpeta `DC-Evidencia-5` contiene los diagramas originales de la EV5, mientras que la carpeta `DIAGRAMA-DE-CLASES` incluye los diagramas **actualizados al proyecto final**.  
+  El archivo `DC-ABP.drawio.png` refleja el **diagrama de clases definitivo**, incluyendo relaciones de herencia, agregación, composición y asociación.
+
+- **DATA-BASES / BD-Evidencia-5 y BD-Evidencia-6** → Evolución del modelo de base de datos.  
+  - La carpeta **BD-Evidencia-5** contiene **únicamente las bases de datos solicitadas en la consigna de la Evidencia 5**, sin modificaciones adicionales.  
+  - La carpeta **BD-Evidencia-6** incluye **las bases de datos de la consigna de la Evidencia 6**, donde se agregaron más registros en DML y consultas más avanzadas (joins y subconsultas).  
+  - La carpeta **DATA-BASES** principal almacena los **scripts SQL finales del producto completo**:  
+    - `Consultas-DDL-ABP.sql`: definición de estructura (tablas, relaciones y claves).  
+    - `Consultas-DML-ABP.sql`: inserciones y consultas de prueba del sistema final.
+
+- **POO-SMARTHOME** → Proyecto principal refactorizado (Evidencia 6).  
+  Es la **versión final del sistema**, desarrollada bajo principios de **POO** y **arquitectura en capas (DAO, Services, Views)**.  
+  Se implementaron **validaciones de modelos**, **manejo seguro de conexiones**, **TDD (Test Driven Development)** y **tratamiento de excepciones controladas**.  
+  Incluye una nueva carpeta `utils` con funciones de apoyo utilizadas por distintas capas del sistema.  
+  Representa la culminación del proyecto **Domoga** como una aplicación modular, escalable y mantenible.
+
+---
 
 ## 📂 Estructura del Repositorio
 
-Raíz del proyecto
+Raíz del proyecto:
 
 ```tree
 DOMOGA/
-├───DATA-BASES              # Proyecto original previo al refactor (EV5 y EV6)
-│   ├───BD-Evidencia-5      # Base de datos del proyecto original (EV3) adaptada a EV5 y EV6
-│   └── BD-Evidencia-6      # Base de datos del proyecto refactorizado (EV6)
-├───DC-Evidencia-5          # Diagramas actualizados del proyecto refactorizado (EV5 y EV6)
-├───EVIDENCIA-3             # Proyecto original previo al refactor (EV5 y EV6)
-│   ├───data                # Datos de ejecución almacenados en diccionarios
-│   ├───models              # Modelos iniciales, luego convertidos a objetos en EV5
-│   ├───ui                  # Menús e interfaz de consola
-│   ├───utils               # Funciones auxiliares del programa
-│   └── main.py             # Punto de entrada de la aplicación inicial
-├───POO-SMARTHOME           # Proyecto principal refactorizado (EV6)
-│   ├───dao                 # Clases de acceso a datos
-│   │   └───interfaces      # Interfaces DAO
-│   ├───models              # Modelos POO del sistema
-│   ├───services            # Lógica de negocio y conexión entre DAO y views
-│   ├───tests               # Pruebas unitarias centradas en los modelos POO y sus validaciones; no cubren servicios ni DAO
-│   ├───views               # Capa de presentación (interfaz de usuario)
-│   ├── .env.example        # Ejemplo de variables de entorno
-│   ├── requirements.txt    # Dependencias del proyecto
-│   ├── pytest.ini          # Configuración de pytest (marcadores, opciones y filtros de warnings)
-│   └── main.py             # Punto de entrada de la aplicación final
+├───DATA-BASES                  # Evolución del diseño de la base de datos (EV5 y EV6)
+│   ├───BD-Evidencia-5          # Bases de datos de la consigna de la Evidencia 5
+│   ├───BD-Evidencia-6          # Bases de datos de la consigna de la Evidencia 6
+│   ├── Consultas-DDL-ABP.sql   # Script DDL: creación de tablas y relaciones adaptadas al programa final refactorizado
+│   └── Consultas-DML-ABP.sql   # Script DML: inserciones y consultas de prueba adaptadas a la nueva base de datos
+│
+├───DIAGRAMA-DE-CLASES          # Diagramas UML del sistema
+│   ├───DC-Evidencia-5          # Diagramas de transición hacia la estructura POO (EV5 y EV6)
+│   ├── DC-ABP.drawio.png       # Diagrama de clases actualizado al sistema final
+│   └── README.md               # Documentación del diagrama de clases y relaciones UML
+│
+├───EVIDENCIA-3                 # Proyecto original sin POO (punto de partida)
+│   ├───data                    # Datos de ejecución almacenados en estructuras básicas
+│   ├───models                  # Modelos iniciales, base para la conversión a POO
+│   ├───ui                      # Menús e interfaz de consola
+│   ├───utils                   # Funciones auxiliares del programa
+│   └── main.py                 # Punto de entrada de la aplicación inicial
+│
+├───POO-SMARTHOME               # Proyecto principal refactorizado (EV6)
+│   ├───dao                     # Capa de acceso a datos
+│   │   └───interfaces          # Interfaces DAO para manejo abstracto de datos
+│   ├───models                  # Modelos POO del sistema (Usuario, Dispositivo, etc.)
+│   ├───services                # Lógica de negocio y conexión entre DAO y views
+│   ├───tests                   # Pruebas unitarias (validaciones, TDD, excepciones)
+│   ├───utils                   # Funciones auxiliares del sistema refactorizado
+│   ├───views                   # Capa de presentación (interfaz de usuario)
+│   ├── .env.example            # Ejemplo de configuración de variables de entorno
+│   ├── requirements.txt        # Dependencias del proyecto
+│   ├── pytest.ini              # Configuración de pytest (marcadores y warnings)
+│   └── main.py                 # Punto de entrada de la aplicación final
+│
 ├── .gitignore
 ├── LICENSE
 └── README.md
-```
+
 
 ## ✨ Funcionalidades
 
